@@ -1,2 +1,7 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--ion-color-primary);
+}
