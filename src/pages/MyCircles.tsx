@@ -9,7 +9,6 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
 import './MyCircles.css';
 import React from 'react';
 
