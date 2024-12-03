@@ -1,0 +1,7 @@
+{
+  "name": "cashCircle",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
