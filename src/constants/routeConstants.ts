@@ -11,5 +11,11 @@ export class RouteConstants {
   static readonly profile = 'profile';
   static readonly profileRelative = `/${RouteConstants.profile}`;
 
+  static readonly login = 'login';
+  static readonly loginRelative = `/${RouteConstants.login}`;
+
+  static readonly welcome = 'welcome';
+  static readonly welcomeRelative = `/${RouteConstants.welcome}`;
+
   static readonly wildcard = `**`;
 }

@@ -1,20 +1,20 @@
 import React from 'react';
 import {
-  IonSplitPane,
-  IonMenu,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
-  IonList,
-  IonItem,
+  IonHeader,
   IonIcon,
+  IonItem,
   IonLabel,
+  IonList,
+  IonMenu,
   IonRouterOutlet,
+  IonSplitPane,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/react';
-import { triangle, ellipse, square } from 'ionicons/icons';
-import Routes from './Routes';
+import { ellipse, square, triangle } from 'ionicons/icons';
 import { RouteConstants } from '../constants/routeConstants';
+import AppRoutes from './AppRoutes';
 
 const WebSidebar: React.FC = () => (
   <IonSplitPane contentId="main">
@@ -45,8 +45,9 @@ const WebSidebar: React.FC = () => (
         </IonList>
       </IonContent>
     </IonMenu>
+
     <IonRouterOutlet id="main">
-      <Routes />
+      <AppRoutes />
     </IonRouterOutlet>
   </IonSplitPane>
 );

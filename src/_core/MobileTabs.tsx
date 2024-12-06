@@ -1,14 +1,15 @@
 import React from 'react';
-import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
-import { triangle, ellipse, square } from 'ionicons/icons';
-import Routes from './Routes';
+import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
+import { ellipse, square, triangle } from 'ionicons/icons';
 import { RouteConstants } from '../constants/routeConstants';
+import AppRoutes from './AppRoutes';
 
 const MobileTabs: React.FC = () => (
   <IonTabs>
     <IonRouterOutlet>
-      <Routes />
+      <AppRoutes />
     </IonRouterOutlet>
+
     <IonTabBar slot="bottom">
       <IonTabButton tab={RouteConstants.home} href={RouteConstants.homeRelative}>
         <IonIcon aria-hidden="true" icon={triangle} />
