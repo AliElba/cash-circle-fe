@@ -29,19 +29,23 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import React, { FC } from 'react';
-import MobileTabs from './_core/MobileTabs';
-import WebSidebar from './_core/WebSidebar';
 import { IonReactRouter } from '@ionic/react-router';
+import MobileTabs from './_core/layout/MobileTabs';
+import WebSidebar from './_core/layout/WebSidebar';
 
 setupIonicReact();
 
 const App: FC = () => {
-  const isMobile = isPlatform('mobile') || window.innerWidth < 768;
+  const isMobile = isPlatform('mobile');
   // const navigate = useNavigate();
 
   return (
     <IonApp>
       <IonReactRouter>
+        {/*<IonRouterOutlet>
+          <AppRoutes />
+        </IonRouterOutlet>*/}
+
         {isMobile ?
           <MobileTabs />
         : <WebSidebar />}

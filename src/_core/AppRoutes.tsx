@@ -10,16 +10,20 @@ import Welcome from '../pages/Welcome';
 
 const AppRoutes: React.FC = () => (
   <>
-    <Route path={RouteConstants.loginRelative} element={<Login onLogin={() => null} />} />
+    <Route path="/" exact>
+      <Redirect to={RouteConstants.loginRelative} />
+    </Route>
+    <Route path={RouteConstants.loginRelative} component={Login} />
+    <Route path={RouteConstants.welcomeRelative} component={Welcome} />
+
     <Route path={RouteConstants.homeRelative} render={() => <Home />} exact={true} />
     <Route path={RouteConstants.myCirclesRelative} render={() => <MyCircles />} exact={true} />
     <Route path={RouteConstants.paymentsRelative} render={() => <Payments />} exact={true} />
     <Route path={RouteConstants.profileRelative} render={() => <Profile />} exact={true} />
-    <Route path={RouteConstants.welcomeRelative} element={<Welcome />} />
-    {/*<Route path="*" element={<Navigate to={RouteConstants.homeRelative} />} />*/}
-    <Route path="*" exact={true}>
+
+    {/*<Route path="*" exact={true}>
       <Redirect to={RouteConstants.homeRelative} />
-    </Route>
+    </Route>*/}
   </>
 );
 

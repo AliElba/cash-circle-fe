@@ -1,63 +1,52 @@
 /* Center the grid vertically */
 .login-grid {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 /* Style for the user icon */
 .user-icon {
-  font-size: 8rem;
-  color: gray;
-}
-
-/* Style for the input fields */
-.login-input {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 1rem;
-  margin: 8px 0;
-  width: 100%;
-  box-sizing: border-box;
+    font-size: 8rem;
+    color: gray;
 }
 
 /* Style for the login button */
 .login-button {
-  margin-top: 16px;
+    margin-top: 16px;
 }
 
 /* Divider text (e.g., "or") */
 .divider-text {
-  margin: 16px 0 8px;
-  color: #6c757d;
-  font-size: 0.9rem;
+    margin: 16px 0 8px;
+    color: #6c757d;
+    font-size: 0.9rem;
 }
 
 /* Social media text */
 .social-text {
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-  color: #6c757d;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: #6c757d;
 }
 
 /* Social media icons */
 .social-icon {
-  font-size: 2rem;
-  margin: 0 12px;
-  cursor: pointer;
+    font-size: 2rem;
+    margin: 0 12px;
+    cursor: pointer;
 }
 
 .social-icon.facebook {
-  color: #3b5998;
+    color: #3b5998;
 }
 
 .social-icon.google {
-  color: #db4a39;
+    color: #db4a39;
 }
 
 .social-icon.linkedin {
-  color: #0077b5;
+    color: #0077b5;
 }
