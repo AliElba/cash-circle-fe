@@ -13,7 +13,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { logInOutline, logoFacebook, logoGoogle, logoLinkedin, personCircle } from 'ionicons/icons';
-import './Login.css';
+import './Login.scss';
 import { useHistory } from 'react-router-dom';
 import { RouteConstants } from '../constants/routeConstants';
 
@@ -29,15 +29,36 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
 
+  /**
+   * Handles the login event by navigating to the home route and
+   * going back to the root of the navigation stack.
+   */
   const handleLogin = () => {
+    // Navigate to the home route
     history.push(RouteConstants.homeRelative);
+    // Go back to the root of the navigation stack
     ionRouter.goBack();
+    // Push the home route onto the navigation stack
     ionRouter.push(RouteConstants.homeRelative, 'root');
   };
 
   return (
     <IonPage>
       <IonContent className="ion-padding" fullscreen>
+        <div className="row d-flex justify-content-center">
+          <div className="col-12 text-center">ksaklmsamlksmalms</div>
+        </div>
+
+        <div className="row">
+          <div className="col-12 col-md-6 mx-auto">
+            <div className="p-3 bg-primary text-white text-center">Centered Horizontally</div>
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-center">
+          <div className="p-3 bg-primary text-white">Centered Horizontally</div>
+        </div>
+
         <IonCard className="ion-align-items-center">
           <IonGrid className="login-grid">
             {/* User Icon */}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonPage, IonRow, IonText } from '@ionic/react';
 import { checkmarkCircle } from 'ionicons/icons';
-import './Welcome.css';
+import './Welcome.scss';
 
 const Welcome: React.FC = () => {
   return (

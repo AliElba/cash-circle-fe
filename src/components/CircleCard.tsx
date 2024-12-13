@@ -1,4 +1,4 @@
-import './ExploreContainer.css';
+import './ExploreContainer.scss';
 
 interface Props {
   name: string;

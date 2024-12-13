@@ -27,11 +27,22 @@ import '@ionic/react/css/display.css';
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.scss';
 import React, { FC } from 'react';
 import { IonReactRouter } from '@ionic/react-router';
 import MobileTabs from './_core/layout/MobileTabs';
 import WebSidebar from './_core/layout/WebSidebar';
+import './App.scss';
+
+// Import functions, variables, and mixins needed by other Bootstrap files
+import 'bootstrap/scss/_functions.scss';
+import 'bootstrap/scss/_mixins.scss';
+
+import 'bootstrap/scss/bootstrap-reboot.scss';
+import 'bootstrap/scss/bootstrap-grid.scss';
+import 'bootstrap/scss/bootstrap-utilities.scss';
+
+import './styles-bootstrap.reset.scss';
 
 setupIonicReact();
 

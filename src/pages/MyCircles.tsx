@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import './MyCircles.css';
+import './MyCircles.scss';
 import React from 'react';
 
 const MyCircles: React.FC = () => {

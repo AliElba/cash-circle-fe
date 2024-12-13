@@ -1,5 +1,5 @@
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import './Payments.css';
+import './Payments.scss';
 import React from 'react';
 
 const Payments: React.FC = () => {
