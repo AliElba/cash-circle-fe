@@ -1,8 +1,8 @@
-import React from 'react';
-import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import { RouteConstants } from '../../constants/routeConstants';
-import AppRoutes from '../AppRoutes';
+import React from "react";
+import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
+import { ellipse, square, triangle } from "ionicons/icons";
+import { RouteConstants } from "../../constants/constants";
+import AppRoutes from "../AppRoutes";
 
 const MobileTabs: React.FC = () => (
   <IonTabs>

@@ -1,3 +1,7 @@
+export class StorageConstants {
+  static readonly isIntroPageVisited = 'is-intro-page-visited';
+}
+
 export class RouteConstants {
   static readonly home = 'home';
   static readonly homeRelative = `/${RouteConstants.home}`;
@@ -16,6 +20,9 @@ export class RouteConstants {
 
   static readonly welcome = 'welcome';
   static readonly welcomeRelative = `/${RouteConstants.welcome}`;
+
+  static readonly intro = 'intro';
+  static readonly introRelative = `/${RouteConstants.intro}`;
 
   static readonly wildcard = `**`;
 }

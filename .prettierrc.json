@@ -23,5 +23,7 @@
         "singleQuote": false
       }
     }
-  ]
+  ],
+  "bracketSameLine": true,
+  "proseWrap": "preserve"
 }

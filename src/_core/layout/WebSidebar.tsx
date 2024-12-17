@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   IonContent,
   IonHeader,
@@ -11,17 +11,17 @@ import {
   IonSplitPane,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import { RouteConstants } from '../../constants/routeConstants';
-import AppRoutes from '../AppRoutes';
+} from "@ionic/react";
+import { ellipse, square, triangle } from "ionicons/icons";
+import { RouteConstants } from "../../constants/constants";
+import AppRoutes from "../AppRoutes";
 
 const WebSidebar: React.FC = () => {
   const paths = [
-    { path: RouteConstants.homeRelative, label: 'Home', icon: triangle },
-    { path: RouteConstants.myCirclesRelative, label: 'My Circles', icon: ellipse },
-    { path: RouteConstants.paymentsRelative, label: 'Payments', icon: square },
-    { path: RouteConstants.profileRelative, label: 'Profile', icon: square },
+    { path: RouteConstants.homeRelative, label: "Home", icon: triangle },
+    { path: RouteConstants.myCirclesRelative, label: "My Circles", icon: ellipse },
+    { path: RouteConstants.paymentsRelative, label: "Payments", icon: square },
+    { path: RouteConstants.profileRelative, label: "Profile", icon: square },
   ];
 
   return (
