@@ -14,21 +14,10 @@ const AppRoutes: React.FC = () => {
   const { isAuth } = useAuth();
   return (
     <>
-      <Route
-        path="/"
-        exact
-        render={() => {
-          return isAuth ? <Redirect to={RouteConstants.homeRelative} /> : <Login />;
-        }}
-      />
-
-      {/*<Route path="/" component={Login} exact />*/}
+      <Route path="/" exact render={() => (isAuth ? <Redirect to={RouteConstants.homeRelative} /> : <Login />)} />
       <Route path={RouteConstants.introRelative} component={Intro} exact />
-
       <Route path={RouteConstants.loginRelative} component={Login} exact />
-
       <Route path={RouteConstants.welcomeRelative} component={Welcome} />
-
       <Route path={RouteConstants.homeRelative} render={() => <Home />} exact={true} />
       <Route path={RouteConstants.myCirclesRelative} render={() => <MyCircles />} exact={true} />
       <Route path={RouteConstants.paymentsRelative} render={() => <Payments />} exact={true} />
