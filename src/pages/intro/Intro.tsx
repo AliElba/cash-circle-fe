@@ -4,7 +4,7 @@ import "@ionic/react/css/ionic-swiper.css";
 import { IonButton, IonContent, IonPage, IonText } from "@ionic/react";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "./Intro.scss";
-import { RouteConstants, StorageConstants } from "../constants/constants";
+import { RouteConstants, StorageConstants } from "../../constants/constants";
 import { Preferences } from "@capacitor/preferences";
 import { useHistory } from "react-router";
 

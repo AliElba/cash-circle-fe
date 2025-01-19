@@ -14,9 +14,9 @@ import {
 } from "@ionic/react";
 import { logInOutline, logoFacebook, logoGoogle, logoLinkedin, personCircle } from "ionicons/icons";
 import "./Login.scss";
-import { RouteConstants, StorageConstants } from "../constants/constants";
+import { RouteConstants, StorageConstants } from "../../constants/constants";
 import { Preferences } from "@capacitor/preferences";
-import Intro from "../components/Intro";
+import Intro from "../intro/Intro";
 import { useLocation } from "react-router";
 
 const Login: React.FC = () => {

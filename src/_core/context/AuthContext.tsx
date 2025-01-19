@@ -8,7 +8,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuth, setIsAuth] = useState<boolean>(false); // Default is not authenticated.
+  const [isAuth, setIsAuth] = useState<boolean>(true); // Default value for the isAuth state.
 
   return <AuthContext.Provider value={{ isAuth, setIsAuth }}>{children}</AuthContext.Provider>;
 };
