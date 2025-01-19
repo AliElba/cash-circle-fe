@@ -17,52 +17,34 @@ import "./Login.scss";
 import { RouteConstants, StorageConstants } from "../constants/constants";
 import { Preferences } from "@capacitor/preferences";
 import Intro from "../components/Intro";
+import { useLocation } from "react-router";
 
-interface ComponentProps {
-  onLogin?: (mobileNumber: string, password: string) => void;
-}
-
-const Login: React.FC<ComponentProps> = ({ onLogin }) => {
+const Login: React.FC = () => {
+  console.log("[Login] rendered");
   const ionRouter = useIonRouter();
+  const location = useLocation();
 
   // Local state for form inputs
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
 
-  const [isIntroPageVisited, setIsIntroPageVisited] = useState(true);
+  const [isIntroPageVisited, setIsIntroPageVisited] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const checkIntroKeyVisitedInStorage = async () => {
-      const isIntroPageVisited = await Preferences.get({ key: StorageConstants.isIntroPageVisited });
-      setIsIntroPageVisited(isIntroPageVisited.value === "true");
+    const checkIntroPageVisited = async () => {
+      const result = await Preferences.get({ key: StorageConstants.isIntroPageVisited });
+      const visited = result.value === "true";
+      console.log("isIntroPageVisited: ", visited);
+      setIsIntroPageVisited(visited);
     };
 
-    checkIntroKeyVisitedInStorage().then();
-  }, []);
-
-  const handleLogin = () => {
-    // Navigate to the home route
-    ionRouter.push(RouteConstants.homeRelative);
-    // Go back to the root of the navigation stack
-    ionRouter.goBack();
-    // Push the home route onto the navigation stack
-    ionRouter.push(RouteConstants.homeRelative, "root");
-  };
-
-  const finishIntro = async () => {
-    setIsIntroPageVisited(true);
-    Preferences.set({ key: StorageConstants.isIntroPageVisited, value: "true" }).then();
-  };
-
-  const seeIntroAgain = () => {
-    setIsIntroPageVisited(false);
-    Preferences.remove({ key: StorageConstants.isIntroPageVisited }).then();
-  };
+    checkIntroPageVisited().then();
+  }, [location]);
 
   return (
     <>
       {!isIntroPageVisited ? (
-        <Intro onFinish={finishIntro} />
+        <Intro />
       ) : (
         <IonPage>
           <IonContent className="ion-padding" fullscreen>

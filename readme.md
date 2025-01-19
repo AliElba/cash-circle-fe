@@ -1,7 +1,8 @@
 You can use Capacitor’s CLI to bypass the debugging process by running the app without debugging:
+
 `npx cap run ios --no-debug --no-build`
 
-also we can disable the debuuger on Xcode if we faced any issue:
+also we can disable the debugger on Xcode if we faced any issue:
 
 3. Disable Debugger in Xcode
 
@@ -16,7 +17,7 @@ If you want to run the app via Xcode but avoid attaching the debugger:
 
 This allows the app to launch without attempting to attach the debugger.
 
-Manually build and run your project in Xcode instead of using npx cap run ios.
+Manually build and run your project in Xcode instead of using `npx cap run ios`.
 `npx cap open ios`
 
 ### Build and run the app for Android and iOS
@@ -33,11 +34,11 @@ You can build and run the app using Ionic CLI or npm/npx commands.
 6. Open the project in Android Studio: `ionic cap open android`
 7. Open the project in Xcode: `ionic cap open ios`
 
-Enable automatic updates of the Android build when you make changes to your app
+Enable automatic updates of the Android/IOS build when you make changes to your app
 `ionic capacitor run android --livereload`
 `ionic capacitor run ios --livereload`
 
-**Using npm/npx:**
+**Using npm/npx CLI:**
 
 1. Build the web app: `npm run build`
 2. Build the app for Android: `npx cap build android`
@@ -47,4 +48,4 @@ Enable automatic updates of the Android build when you make changes to your app
 6. Open the project in Android Studio: `npx cap open android`
 7. Open the project in Xcode: `npx cap open ios`
 
-8. Run the app for iOS: `ionic cap run ios --livereload --external --verbose
+8. Run the app for iOS: `ionic cap run ios --livereload --external --verbose`
