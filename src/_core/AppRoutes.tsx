@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import Home from "../pages/Home";
+import Home from "../pages/home/Home";
 import MyCircles from "../pages/MyCircles";
 import Payments from "../pages/Payments";
 import Profile from "../pages/Profile";
