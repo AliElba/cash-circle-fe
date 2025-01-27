@@ -1,52 +1,41 @@
-/* Center the grid vertically */
+/* Login.scss */
 .login-grid {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-/* Style for the user icon */
 .user-icon {
-    font-size: 8rem;
-    color: gray;
+  font-size: 100px;
+  color: var(--ion-color-primary);
+  margin-bottom: 20px;
 }
 
-/* Style for the login button */
-.login-button {
-    margin-top: 16px;
+.ion-text-center {
+  text-align: center;
 }
 
-/* Divider text (e.g., "or") */
-.divider-text {
-    margin: 16px 0 8px;
-    color: #6c757d;
-    font-size: 0.9rem;
+.ion-margin-top {
+  margin-top: 15px;
 }
 
-/* Social media text */
-.social-text {
-    margin-bottom: 12px;
-    font-size: 0.9rem;
-    color: #6c757d;
+.ion-padding {
+  padding: 15px;
 }
 
-/* Social media icons */
-.social-icon {
-    font-size: 2rem;
-    margin: 0 12px;
-    cursor: pointer;
+.login-grid .ion-button {
+  margin-top: 20px;
 }
 
-.social-icon.facebook {
-    color: #3b5998;
+.login-grid .ion-input {
+  margin-bottom: 15px;
 }
 
-.social-icon.google {
-    color: #db4a39;
-}
-
-.social-icon.linkedin {
-    color: #0077b5;
+.text-danger {
+  color: var(--ion-color-danger);
+  font-size: 0.9rem;
+  text-align: center;
 }

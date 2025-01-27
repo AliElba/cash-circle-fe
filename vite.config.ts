@@ -7,6 +7,16 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), legacy()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",
@@ -16,8 +26,9 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-        @use "bootstrap/scss/bootstrap-grid.scss";
-        @use "bootstrap/scss/bootstrap-utilities.scss";
+        @use "sass:math";
+        @use "bootstrap/scss/bootstrap-grid" as *;
+        @use "bootstrap/scss/bootstrap-utilities" as *;
         `,
         quietDeps: true, // Suppress deprecation warnings from 3rd-party libraries
       },

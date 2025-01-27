@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   IonButton,
-  IonCard,
-  IonCol,
   IonContent,
   IonGrid,
   IonIcon,
@@ -12,126 +10,110 @@ import {
   IonText,
   useIonRouter,
 } from "@ionic/react";
-import { logInOutline, logoFacebook, logoGoogle, logoLinkedin, personCircle } from "ionicons/icons";
+import { logInOutline, personCircle } from "ionicons/icons";
 import "./Login.scss";
-import { RouteConstants, StorageConstants } from "../../constants/constants";
 import { Preferences } from "@capacitor/preferences";
 import Intro from "../intro/Intro";
-import { useLocation } from "react-router";
+import { RouteConstants, StorageConstants } from "../../constants/constants";
+import { authService } from "../../services/auth.service";
+import { AxiosError } from "axios";
 
 const Login: React.FC = () => {
-  console.log("[Login] rendered");
   const ionRouter = useIonRouter();
-  const location = useLocation();
-
-  // Local state for form inputs
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [isIntroPageVisited, setIsIntroPageVisited] = useState<boolean | null>(null);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
+  // Check if the intro page has been visited
   useEffect(() => {
     const checkIntroPageVisited = async () => {
       const result = await Preferences.get({ key: StorageConstants.isIntroPageVisited });
-      const visited = result.value === "true";
-      console.log("isIntroPageVisited: ", visited);
-      setIsIntroPageVisited(visited);
+      setIsIntroPageVisited(result.value === "true");
     };
 
     checkIntroPageVisited().then();
-  }, [location]);
+  }, []);
 
+  const handleLogin = async () => {
+    setErrorMessages([]); // Reset error messages state
+
+    try {
+      await authService.login({ email, password });
+
+      // Redirect to the home page after successful login
+      ionRouter.push(RouteConstants.homeRelative, "forward");
+    } catch (err: AxiosError | any) {
+      // Handle errors from authService
+      const errorMessage = err.response?.data?.message || "An error occurred during login.";
+      setErrorMessages(Array.isArray(errorMessage) ? errorMessage : [errorMessage]);
+    }
+  };
+
+  // Render Intro page if it hasn't been visited
+  if (isIntroPageVisited === false) {
+    return <Intro />;
+  }
+
+  // Render login page if intro page has been visited
   return (
-    <>
-      {!isIntroPageVisited ? (
-        <Intro />
-      ) : (
-        <IonPage>
-          <IonContent className="ion-padding" fullscreen>
-            <div className="row d-flex justify-content-center">
-              <div className="col-12 text-center">ksaklmsamlksmalms</div>
-            </div>
+    <IonPage>
+      <IonContent className="ion-padding" fullscreen>
+        <IonGrid className="login-grid">
+          {/* User Icon */}
+          <IonRow className="ion-justify-content-center">
+            <IonIcon icon={personCircle} className="user-icon" />
+          </IonRow>
 
-            <div className="row">
-              <div className="col-12 col-md-6 mx-auto">
-                <div className="p-3 bg-primary text-white text-center">Centered Horizontally</div>
-              </div>
-            </div>
+          {/* Email Input */}
+          <IonRow className="ion-justify-content-center">
+            <IonInput
+              label="Email"
+              labelPlacement="floating"
+              fill="outline"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onIonChange={(e) => setEmail(e.detail.value!)}
+            />
+          </IonRow>
 
-            <div className="d-flex justify-content-center">
-              <div className="p-3 bg-primary text-white">Centered Horizontally</div>
-            </div>
+          {/* Password Input */}
+          <IonRow className="ion-justify-content-center">
+            <IonInput
+              label="Password"
+              labelPlacement="floating"
+              fill="outline"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onIonChange={(e) => setPassword(e.detail.value!)}
+            />
+          </IonRow>
 
-            <IonCard className="ion-align-items-center">
-              <IonGrid className="login-grid">
-                {/* User Icon */}
-                <IonRow className="ion-justify-content-center">
-                  <IonIcon icon={personCircle} className="user-icon" />
-                </IonRow>
+          {/* Login Button */}
+          <IonRow className="ion-justify-content-center">
+            <IonButton expand="block" color="primary" onClick={handleLogin}>
+              Login
+              <IonIcon icon={logInOutline} slot="end" />
+            </IonButton>
+          </IonRow>
 
-                {/* Mobile Number Input */}
-                <IonRow className="ion-justify-content-center">
-                  <IonCol size="12" sizeMd="8">
-                    <IonInput
-                      label="Mobile number"
-                      labelPlacement="floating"
-                      fill="outline"
-                      type="tel"
-                      placeholder="+41 xx xxx xx xx"
-                      value={mobileNumber}
-                      onIonChange={(e) => setMobileNumber(e.detail.value!)}
-                    />
-                  </IonCol>
-                </IonRow>
-
-                {/* Password Input */}
-                <IonRow className="ion-justify-content-center">
-                  <IonCol size="12" sizeMd="8">
-                    <IonInput
-                      label="Password"
-                      labelPlacement="floating"
-                      fill="outline"
-                      type="password"
-                      placeholder=""
-                      value={password}
-                      onIonChange={(e) => setPassword(e.detail.value!)}
-                    />
-                  </IonCol>
-                </IonRow>
-
-                {/* Login Button */}
-                <IonRow className="ion-justify-content-center">
-                  <IonCol>
-                    <IonButton
-                      routerLink={RouteConstants.homeRelative}
-                      expand="block"
-                      color="primary"
-                      className="login-button">
-                      login
-                      <IonIcon icon={logInOutline} slot="end" />
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
-
-                {/* Social Media Login */}
-                <IonRow className="ion-justify-content-center">
-                  <IonText className="divider-text">or</IonText>
-                </IonRow>
-                <IonRow className="ion-justify-content-center">
-                  <IonText className="social-text">use social accounts to fill data</IonText>
-                </IonRow>
-
-                <IonRow className="ion-justify-content-center">
-                  <IonIcon icon={logoFacebook} className="social-icon facebook" />
-                  <IonIcon icon={logoGoogle} className="social-icon google" />
-                  <IonIcon icon={logoLinkedin} className="social-icon linkedin" />
-                </IonRow>
-              </IonGrid>
-            </IonCard>
-          </IonContent>
-        </IonPage>
-      )}
-    </>
+          {/* Error Messages */}
+          {errorMessages.length > 0 && (
+            <IonRow className="ion-justify-content-center">
+              <IonText color="danger">
+                <ul>
+                  {errorMessages.map((message, index) => (
+                    <li key={index}>{message}</li>
+                  ))}
+                </ul>
+              </IonText>
+            </IonRow>
+          )}
+        </IonGrid>
+      </IonContent>
+    </IonPage>
   );
 };
 

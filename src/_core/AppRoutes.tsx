@@ -8,10 +8,10 @@ import { RouteConstants } from "../constants/constants";
 import Welcome from "../pages/Welcome";
 import Intro from "../pages/intro/Intro";
 import Login from "../pages/login/Login";
-import { useAuth } from "./context/AuthContext";
+import useIsAuth from "./hooks/useIsAuth";
 
 const AppRoutes: React.FC = () => {
-  const { isAuth } = useAuth();
+  const isAuth = useIsAuth();
   return (
     <>
       <Route path="/" exact render={() => (isAuth ? <Redirect to={RouteConstants.homeRelative} /> : <Login />)} />

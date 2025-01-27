@@ -1,22 +1,52 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { User } from "../../model/clinet-models";
+import { authService } from "../../services/auth.service";
 
-interface AuthContextType {
-  isAuth: boolean;
-  setIsAuth: (auth: boolean) => void;
+interface AuthContextProps {
+  user: User | null;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
+  register: (userData: { email: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
+  logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+/**
+ * Provides the authentication context to the application.
+ * example usage: const { user, login, register, logout } = useContext(AuthContext);
+ */
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuth, setIsAuth] = useState<boolean>(true); // Default value for the isAuth state.
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
 
-  return <AuthContext.Provider value={{ isAuth, setIsAuth }}>{children}</AuthContext.Provider>;
-};
+  useEffect(() => {
+    const currentUser = authService.getCurrentUser();
+    setUser(currentUser);
+  }, []);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+  /**
+   * Logs in a user and updates the authentication state.
+   * @param credentials - The user's login credentials.
+   */
+  const login = async (credentials: { email: string; password: string }) => {
+    await authService.login(credentials);
+    setUser(authService.getCurrentUser());
+  };
+
+  /**
+   * Registers a new user and updates the authentication state.
+   * @param userData - The user data for registration.
+   */
+  const register = async (userData: { email: string; password: string; firstName?: string; lastName?: string }) => {
+    await authService.register(userData);
+  };
+
+  /**
+   * Logs out the current user and updates the authentication state.
+   */
+  const logout = () => {
+    authService.logout();
+    setUser(null);
+  };
+
+  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
 };
