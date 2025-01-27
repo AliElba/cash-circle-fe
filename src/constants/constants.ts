@@ -19,6 +19,9 @@ export class RouteConstants {
   static readonly login = "login";
   static readonly loginRelative = `/${RouteConstants.login}`;
 
+  static readonly register = "register";
+  static readonly registerRelative = `/${RouteConstants.register}`;
+
   static readonly welcome = "welcome";
   static readonly welcomeRelative = `/${RouteConstants.welcome}`;
 

@@ -74,7 +74,8 @@ const Login: React.FC = () => {
               type="email"
               placeholder="Enter your email"
               value={email}
-              onIonChange={(e) => setEmail(e.detail.value!)}
+              onIonChange={(e) => setEmail(e.detail.value!)} // Keep onIonChange for intermediate updates
+              onBlur={(e) => setEmail((e.target as { value: string }).value)} // Ensure final value is captured
             />
           </IonRow>
 
@@ -87,7 +88,8 @@ const Login: React.FC = () => {
               type="password"
               placeholder="Enter your password"
               value={password}
-              onIonChange={(e) => setPassword(e.detail.value!)}
+              onIonChange={(e) => setPassword(e.detail.value!)} // Keep onIonChange for intermediate updates
+              onBlur={(e) => setPassword((e.target as { value: string }).value)} // Ensure final value is captured
             />
           </IonRow>
 

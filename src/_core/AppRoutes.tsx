@@ -9,6 +9,7 @@ import Welcome from "../pages/Welcome";
 import Intro from "../pages/intro/Intro";
 import Login from "../pages/login/Login";
 import useIsAuth from "./hooks/useIsAuth";
+import Register from "../pages/register/Register";
 
 const AppRoutes: React.FC = () => {
   const isAuth = useIsAuth();
@@ -17,6 +18,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/" exact render={() => (isAuth ? <Redirect to={RouteConstants.homeRelative} /> : <Login />)} />
       <Route path={RouteConstants.introRelative} component={Intro} exact />
       <Route path={RouteConstants.loginRelative} component={Login} exact />
+      <Route path={RouteConstants.registerRelative} component={Register} />
       <Route path={RouteConstants.welcomeRelative} component={Welcome} />
       <Route path={RouteConstants.homeRelative} render={() => <Home />} exact={true} />
       <Route path={RouteConstants.myCirclesRelative} render={() => <MyCircles />} exact={true} />

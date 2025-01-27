@@ -1,0 +1,25 @@
+.register-grid {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  .user-icon {
+    font-size: 5rem;
+    color: #3880ff;
+  }
+
+  .ion-input {
+    margin-bottom: 1rem;
+  }
+
+  .ion-button {
+    margin-top: 1rem;
+  }
+
+  .ion-text {
+    margin-top: 1rem;
+  }
+}

@@ -9,7 +9,12 @@ const MobileTabs: React.FC = () => {
   const location = useLocation();
 
   // Define routes where tabs should be hidden
-  const hideTabsOnRoutes = [RouteConstants.loginRelative, RouteConstants.introRelative, "/"];
+  const hideTabsOnRoutes = [
+    RouteConstants.loginRelative,
+    RouteConstants.introRelative,
+    "/",
+    RouteConstants.registerRelative,
+  ];
 
   // Check if the current route is in the hideTabsOnRoutes list
   const shouldHideTabs = hideTabsOnRoutes.includes(location.pathname);

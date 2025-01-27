@@ -7,21 +7,31 @@ import { StorageConstants } from "../constants/constants";
 const API_URL = "/api/auth"; // Use proxy path instead of full backend URL
 
 interface AuthResponse {
-  token: string;
+  access_token: string;
 }
 
 /**
  * Registers a new user with the provided user data.
  * @param userData - The user data for registration.
+ * @param headers - Optional headers for the request.
  * @returns The authentication response containing the JWT token.
  */
-const register = async (userData: {
-  email: string;
-  password: string;
-  firstName?: string;
-  lastName?: string;
-}): Promise<AuthResponse> => {
-  const response = await axios.post(`${API_URL}/register`, userData);
+const register = async (
+  userData: {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+  },
+  headers = {},
+): Promise<AuthResponse> => {
+  const token = await getToken();
+  const response = await axios.post(`${API_URL}/register`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...headers,
+    },
+  });
   return response.data;
 };
 
@@ -52,12 +62,21 @@ const logout = (): void => {
  * Retrieves the current user from the JWT token stored in local storage.
  * @returns The current user or null if no token is found.
  */
-const getCurrentUser = (): User | null => {
-  const token = localStorage.getItem("token");
+const getCurrentUser = async (): Promise<User | null> => {
+  const { value: token } = await Preferences.get({ key: StorageConstants.token });
   if (token) {
     return jwtDecode(token);
   }
   return null;
 };
 
-export const authService = { register, login, logout, getCurrentUser };
+/**
+ * Retrieves the token from Capacitor Preferences.
+ * @returns {Promise<string | null>}
+ */
+const getToken = async (): Promise<string | null> => {
+  const { value: token } = await Preferences.get({ key: StorageConstants.token });
+  return token;
+};
+
+export const authService = { register, login, logout, getCurrentUser, getToken };
