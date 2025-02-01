@@ -41,4 +41,39 @@ Enable automatic updates of the Android/IOS build when you make changes to your 
 7. Open the project in Xcode: `ionic cap open ios` | `npx cap open ios`
 8. Run the app for iOS with livereload: `ionic cap run ios --livereload --external --verbose`
 
+# openapi-generator
 
+- we will need swagger to be setup on BE
+- the generator will need also java to be installed (you can use docker for it)
+- also we need to add all related swagger annotations needed on BE e.g. @ApiResponse, @ApiProp, @ApiResponse which make
+  the def doc correct
+-
+
+**Using Docker for open api generator tool (Optional) otherwise install `@openapitools/openapi-generator-cli`**
+
+``
+docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
+    -i https://raw.githubusercontent.com/openapitools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml \
+    -g typescript-axios \
+    -o /local/generated
+``
+
+**Install OpenJDK 17**
+(we may need java v17 to make the generator works fine)
+
+## macOS (Homebrew)
+
+`brew install openjdk@17`
+and then follow this steps provided by the cli:
+For the system Java wrappers to find this JDK, symlink it with
+`sudo ln -sfn /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk`
+
+openjdk@17 is keg-only, which means it was not symlinked into /opt/homebrew,
+because this is an alternate version of another formula.
+
+If you need to have openjdk@17 first in your PATH, run:
+`echo 'export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"'` >> ~/.zshrc
+
+For compilers to find openjdk@17 you may need to set:
+`export CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"`
+``

@@ -1,7 +1,7 @@
 import React from "react";
 import { isPlatform } from "@ionic/react";
-import MobileTabs from "./_core/layout/MobileTabs";
-import WebSidebar from "./_core/layout/WebSidebar";
+import MobileTabs from "./app/layout/MobileTabs";
+import WebSidebar from "./app/layout/WebSidebar";
 
 const AppContent: React.FC = () => {
   console.log("[AppContent] rendered");

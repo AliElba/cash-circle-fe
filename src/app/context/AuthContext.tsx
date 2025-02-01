@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-import { User } from "../../model/clinet-models";
+import { User } from "../../model/models";
 import { authService } from "../../services/auth.service";
 
 interface AuthContextProps {

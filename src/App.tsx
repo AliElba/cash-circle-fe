@@ -16,7 +16,7 @@ import "./theme/variables.scss";
 import React, { FC } from "react";
 import "./App.scss";
 import "./styles-bootstrap.reset.scss";
-import { AuthProvider } from "./_core/context/AuthContext";
+import { AuthProvider } from "./app/context/AuthContext";
 import AppContent from "./AppContent";
 import { IonReactRouter } from "@ionic/react-router";
 

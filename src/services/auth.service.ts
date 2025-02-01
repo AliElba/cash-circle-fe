@@ -1,6 +1,6 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { User } from "../model/clinet-models";
+import { User } from "../model/models";
 import { Preferences } from "@capacitor/preferences";
 import { StorageConstants } from "../constants/constants";
 
