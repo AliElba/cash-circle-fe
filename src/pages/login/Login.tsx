@@ -5,6 +5,7 @@ import {
   IonGrid,
   IonIcon,
   IonInput,
+  IonItem,
   IonPage,
   IonRow,
   IonText,
@@ -65,8 +66,7 @@ const Login: React.FC = () => {
             <IonIcon icon={personCircle} className="user-icon" />
           </IonRow>
 
-          {/* Email Input */}
-          <IonRow className="ion-justify-content-center">
+          <IonItem className="ion-justify-content-center">
             <IonInput
               label="Email"
               labelPlacement="floating"
@@ -77,10 +77,9 @@ const Login: React.FC = () => {
               onIonChange={(e) => setEmail(e.detail.value!)} // Keep onIonChange for intermediate updates
               onBlur={(e) => setEmail((e.target as { value: string }).value)} // Ensure final value is captured
             />
-          </IonRow>
+          </IonItem>
 
-          {/* Password Input */}
-          <IonRow className="ion-justify-content-center">
+          <IonItem className="ion-justify-content-center ion-margin-bottom">
             <IonInput
               label="Password"
               labelPlacement="floating"
@@ -91,10 +90,9 @@ const Login: React.FC = () => {
               onIonChange={(e) => setPassword(e.detail.value!)} // Keep onIonChange for intermediate updates
               onBlur={(e) => setPassword((e.target as { value: string }).value)} // Ensure final value is captured
             />
-          </IonRow>
+          </IonItem>
 
-          {/* Login Button */}
-          <IonRow className="ion-justify-content-center">
+          <IonRow className="ion-justify-content-center ion-margin-bottom">
             <IonButton expand="block" color="primary" onClick={handleLogin}>
               Login
               <IonIcon icon={logInOutline} slot="end" />

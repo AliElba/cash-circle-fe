@@ -1,18 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  IonButton,
-  IonContent,
-  IonDatetime,
-  IonDatetimeButton,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonModal,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
 import "./Circle.scss";
@@ -20,6 +7,7 @@ import { CircleService } from "../../services/circle.service";
 import useCurrentUserId from "../../app/hooks/useCurrentUserId";
 import { CircleStatus, MemberDto } from "../../app/generated/api";
 import { RouteConstants } from "../../constants/constants";
+import CircleDetailsSlide from "./slides/CircleDetailsSlide";
 
 const calculateEndDate = (startDate: string, duration: number) => {
   if (!startDate) return "";
@@ -32,7 +20,7 @@ const DEFAULT_DURATION = 6;
 const MIN_AMOUNT = 1000;
 const TODAY_FORMATED = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
 
-const CreateCircle: React.FC = () => {
+const Circle: React.FC = () => {
   const currentUserId = useCurrentUserId();
   const history = useHistory();
 
@@ -118,93 +106,7 @@ const CreateCircle: React.FC = () => {
           slidesPerView={1}
           allowTouchMove={false}>
           <SwiperSlide>
-            <div className="swiper__slide-container">
-              <div className="swiper__slide-content">
-                <IonItem lines="full">
-                  <IonInput
-                    type="text"
-                    placeholder="Enter Circle Name"
-                    value={form.name}
-                    onIonChange={(e) => updateForm("name", e.detail.value!)}></IonInput>
-                </IonItem>
-
-                <h2 className="text-start">How much do you want?</h2>
-                <p className="text-start fs-6">
-                  Enter amount from <strong>1,000 CHF</strong> to <strong>10,000 CHF</strong>
-                </p>
-
-                <IonItem lines="full">
-                  <IonInput
-                    type="number"
-                    placeholder="Enter Amount"
-                    value={form.amount}
-                    min={1000}
-                    max={10000}
-                    onIonChange={(e) => updateForm("amount", parseInt(e.detail.value!, 10))}
-                  />
-                  <span className="currency">CHF</span>
-                </IonItem>
-
-                <IonItem lines="full">
-                  <IonLabel>Start Date</IonLabel>
-                  <IonDatetimeButton datetime="startDatePicker"></IonDatetimeButton>
-                </IonItem>
-                <IonModal keepContentsMounted={true}>
-                  <IonDatetime
-                    id="startDatePicker"
-                    presentation="month-year"
-                    value={form.startDate}
-                    min={new Date().toISOString()} // Set minimum date to today
-                    max={new Date(new Date().setFullYear(new Date().getFullYear() + 2)).toISOString()} // Set maximum date to 10 years from today
-                    onIonChange={(e) => {
-                      const selectedDate = e.detail.value! as string;
-                      const date = new Date(selectedDate);
-                      const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-01`; // Format YYYY-MM-01
-                      updateForm("startDate", formattedDate);
-                      updateForm("endDate", calculateEndDate(formattedDate, form.duration));
-                    }}
-                  />
-                </IonModal>
-
-                <div className="my-4">
-                  <h4 className="text-start">Choose Duration</h4>
-                  <div className="duration-options">
-                    {[6, 10, 12].map((month) => (
-                      <div
-                        key={month}
-                        className={`duration-card ${form.duration === month ? "selected" : ""}`}
-                        onClick={() => {
-                          updateForm("duration", month);
-                          updateForm("endDate", calculateEndDate(form.startDate, month));
-                        }}>
-                        <span className="duration-text">{month} Months</span>
-                        <span className="separator"></span>
-                        <span className="amount-text">
-                          {(form.amount / month).toFixed(0)} <br /> CHF/mo
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <IonItem lines="full">
-                  <IonLabel>End Date</IonLabel>
-                  <IonDatetimeButton datetime="endDatePicker" />
-                </IonItem>
-                <IonModal keepContentsMounted={true}>
-                  <IonDatetime id="endDatePicker" presentation="month-year" value={form.endDate} disabled />
-                </IonModal>
-              </div>
-
-              <div className="swiper__footer">
-                <IonButton
-                  onClick={() => swiper.slideNext()}
-                  expand="block"
-                  disabled={!form.amount || form.amount < MIN_AMOUNT || !form.name || !form.startDate}>
-                  Next: Select Payout Slot
-                </IonButton>
-              </div>
-            </div>
+            <CircleDetailsSlide form={form} updateForm={updateForm} swiper={swiper} />
           </SwiperSlide>
 
           <SwiperSlide>
@@ -249,4 +151,4 @@ const CreateCircle: React.FC = () => {
   );
 };
 
-export default CreateCircle;
+export default Circle;
