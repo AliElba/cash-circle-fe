@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * CashCircle API
- * API documentation for CashCircle - http://localhost:3000/api-json
+ * API documentation for CashCircle - http://localhost:3000/api/docs-json
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -21,22 +21,34 @@
  */
 export interface AddMemberDto {
     /**
-     * 
+     * User ID if the member already exists
      * @type {string}
      * @memberof AddMemberDto
      */
     'userId': string;
     /**
-     * 
+     * Email of the member if userId is not provided
      * @type {string}
      * @memberof AddMemberDto
      */
     'email': string;
     /**
-     * 
+     * Slot number for the member
      * @type {number}
      * @memberof AddMemberDto
      */
     'slotNumber': number;
+    /**
+     * Payout date for this member
+     * @type {string}
+     * @memberof AddMemberDto
+     */
+    'payoutDate': string;
+    /**
+     * Administrative fees paid by this member
+     * @type {number}
+     * @memberof AddMemberDto
+     */
+    'adminFees': number;
 }
 

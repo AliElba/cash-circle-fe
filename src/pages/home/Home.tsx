@@ -1,9 +1,48 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import "./Home.scss";
-import React from "react";
-import CircleCard from "../../components/CircleCard/CircleCard";
+import React, { useEffect, useState } from "react";
+import { CircleService } from "../../services/circle.service";
+import useCurrentUserId from "../../app/hooks/useCurrentUserId";
+import { useHistory } from "react-router";
+import { RouteConstants } from "../../constants/constants";
+import { CircleStatus } from "../../app/generated/api";
+import CircleSwiper from "../../components/circleSwiper/CircleSwiper";
 
 const Home: React.FC = () => {
+  const history = useHistory();
+  const currentUserId = useCurrentUserId();
+
+  const [userCircles, setUserCircles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserCircles = async () => {
+      if (!currentUserId) return; // Wait for user to be available
+
+      try {
+        // Fetch only active user circles
+        const circles = await CircleService.getUserCircles(currentUserId, CircleStatus.Active);
+        setUserCircles(circles);
+      } catch (error) {
+        console.error("Error fetching user circles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserCircles().then();
+  }, [currentUserId]); // Re-fetch circles when the user changes
+
   return (
     <IonPage>
       <IonHeader>
@@ -16,15 +55,19 @@ const Home: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        <CircleCard
-          totalAmount="24,000"
-          monthlyAmount="2,000"
-          adminFees="2,880 EGP"
-          duration={12} // 12 months
-          startDate="Dec 2024"
-          endDate="Nov 2025"
-          yourTurn={12} // 3rd turn
-        />
+        <div className="header">
+          <IonText className="ion-text-subtitle">Active Circles</IonText>
+
+          <IonButton
+            fill="clear"
+            color="primary"
+            size="small"
+            onClick={() => history.push(RouteConstants.circleRelative)}>
+            See all
+          </IonButton>
+        </div>
+
+        <CircleSwiper circleStatus={CircleStatus.Active} />
       </IonContent>
     </IonPage>
   );

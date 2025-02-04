@@ -1,9 +1,8 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-import { User } from "../../model/models";
 import { authService } from "../../services/auth.service";
 
 interface AuthContextProps {
-  user: User | null;
+  userId: string | null;
   login: (credentials: { email: string; password: string }) => Promise<void>;
   register: (userData: { email: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
   logout: () => void;
@@ -16,11 +15,15 @@ interface AuthContextProps {
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
+    const extractCurrentUserId = async () => {
+      const currentUser = await authService.getCurrentUserId();
+      setUserId(currentUser);
+      console.log("currentUser", currentUser);
+    };
+    extractCurrentUserId().then(() => console.log("extractCurrentUserId done"));
   }, []);
 
   /**
@@ -29,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    */
   const login = async (credentials: { email: string; password: string }) => {
     await authService.login(credentials);
-    setUser(authService.getCurrentUser());
+    setUserId(await authService.getCurrentUserId());
   };
 
   /**
@@ -45,8 +48,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    */
   const logout = () => {
     authService.logout();
-    setUser(null);
+    setUserId(null);
   };
 
-  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ userId, login, register, logout }}>{children}</AuthContext.Provider>;
 };

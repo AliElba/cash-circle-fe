@@ -4,8 +4,6 @@ You can use Capacitor’s CLI to bypass the debugging process by running the app
 
 also we can disable the debugger on Xcode if we faced any issue:
 
-3. Disable Debugger in Xcode
-
 If you want to run the app via Xcode but avoid attaching the debugger:
 
 1. In Xcode, select your target scheme (e.g., App).
@@ -39,7 +37,8 @@ Enable automatic updates of the Android/IOS build when you make changes to your 
 5. Run the app for iOS: `ionic cap run ios` | `npx cap run ios`
 6. Open the project in Android Studio: `ionic cap open android` | `npx cap open android`
 7. Open the project in Xcode: `ionic cap open ios` | `npx cap open ios`
-8. Run the app for iOS with livereload: `ionic cap run ios --livereload --external --verbose`
+8. Run the app for iOS with livereload: `ionic cap run ios --livereload --external`
+9. Run the app for Android with livereload: `ionic cap run android --livereload --external`
 
 # openapi-generator
 
@@ -77,3 +76,22 @@ If you need to have openjdk@17 first in your PATH, run:
 For compilers to find openjdk@17 you may need to set:
 `export CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"`
 ``
+
+**Start the frontend app:**
+
+1. Restart the DB docker container `npm run db:dev:restart`
+2. Start the backend app `npm run start:dev`
+3. Check backend api is reachable and BE is running
+4. Check the swagger doc is reachable and correct `http://localhost:3000/api/docs-json`
+5. Run the openapi generator to generate the api client `npm run api`
+6. Start the FE app in the browser: `ionic serve`
+
+## Scripts
+
+### Start Frontend App
+
+- `npm run api`: Generate the API client using the OpenAPI Generator.
+- `ionic serve`: Start the application in development mode with hot-reloading.
+- `npm run build`: Build the application.
+- `ìonic cap run android`: Run the application on an Android device or emulator.
+- `ionic cap run ios`: Run the application on an iOS device or emulator.

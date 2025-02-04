@@ -17,14 +17,16 @@
 /**
  * 
  * @export
- * @interface CreateUnregisteredUserDto
+ * @enum {string}
  */
-export interface CreateUnregisteredUserDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUnregisteredUserDto
-     */
-    'email': string;
-}
+
+export const CircleStatus = {
+    Pending: 'PENDING',
+    Active: 'ACTIVE',
+    Completed: 'COMPLETED'
+} as const;
+
+export type CircleStatus = typeof CircleStatus[keyof typeof CircleStatus];
+
+
 

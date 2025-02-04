@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * CashCircle API
- * API documentation for CashCircle - http://localhost:3000/api-json
+ * API documentation for CashCircle - http://localhost:3000/api/docs-json
  *
  * The version of the OpenAPI document: 1.0
  *
@@ -35,7 +35,7 @@ import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, operationServerMap, type Reques
 // @ts-ignore
 // @ts-ignore
 // @ts-ignore
-import type { AddMemberDto, CircleDto, CreateCircleDto, UpdateCircleDto } from "../models";
+import type { AddMemberDto, CirclePayload, CreateCircleDto, UpdateCircleDto } from "../models";
 
 /**
  * CirclesApi - axios parameter creator
@@ -325,7 +325,7 @@ export const CirclesApiFp = function (configuration?: Configuration) {
     async create(
       createCircleDto: CreateCircleDto,
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CircleDto>>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CirclePayload>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.create(createCircleDto, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
@@ -345,7 +345,7 @@ export const CirclesApiFp = function (configuration?: Configuration) {
      */
     async findAll(
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CircleDto>>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CirclePayload>>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.findAll(options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
@@ -367,7 +367,7 @@ export const CirclesApiFp = function (configuration?: Configuration) {
     async findOne(
       id: string,
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CirclePayload>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.findOne(id, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
@@ -437,7 +437,7 @@ export const CirclesApiFp = function (configuration?: Configuration) {
       id: string,
       updateCircleDto: UpdateCircleDto,
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CirclePayload>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.update(id, updateCircleDto, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
@@ -476,7 +476,7 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    create(createCircleDto: CreateCircleDto, options?: RawAxiosRequestConfig): AxiosPromise<Array<CircleDto>> {
+    create(createCircleDto: CreateCircleDto, options?: RawAxiosRequestConfig): AxiosPromise<CirclePayload> {
       return localVarFp.create(createCircleDto, options).then((request) => request(axios, basePath));
     },
     /**
@@ -484,7 +484,7 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    findAll(options?: RawAxiosRequestConfig): AxiosPromise<Array<CircleDto>> {
+    findAll(options?: RawAxiosRequestConfig): AxiosPromise<Array<CirclePayload>> {
       return localVarFp.findAll(options).then((request) => request(axios, basePath));
     },
     /**
@@ -493,7 +493,7 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    findOne(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+    findOne(id: string, options?: RawAxiosRequestConfig): AxiosPromise<CirclePayload> {
       return localVarFp.findOne(id, options).then((request) => request(axios, basePath));
     },
     /**
@@ -522,7 +522,7 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    update(id: string, updateCircleDto: UpdateCircleDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+    update(id: string, updateCircleDto: UpdateCircleDto, options?: RawAxiosRequestConfig): AxiosPromise<CirclePayload> {
       return localVarFp.update(id, updateCircleDto, options).then((request) => request(axios, basePath));
     },
   };

@@ -17,14 +17,16 @@
 /**
  * 
  * @export
- * @interface CreateUnregisteredUserDto
+ * @enum {string}
  */
-export interface CreateUnregisteredUserDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUnregisteredUserDto
-     */
-    'email': string;
-}
+
+export const PaymentStatus = {
+    Pending: 'PENDING',
+    Completed: 'COMPLETED',
+    Failed: 'FAILED'
+} as const;
+
+export type PaymentStatus = typeof PaymentStatus[keyof typeof PaymentStatus];
+
+
 

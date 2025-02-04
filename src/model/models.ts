@@ -1,3 +1,5 @@
+import { CircleMemberPayload, CirclePayload } from "../app/generated/api";
+
 export interface User {
   id: string;
   email: string;
@@ -9,31 +11,6 @@ export interface User {
   updatedAt: Date;
 
   // Relationships
-  circlesOwned: Circle[]; // List of circles owned by the user
-  circleMemberships: CircleMember[]; // Memberships in different circles
-}
-
-export interface Circle {
-  id: string;
-  name: string;
-  ownerId: string; // Foreign key to the User
-  status: "pending" | "active" | "completed"; // Enum values
-  createdAt: Date;
-
-  // Relationships
-  members: CircleMember[]; // List of members in the circle
-}
-
-export interface CircleMember {
-  id: string;
-  circleId: string; // Foreign key to the Circle
-  userId: string; // Foreign key to the User
-  slotNumber?: number | null; // Optional slot number
-  status: "pending" | "confirmed"; // Enum values
-  paymentStatus: "paid" | "pending"; // Enum values
-  createdAt: Date;
-
-  // Relationships
-  circle: Circle; // Reference to the circle
-  user: User; // Reference to the user
+  circlesOwned: CirclePayload[]; // List of circles owned by the user
+  circleMemberships: CircleMemberPayload[]; // Memberships in different circles
 }

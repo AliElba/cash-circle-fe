@@ -28,5 +28,9 @@ export class RouteConstants {
   static readonly intro = "intro";
   static readonly introRelative = `/${RouteConstants.intro}`;
 
+  static readonly circle = "circle";
+  static readonly circleRelative = `/${RouteConstants.circle}`;
+  static readonly circleCreateRelative = `/${RouteConstants.circle}/create`;
+
   static readonly wildcard = `**`;
 }

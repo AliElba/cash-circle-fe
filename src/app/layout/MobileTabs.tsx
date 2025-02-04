@@ -14,6 +14,7 @@ const MobileTabs: React.FC = () => {
     RouteConstants.introRelative,
     "/",
     RouteConstants.registerRelative,
+    RouteConstants.circleCreateRelative,
   ];
 
   // Check if the current route is in the hideTabsOnRoutes list

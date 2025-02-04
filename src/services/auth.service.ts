@@ -1,6 +1,5 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { User } from "../model/models";
 import { Preferences } from "@capacitor/preferences";
 import { StorageConstants } from "../constants/constants";
 
@@ -62,10 +61,11 @@ const logout = (): void => {
  * Retrieves the current user from the JWT token stored in local storage.
  * @returns The current user or null if no token is found.
  */
-const getCurrentUser = async (): Promise<User | null> => {
+const getCurrentUserId = async (): Promise<string | null> => {
   const { value: token } = await Preferences.get({ key: StorageConstants.token });
   if (token) {
-    return jwtDecode(token);
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.sub || null;
   }
   return null;
 };
@@ -79,4 +79,4 @@ const getToken = async (): Promise<string | null> => {
   return token;
 };
 
-export const authService = { register, login, logout, getCurrentUser, getToken };
+export const authService = { register, login, logout, getCurrentUserId, getToken };
