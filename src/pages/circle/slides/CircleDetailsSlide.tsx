@@ -73,11 +73,11 @@ const CircleDetailsSlide: React.FC<CircleDetailsSlideProps> = ({ form, updateFor
 
         <div className="my-4">
           <h4 className="text-start">Choose Duration</h4>
-          <div className="duration-options">
+          <div className="selection-card__container">
             {[6, 10, 12].map((month) => (
               <div
                 key={month}
-                className={`duration-card ${form.duration === month ? "selected" : ""}`}
+                className={`selection-card ${form.duration === month ? "selected" : ""}`}
                 onClick={() => {
                   updateForm("duration", month);
                   updateForm("endDate", calculateEndDate(form.startDate, month));

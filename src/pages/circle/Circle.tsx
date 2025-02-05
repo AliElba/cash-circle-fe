@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IonButton, IonContent, IonHeader, IonItem, IonLabel, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonContent, IonItem, IonLabel, IonPage } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
 import "./Circle.scss";
@@ -8,6 +8,8 @@ import useCurrentUserId from "../../app/hooks/useCurrentUserId";
 import { CircleStatus, MemberDto } from "../../app/generated/api";
 import { RouteConstants } from "../../constants/constants";
 import CircleDetailsSlide from "./slides/CircleDetailsSlide";
+import SlotSelectionSlide from "./slides/SlotSelectionSlide";
+import PageHeader from "../../components/back-button/PageHeader";
 
 const calculateEndDate = (startDate: string, duration: number) => {
   if (!startDate) return "";
@@ -92,11 +94,7 @@ const Circle: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>{circleId ? "Edit Circle" : "Create Circle"}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <PageHeader title={circleId ? "Edit Circle" : "Create Circle"} />
 
       <IonContent>
         <Swiper
@@ -107,6 +105,10 @@ const Circle: React.FC = () => {
           allowTouchMove={false}>
           <SwiperSlide>
             <CircleDetailsSlide form={form} updateForm={updateForm} swiper={swiper} />
+          </SwiperSlide>
+
+          <SwiperSlide>
+            <SlotSelectionSlide form={form} updateForm={updateForm} swiper={swiper} />
           </SwiperSlide>
 
           <SwiperSlide>

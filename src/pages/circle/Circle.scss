@@ -12,6 +12,10 @@
   justify-content: space-between;
 }
 
+.swiper__slide-content {
+  text-align: left;
+}
+
 .swiper__footer {
   width: 100%;
   padding: 10px;
@@ -22,26 +26,28 @@
   font-size: 16px;
 }
 
-.duration-options {
+.selection-card__container {
   display: flex;
   gap: 10px;
   justify-content: space-between;
+  margin: 16px 0;
 }
 
-.duration-card {
+.selection-card {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   flex: 1;
+
   padding: 16px;
+  margin: unset;
   text-align: left;
-  border: 2px solid var(--ion-color-medium);
   border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
   background: var(--ion-background-color);
-  align-items: center;
-  justify-content: space-between;
   min-width: 80px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 
   transition: all 0.3s ease-in-out;
 
