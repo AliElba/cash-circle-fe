@@ -55,7 +55,7 @@ const SlotSelectionSlide: React.FC<SlotSelectionSlideProps> = ({ form, updateFor
   }, [form.startDate, form.duration, form.amount]);
 
   return (
-    <div className="swiper__slide-container">
+    <div className="slot-selection-slide swiper__slide-container">
       <div className="swiper__slide-content">
         <h2>Choose your payout month:</h2>
         <p className="text-start fs-6 ion-color-medium">
@@ -78,8 +78,8 @@ const SlotSelectionSlide: React.FC<SlotSelectionSlideProps> = ({ form, updateFor
               key={slot.id}
               className={`selection-card ${form.slotNumber === slot.id ? "selected" : ""}`}
               onClick={() => updateForm("slotNumber", slot.id)}>
-              <div className="slot-header">
-                <IonChip color="dark">{slot.id}st</IonChip>
+              <div>
+                <IonChip color="dark">{slot.id}st</IonChip>{" "}
               </div>
 
               <IonText className="fw-bold">
@@ -94,6 +94,8 @@ const SlotSelectionSlide: React.FC<SlotSelectionSlideProps> = ({ form, updateFor
           ))}
         </div>
       </div>
+
+      <IonText color="medium">Collected Form Values: {JSON.stringify(form)}</IonText>
 
       {/* Footer */}
       <div className="slot-footer">
@@ -113,7 +115,7 @@ const SlotSelectionSlide: React.FC<SlotSelectionSlideProps> = ({ form, updateFor
         </div>
 
         <IonButton expand="block" disabled={!form.slotNumber} onClick={() => swiper.slideNext()}>
-          Next
+          Next: Add members
         </IonButton>
       </div>
     </div>

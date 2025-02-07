@@ -23,7 +23,7 @@ const CircleDetailsSlide: React.FC<CircleDetailsSlideProps> = ({ form, updateFor
       <div className="swiper__slide-content">
         <IonItem lines="full">
           <IonInput
-            label="Circle Name *"
+            label="Circle Name"
             labelPlacement="floating"
             fill="outline"
             type="text"
@@ -45,7 +45,7 @@ const CircleDetailsSlide: React.FC<CircleDetailsSlideProps> = ({ form, updateFor
             value={form.amount}
             min={1000}
             max={10000}
-            onIonChange={(e) => updateForm("amount", parseInt(e.detail.value!, 10))}
+            onIonInput={(e) => updateForm("amount", parseInt(e.detail.value!, 10))}
           />
           <span className="currency">CHF</span>
         </IonItem>
@@ -105,8 +105,8 @@ const CircleDetailsSlide: React.FC<CircleDetailsSlideProps> = ({ form, updateFor
         <IonButton
           onClick={() => swiper.slideNext()}
           expand="block"
-          disabled={!form.amount || form.amount < 1000 || !form.name || !form.startDate}>
-          Next: Select Payout Slot
+          disabled={!form.amount || form.amount < 1000 || form.amount > 10000 || !form.startDate}>
+          Next: Select Payout Month
         </IonButton>
       </div>
     </div>

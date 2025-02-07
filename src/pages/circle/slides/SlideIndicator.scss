@@ -1,0 +1,54 @@
+.slide-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+
+  .slide-indicator__titles {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--ion-color-medium);
+    padding-bottom: 8px;
+
+    .slide-indicator__titles-title {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .slide-indicator__titles-title.active {
+      color: var(--ion-color-dark);
+    }
+  }
+
+  .progress-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 6px;
+    background: var(--ion-color-light);
+    overflow: hidden;
+  }
+
+  .progress-step {
+    flex: 1;
+    height: 100%;
+    background: var(--ion-color-light);
+    transition: background 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  .progress-step:not(:last-child) {
+    margin-right: 7px;
+  }
+
+  .progress-step.active {
+    background: var(--ion-color-success);
+  }
+}

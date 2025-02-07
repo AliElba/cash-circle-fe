@@ -10,6 +10,7 @@ import { RouteConstants } from "../../constants/constants";
 import CircleDetailsSlide from "./slides/CircleDetailsSlide";
 import SlotSelectionSlide from "./slides/SlotSelectionSlide";
 import PageHeader from "../../components/back-button/PageHeader";
+import SlideIndicator from "./slides/SlideIndicator";
 
 const calculateEndDate = (startDate: string, duration: number) => {
   if (!startDate) return "";
@@ -21,11 +22,13 @@ const calculateEndDate = (startDate: string, duration: number) => {
 const DEFAULT_DURATION = 6;
 const MIN_AMOUNT = 1000;
 const TODAY_FORMATED = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
+const SLIDE_TITLES = ["Circle Details", "Payout Month", "Add Members", "Review & Confirm"];
 
 const Circle: React.FC = () => {
   const currentUserId = useCurrentUserId();
   const history = useHistory();
 
+  const [activeIndex, setActiveIndex] = useState(0);
   const { circleId } = useParams<{ circleId?: string }>(); // Detect if editing
   const [swiper, setSwiper] = useState<any>(null);
   const [form, setForm] = useState({
@@ -100,18 +103,20 @@ const Circle: React.FC = () => {
         <Swiper
           className="swiper__container"
           onSwiper={setSwiper}
+          onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)} // Ensures re-render
           spaceBetween={50}
           slidesPerView={1}
           allowTouchMove={false}>
           <SwiperSlide>
+            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
             <CircleDetailsSlide form={form} updateForm={updateForm} swiper={swiper} />
           </SwiperSlide>
-
           <SwiperSlide>
+            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
             <SlotSelectionSlide form={form} updateForm={updateForm} swiper={swiper} />
           </SwiperSlide>
-
           <SwiperSlide>
+            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
             <div className="step">
               <h2>Choose Your Payout Slot</h2>
               <IonItem>
@@ -133,14 +138,13 @@ const Circle: React.FC = () => {
               </IonButton>
             </div>
           </SwiperSlide>
-
           <SwiperSlide>
+            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
             {/*<MemberSelectionSlide form={form} updateForm={updateForm} />*/}
             <IonButton onClick={() => swiper.slideNext()} expand="block">
               Next: Review & Confirm
             </IonButton>
           </SwiperSlide>
-
           <SwiperSlide>
             {/*<ReviewCircleSlide form={form} />*/}
             <IonButton onClick={handleSubmit} expand="block">

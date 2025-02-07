@@ -11,7 +11,7 @@ import Login from "../pages/login/Login";
 import useIsAuth from "./hooks/useIsAuth";
 import Register from "../pages/register/Register";
 import Circle from "../pages/circle/Circle";
-import MyCircles from "../pages/myCircles/MyCircles";
+import MyCircles from "../pages/my-circles/MyCircles";
 
 const AppRoutes: React.FC = () => {
   const isAuth = useIsAuth();
