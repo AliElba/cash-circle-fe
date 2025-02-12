@@ -21,7 +21,7 @@ import { AxiosError } from "axios";
 
 const Login: React.FC = () => {
   const ionRouter = useIonRouter();
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isIntroPageVisited, setIsIntroPageVisited] = useState<boolean | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
     setErrorMessages([]); // Reset error messages state
 
     try {
-      await authService.login({ email, password });
+      await authService.login({ phone: phone, password });
 
       // Redirect to the home page after successful login
       ionRouter.push(RouteConstants.homeRelative, "forward");
@@ -68,14 +68,14 @@ const Login: React.FC = () => {
 
           <IonItem className="ion-justify-content-center">
             <IonInput
-              label="Email"
+              label="phone"
               labelPlacement="floating"
               fill="outline"
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onIonChange={(e) => setEmail(e.detail.value!)} // Keep onIonChange for intermediate updates
-              onBlur={(e) => setEmail((e.target as { value: string }).value)} // Ensure final value is captured
+              type="tel"
+              placeholder="Enter your phone"
+              value={phone}
+              onIonChange={(e) => setPhone(e.detail.value!)} // Keep onIonChange for intermediate updates
+              onBlur={(e) => setPhone((e.target as { value: string }).value)} // Ensure final value is captured
             />
           </IonItem>
 

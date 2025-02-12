@@ -93,5 +93,14 @@ For compilers to find openjdk@17 you may need to set:
 - `npm run api`: Generate the API client using the OpenAPI Generator.
 - `ionic serve`: Start the application in development mode with hot-reloading.
 - `npm run build`: Build the application.
-- `ìonic cap run android`: Run the application on an Android device or emulator.
-- `ionic cap run ios`: Run the application on an iOS device or emulator.
+- `npx cap sync android`: Sync the Android project.
+- `npx cap open android`: Open the Android project in Android Studio.
+
+### Proxy Configuration
+
+The proxy is configured in `vite.config.ts`.
+The `proxy` option forwards any requests from the frontend to the backend.
+The `changeOrigin` option is set to `true` to allow the proxy to rewrite the "Origin" header.
+The proxy is setup to forward any requests from the frontend to `http://localhost:3000` which is the address of the
+backend server. For example, if the frontend makes a request to `http://localhost:8100/api/users`, the proxy will
+forward the request to `http://localhost:3000/api/users`.

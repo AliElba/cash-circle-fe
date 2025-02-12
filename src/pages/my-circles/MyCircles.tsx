@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonIcon, IonNavLink, IonPage, IonText } from "@ionic/react";
+import { IonButton, IonContent, IonIcon, IonPage, IonText } from "@ionic/react";
 import "./MyCircles.scss";
 import React from "react";
 import { CircleStatus } from "../../app/generated/api";
@@ -15,10 +15,6 @@ const MyCircles: React.FC = () => {
 
       <IonContent>
         <div className="page-header-actions">
-          <IonNavLink routerDirection="forward" onClick={() => history.push("/circle/create")}>
-            <IonButton>Navigate</IonButton>
-          </IonNavLink>
-
           <IonButton fill="solid" color="primary" size="small" onClick={() => history.push("/circle/create")}>
             <IonIcon slot="start" icon={addCircle} />
             Create Circle

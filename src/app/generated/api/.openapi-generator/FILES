@@ -9,7 +9,6 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
-models/add-member-dto.ts
 models/circle-member-payload.ts
 models/circle-payload.ts
 models/circle-status.ts
@@ -19,7 +18,6 @@ models/index.ts
 models/login-dto.ts
 models/member-dto.ts
 models/member-status.ts
-models/member-update-dto.ts
 models/payment-status.ts
 models/register-dto.ts
 models/update-circle-dto.ts

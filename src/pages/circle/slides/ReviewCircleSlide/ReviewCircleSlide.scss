@@ -1,0 +1,39 @@
+.review-circle-slide {
+  /* Make content scrollable */
+  .swiper__slide-content {
+    flex: 1;
+    overflow-y: auto; /* Enable scrolling */
+    margin-bottom: 80px; /* Space for footer */
+  }
+
+  .review-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .contact-initials {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--ion-color-medium);
+    background: var(--ion-color-light);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper__footer {
+    display: flex;
+
+    border-top: 1px solid var(--ion-color-light);
+
+    /* Make buttons take 50% width */
+    .half-button {
+      flex: 1;
+      margin: 0 4px;
+    }
+  }
+}

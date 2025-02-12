@@ -98,8 +98,8 @@ export interface CircleMemberPayload {
 
 export const CircleMemberPayloadStatusEnum = {
   Pending: "PENDING",
-  Active: "ACTIVE",
-  Completed: "COMPLETED",
+  Confirmed: "CONFIRMED",
+  Rejected: "REJECTED",
 } as const;
 
 export type CircleMemberPayloadStatusEnum =

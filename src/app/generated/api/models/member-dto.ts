@@ -21,11 +21,23 @@
  */
 export interface MemberDto {
     /**
-     * 
+     * ID of the existing member
+     * @type {string}
+     * @memberof MemberDto
+     */
+    'id': string;
+    /**
+     * User ID if the member already exists
      * @type {string}
      * @memberof MemberDto
      */
     'userId': string;
+    /**
+     * Phone number of the member
+     * @type {string}
+     * @memberof MemberDto
+     */
+    'phone': string;
     /**
      * Slot number for the member in the circle
      * @type {number}
@@ -56,12 +68,6 @@ export interface MemberDto {
      * @memberof MemberDto
      */
     'adminFees': number;
-    /**
-     * Last update timestamp
-     * @type {string}
-     * @memberof MemberDto
-     */
-    'updatedAt': string;
 }
 
 export const MemberDtoStatusEnum = {

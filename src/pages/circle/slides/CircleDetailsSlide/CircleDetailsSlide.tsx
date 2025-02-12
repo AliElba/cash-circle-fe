@@ -1,5 +1,6 @@
 import React from "react";
 import { IonButton, IonDatetime, IonDatetimeButton, IonInput, IonItem, IonLabel, IonModal } from "@ionic/react";
+import { CircleForm } from "../../Circle";
 
 const calculateEndDate = (startDate: string, duration: number) => {
   if (!startDate) return "";
@@ -8,8 +9,8 @@ const calculateEndDate = (startDate: string, duration: number) => {
   return start.toISOString().split("T")[0]; // Format YYYY-MM-DD
 };
 
-interface CircleDetailsSlideProps {
-  form: any;
+export interface CircleSlideProps {
+  form: CircleForm;
   updateForm: (field: string, value: any) => void;
   swiper: any;
 }
@@ -17,7 +18,7 @@ interface CircleDetailsSlideProps {
 const MIN_START_DATE = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
 const MAX_START_DATE = new Date(new Date().setFullYear(new Date().getFullYear() + 2)).toISOString(); // max 2 years
 
-const CircleDetailsSlide: React.FC<CircleDetailsSlideProps> = ({ form, updateForm, swiper }) => {
+const CircleDetailsSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
   return (
     <div className="swiper__slide-container">
       <div className="swiper__slide-content">

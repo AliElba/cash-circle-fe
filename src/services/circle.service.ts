@@ -1,10 +1,9 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { CirclePayload, CirclesApi, CircleStatus, CreateCircleDto, UpdateCircleDto } from "../app/generated/api";
 
 const circleApi = new CirclesApi(undefined, "/api", axios);
 
 export const CircleService = {
-  // Fetch all active circles where the user is a member
   getUserCircles: async (userId: string, circleStatus: CircleStatus = CircleStatus.Active) => {
     try {
       const response = await circleApi.findAll(); // Fetch all circles
@@ -40,9 +39,9 @@ export const CircleService = {
     try {
       const response = await circleApi.create(createCircleDto);
       return response.data;
-    } catch (error) {
-      console.error("Failed to create circle:", error);
-      throw error;
+    } catch (error: AxiosError | any) {
+      console.error("Failed to create circle:", error.response.data.message);
+      throw error.response.data.message;
     }
   },
 

@@ -18,22 +18,23 @@ import globalAxios from "axios";
 // Some imports not used depending on template conditions
 // @ts-ignore
 import {
-  assertParamExists,
-  createRequestFunction,
-  DUMMY_BASE_URL,
-  serializeDataIfNeeded,
-  setApiKeyToObject,
-  setBasicAuthToObject,
-  setBearerAuthToObject,
-  setOAuthToObject,
-  setSearchParams,
-  toPathString
+    assertParamExists,
+    createRequestFunction,
+    DUMMY_BASE_URL,
+    serializeDataIfNeeded,
+    setApiKeyToObject,
+    setBasicAuthToObject,
+    setBearerAuthToObject,
+    setOAuthToObject,
+    setSearchParams,
+    toPathString
 } from "../common";
 // @ts-ignore
 import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, operationServerMap, type RequestArgs, RequiredError } from "../base";
 // @ts-ignore
 // @ts-ignore
-import type { CreateUnregisteredUserDto, UpdateUserDto } from "../models";
+// @ts-ignore
+import type { CreateUnregisteredUserDto, UpdateUserDto, UserPayload } from "../models";
 
 /**
  * UsersApi - axios parameter creator
@@ -141,6 +142,33 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         options: localVarRequestOptions,
       };
     },
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getUsers: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/users`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: "GET", ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -217,6 +245,26 @@ export const UsersApiFp = function (configuration?: Configuration) {
           configuration,
         )(axios, localVarOperationServerBasePath || basePath);
     },
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getUsers(
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserPayload>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getUsers(options);
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap["UsersApi.getUsers"]?.[localVarOperationServerIndex]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
   };
 };
 
@@ -257,6 +305,14 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
      */
     getMe(options?: RawAxiosRequestConfig): AxiosPromise<void> {
       return localVarFp.getMe(options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getUsers(options?: RawAxiosRequestConfig): AxiosPromise<Array<UserPayload>> {
+      return localVarFp.getUsers(options).then((request) => request(axios, basePath));
     },
   };
 };
@@ -303,6 +359,18 @@ export class UsersApi extends BaseAPI {
   public getMe(options?: RawAxiosRequestConfig) {
     return UsersApiFp(this.configuration)
       .getMe(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof UsersApi
+   */
+  public getUsers(options?: RawAxiosRequestConfig) {
+    return UsersApiFp(this.configuration)
+      .getUsers(options)
       .then((request) => request(this.axios, this.basePath));
   }
 }

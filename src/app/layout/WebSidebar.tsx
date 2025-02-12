@@ -19,7 +19,7 @@ import AppRoutes from "../AppRoutes";
 const WebSidebar: React.FC = () => {
   const paths = [
     { path: RouteConstants.homeRelative, label: "Home", icon: triangle },
-    { path: RouteConstants.myCirclesRelative, label: "My Circles", icon: ellipse },
+    { path: RouteConstants.circleRelative, label: "My Circles", icon: ellipse },
     { path: RouteConstants.paymentsRelative, label: "Payments", icon: square },
     { path: RouteConstants.profileRelative, label: "Profile", icon: square },
   ];

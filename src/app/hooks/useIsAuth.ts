@@ -9,7 +9,7 @@ const useIsAuth = (): boolean => {
   }
 
   // Return true if the user is authenticated (not null or undefined)
-  return ctx?.user != null;
+  return ctx?.userId != null;
 };
 
 export default useIsAuth;

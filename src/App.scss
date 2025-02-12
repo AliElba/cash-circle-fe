@@ -7,3 +7,10 @@
 .center {
   @include flex-center;
 }
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background: var(--ion-color-light);
+  margin: 8px 0;
+}

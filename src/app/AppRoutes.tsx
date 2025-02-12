@@ -12,6 +12,7 @@ import useIsAuth from "./hooks/useIsAuth";
 import Register from "../pages/register/Register";
 import Circle from "../pages/circle/Circle";
 import MyCircles from "../pages/my-circles/MyCircles";
+import CongratulationsPage from "../pages/circle/congratulations-page/CongratulationsPage";
 
 const AppRoutes: React.FC = () => {
   const isAuth = useIsAuth();
@@ -23,7 +24,7 @@ const AppRoutes: React.FC = () => {
       <Route path={RouteConstants.registerRelative} component={Register} />
       <Route path={RouteConstants.welcomeRelative} component={Welcome} />
       <Route path={RouteConstants.homeRelative} render={() => <Home />} exact={true} />
-      <Route path={RouteConstants.myCirclesRelative} render={() => <MyCircles />} exact={true} />
+      <Route path={RouteConstants.circleRelative} render={() => <MyCircles />} exact={true} />
       <Route path={RouteConstants.paymentsRelative} render={() => <Payments />} exact={true} />
       <Route path={RouteConstants.profileRelative} render={() => <Profile />} exact={true} />
 
@@ -31,6 +32,7 @@ const AppRoutes: React.FC = () => {
 
       <Route path={RouteConstants.circleCreateRelative} component={Circle} exact />
       <Route path={`${RouteConstants.circleRelative}/edit/:circleId`} component={Circle} exact />
+      <Route path={RouteConstants.circleCongratulationsRelative} component={CongratulationsPage} exact />
     </>
   );
 };

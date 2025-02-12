@@ -18,10 +18,9 @@ import { RouteConstants } from "../../constants/constants";
 
 const Register: React.FC = () => {
   const ionRouter = useIonRouter();
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   const handleRegister = async (event: React.FormEvent) => {
@@ -29,7 +28,7 @@ const Register: React.FC = () => {
     setErrorMessages([]); // Reset error messages state
 
     try {
-      await authService.register({ email, password, firstName, lastName });
+      await authService.register({ phone, password, name });
 
       // Redirect to the login page after successful registration
       ionRouter.push(RouteConstants.loginRelative, "forward");
@@ -50,17 +49,17 @@ const Register: React.FC = () => {
               <IonIcon icon={personAddOutline} className="user-icon" />
             </IonRow>
 
-            {/* Email Input */}
+            {/* phone Input */}
             <IonRow className="ion-justify-content-center">
               <IonInput
-                label="Email"
+                label="Phone"
                 labelPlacement="floating"
                 fill="outline"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onIonChange={(e) => setEmail(e.detail.value!)}
-                onBlur={(e) => setEmail((e.target as { value: string }).value)}
+                type="tel"
+                placeholder="Enter your phone"
+                value={phone}
+                onIonChange={(e) => setPhone(e.detail.value!)}
+                onBlur={(e) => setPhone((e.target as { value: string }).value)}
                 required
               />
             </IonRow>
@@ -80,35 +79,19 @@ const Register: React.FC = () => {
               />
             </IonRow>
 
-            {/* First Name Input */}
             <IonRow className="ion-justify-content-center">
               <IonInput
-                label="First Name (Optional)"
+                label="Name (Optional)"
                 labelPlacement="floating"
                 fill="outline"
                 type="text"
-                placeholder="Enter your first name"
-                value={firstName}
-                onIonChange={(e) => setFirstName(e.detail.value!)}
-                onBlur={(e) => setFirstName((e.target as { value: string }).value)}
+                placeholder="Enter your name"
+                value={name}
+                onIonChange={(e) => setName(e.detail.value!)}
+                onBlur={(e) => setName((e.target as { value: string }).value)}
               />
             </IonRow>
 
-            {/* Last Name Input */}
-            <IonRow className="ion-justify-content-center">
-              <IonInput
-                label="Last Name (Optional)"
-                labelPlacement="floating"
-                fill="outline"
-                type="text"
-                placeholder="Enter your last name"
-                value={lastName}
-                onIonChange={(e) => setLastName(e.detail.value!)}
-                onBlur={(e) => setLastName((e.target as { value: string }).value)}
-              />
-            </IonRow>
-
-            {/* Register Button */}
             <IonRow className="ion-justify-content-center">
               <IonButton expand="block" color="primary" type="submit">
                 Register

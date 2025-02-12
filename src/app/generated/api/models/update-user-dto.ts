@@ -25,24 +25,18 @@ export interface UpdateUserDto {
      * @type {string}
      * @memberof UpdateUserDto
      */
-    'firstName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateUserDto
-     */
-    'lastName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateUserDto
-     */
-    'email': string;
+    'phone': string;
     /**
      * 
      * @type {string}
      * @memberof UpdateUserDto
      */
     'password': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    'name': string;
 }
 

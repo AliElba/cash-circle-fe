@@ -44,18 +44,6 @@ export interface CirclePayload {
    */
   ownerId: string;
   /**
-   * Owner user of the circle (relation)
-   * @type {UserPayload}
-   * @memberof CirclePayload
-   */
-  owner: UserPayload;
-  /**
-   * Members of the circle (relation)
-   * @type {Array<CircleMemberPayload>}
-   * @memberof CirclePayload
-   */
-  members: Array<CircleMemberPayload>;
-  /**
    *
    * @type {string}
    * @memberof CirclePayload
@@ -97,6 +85,18 @@ export interface CirclePayload {
    * @memberof CirclePayload
    */
   updatedAt: string;
+  /**
+   * Owner user of the circle (relation)
+   * @type {UserPayload}
+   * @memberof CirclePayload
+   */
+  owner: UserPayload;
+  /**
+   * Members of the circle (relation)
+   * @type {Array<CircleMemberPayload>}
+   * @memberof CirclePayload
+   */
+  members: Array<CircleMemberPayload>;
 }
 
 export const CirclePayloadStatusEnum = {

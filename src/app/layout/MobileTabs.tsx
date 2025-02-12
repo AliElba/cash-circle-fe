@@ -32,7 +32,7 @@ const MobileTabs: React.FC = () => {
             <IonIcon aria-hidden="true" icon={homeOutline} />
             <IonLabel>Home</IonLabel>
           </IonTabButton>
-          <IonTabButton tab={RouteConstants.myCircles} href={RouteConstants.myCirclesRelative}>
+          <IonTabButton tab={RouteConstants.circleRelative} href={RouteConstants.circleRelative}>
             <IonIcon aria-hidden="true" icon={syncCircleOutline} />
             <IonLabel>My Circles</IonLabel>
           </IonTabButton>

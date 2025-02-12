@@ -27,13 +27,13 @@ setupIonicReact();
 const App: FC = () => {
   console.log("[App] rendered");
   return (
-    <IonApp>
-      <AuthProvider>
+    <AuthProvider>
+      <IonApp>
         <IonReactRouter>
           <AppContent />
         </IonReactRouter>
-      </AuthProvider>
-    </IonApp>
+      </IonApp>
+    </AuthProvider>
   );
 };
 

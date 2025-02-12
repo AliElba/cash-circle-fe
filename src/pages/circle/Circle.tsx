@@ -1,16 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { IonButton, IonContent, IonItem, IonLabel, IonPage } from "@ionic/react";
+import React, {useEffect, useState} from "react";import React, {useEffect, useState} from "react";import React, { useEffect, useState } from "react";
+import { IonContent, IonPage } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
 import "./Circle.scss";
 import { CircleService } from "../../services/circle.service";
 import useCurrentUserId from "../../app/hooks/useCurrentUserId";
-import { CircleStatus, MemberDto } from "../../app/generated/api";
+import { type CircleMemberPayload, CircleStatus, CreateCircleDto, MemberStatus } from "../../app/generated/api";
 import { RouteConstants } from "../../constants/constants";
-import CircleDetailsSlide from "./slides/CircleDetailsSlide";
-import SlotSelectionSlide from "./slides/SlotSelectionSlide";
+import CircleDetailsSlide from "./slides/CircleDetailsSlide/CircleDetailsSlide";
+import SlotSelectionSlide from "./slides/SlotSelectionSlide/SlotSelectionSlide";
 import PageHeader from "../../components/back-button/PageHeader";
-import SlideIndicator from "./slides/SlideIndicator";
+import SlideIndicator from "./slides/SlideIndicator/SlideIndicator";
+import MemberSelectionSlide from "./slides/MemberSelectionSlide/MemberSelectionSlide";
+import ReviewCircleSlide from "./slides/ReviewCircleSlide/ReviewCircleSlide";
+
+export type CircleForm = {
+  name: string;
+  amount: number;
+  duration: number;
+  slotNumber: number;
+  startDate: string;
+  endDate: string;
+  status: CircleStatus;
+  ownerId: string;
+  members: CircleMemberPayload[];
+};
 
 const calculateEndDate = (startDate: string, duration: number) => {
   if (!startDate) return "";
@@ -22,7 +36,7 @@ const calculateEndDate = (startDate: string, duration: number) => {
 const DEFAULT_DURATION = 6;
 const MIN_AMOUNT = 1000;
 const TODAY_FORMATED = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
-const SLIDE_TITLES = ["Circle Details", "Payout Month", "Add Members", "Review & Confirm"];
+export const SLIDE_TITLES = ["Circle Details", "Payout Month", "Add Members", "Review & Confirm"];
 
 const Circle: React.FC = () => {
   const currentUserId = useCurrentUserId();
@@ -31,8 +45,8 @@ const Circle: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { circleId } = useParams<{ circleId?: string }>(); // Detect if editing
   const [swiper, setSwiper] = useState<any>(null);
-  const [form, setForm] = useState({
-    name: "",
+  const [form, setForm] = useState<CircleForm>({
+    name: `Circle-${Date.now()}`,
     amount: MIN_AMOUNT,
     duration: DEFAULT_DURATION,
     slotNumber: 1,
@@ -40,8 +54,16 @@ const Circle: React.FC = () => {
     endDate: calculateEndDate(TODAY_FORMATED, DEFAULT_DURATION),
     status: CircleStatus.Pending as CircleStatus,
     ownerId: currentUserId || "", // Default to current user
-    members: [] as MemberDto[],
+    members: [] as CircleMemberPayload[],
   });
+
+  useEffect(() => {
+    if (!currentUserId) {
+      console.log("Waiting for user ID...");
+    } else {
+      console.log("User ID set:", currentUserId);
+    }
+  }, [currentUserId]);
 
   // Fetch circle data if editing and url has circleId
   useEffect(() => {
@@ -63,7 +85,7 @@ const Circle: React.FC = () => {
             amount: data.amount,
             duration: data.duration,
             slotNumber: data.members[0].slotNumber,
-            members: (data.members || []) as MemberDto[],
+            members: (data.members || []) as CircleMemberPayload[],
           });
         } catch (error) {
           console.error("Error fetching circle:", error);
@@ -87,9 +109,32 @@ const Circle: React.FC = () => {
       if (circleId) {
         await CircleService.updateCircle(circleId, form as any);
       } else {
-        await CircleService.createCircle(form);
+        const createCircleDto: CreateCircleDto = {
+          name: form.name,
+          amount: form.amount,
+          duration: form.duration,
+          startDate: form.startDate,
+          endDate: form.endDate,
+          status: form.status,
+          ownerId: form.ownerId,
+          members: form.members.map((member) => ({
+            id: member?.id,
+            userId: member?.userId,
+            phone: member.user.phone,
+            slotNumber: member.slotNumber,
+            status: member.status as MemberStatus,
+            paymentStatus: member.paymentStatus,
+            payoutDate: member.payoutDate,
+            adminFees: member.adminFees,
+          })),
+        };
+        const createdCircle = await CircleService.createCircle(createCircleDto);
+
+        history.push({
+          pathname: RouteConstants.circleCongratulationsRelative,
+          state: { circle: createdCircle },
+        });
       }
-      history.push(RouteConstants.circleRelative);
     } catch (error) {
       console.error("Error saving circle:", error);
     }
@@ -117,39 +162,10 @@ const Circle: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
-            <div className="step">
-              <h2>Choose Your Payout Slot</h2>
-              <IonItem>
-                <IonLabel>Slot</IonLabel>
-                {/*<IonSelect value={form.slotNumber} onIonChange={(e) => updateForm("slotNumber", e.detail.value)}>*/}
-                {/*  {[...Array(parseInt(form.duration))].map((_, index) => (*/}
-                {/*    <IonSelectOption key={index} value={index + 1}>*/}
-                {/*      Slot {index + 1}*/}
-                {/*    </IonSelectOption>*/}
-                {/*  ))}*/}
-                {/*</IonSelect>*/}
-              </IonItem>
-
-              <IonButton onClick={() => swiper.slideNext()} expand="block">
-                Next: Add Members
-              </IonButton>
-              <IonButton onClick={() => swiper.slidePrev()} expand="block" color="light">
-                Back
-              </IonButton>
-            </div>
+            <MemberSelectionSlide form={form} updateForm={updateForm} swiper={swiper} />
           </SwiperSlide>
           <SwiperSlide>
-            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
-            {/*<MemberSelectionSlide form={form} updateForm={updateForm} />*/}
-            <IonButton onClick={() => swiper.slideNext()} expand="block">
-              Next: Review & Confirm
-            </IonButton>
-          </SwiperSlide>
-          <SwiperSlide>
-            {/*<ReviewCircleSlide form={form} />*/}
-            <IonButton onClick={handleSubmit} expand="block">
-              {circleId ? "Update Circle" : "Confirm & Create Circle"}
-            </IonButton>
+            <ReviewCircleSlide form={form} swiper={swiper} handleSubmit={handleSubmit} />
           </SwiperSlide>
         </Swiper>
       </IonContent>

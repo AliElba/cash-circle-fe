@@ -25,7 +25,7 @@ export interface LoginDto {
      * @type {string}
      * @memberof LoginDto
      */
-    'email': string;
+    'phone': string;
     /**
      * 
      * @type {string}

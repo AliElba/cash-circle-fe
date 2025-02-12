@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IonButton, IonChip, IonSegment, IonSegmentButton, IonText } from "@ionic/react";
 import "./SlotSelectionSlide.scss";
-
-interface SlotSelectionSlideProps {
-  form: any;
-  updateForm: (field: string, value: any) => void;
-  swiper: any;
-}
+import { CircleSlideProps } from "../CircleDetailsSlide/CircleDetailsSlide";
 
 enum SlotCategory {
   FIRST = "First Slots",
@@ -41,7 +36,7 @@ const generateAvailableSlots = (startDate: string, duration: number, totalAmount
   };
 };
 
-const SlotSelectionSlide: React.FC<SlotSelectionSlideProps> = ({ form, updateForm, swiper }) => {
+const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
   const [selectedCategory, setSelectedCategory] = useState<SlotCategory>(SlotCategory.FIRST);
   const [availableSlots, setAvailableSlots] = useState<Record<SlotCategory, any[]>>({
     [SlotCategory.FIRST]: [],
@@ -94,8 +89,6 @@ const SlotSelectionSlide: React.FC<SlotSelectionSlideProps> = ({ form, updateFor
           ))}
         </div>
       </div>
-
-      <IonText color="medium">Collected Form Values: {JSON.stringify(form)}</IonText>
 
       {/* Footer */}
       <div className="slot-footer">

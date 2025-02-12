@@ -35,7 +35,7 @@ import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, operationServerMap, type Reques
 // @ts-ignore
 // @ts-ignore
 // @ts-ignore
-import type { AddMemberDto, CirclePayload, CreateCircleDto, UpdateCircleDto } from "../models";
+import type { CirclePayload, CreateCircleDto, MemberDto, UpdateCircleDto } from "../models";
 
 /**
  * CirclesApi - axios parameter creator
@@ -46,19 +46,15 @@ export const CirclesApiAxiosParamCreator = function (configuration?: Configurati
     /**
      *
      * @param {string} id
-     * @param {AddMemberDto} addMemberDto
+     * @param {MemberDto} memberDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addMember: async (
-      id: string,
-      addMemberDto: AddMemberDto,
-      options: RawAxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
+    addMember: async (id: string, memberDto: MemberDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
       // verify required parameter 'id' is not null or undefined
       assertParamExists("addMember", "id", id);
-      // verify required parameter 'addMemberDto' is not null or undefined
-      assertParamExists("addMember", "addMemberDto", addMemberDto);
+      // verify required parameter 'memberDto' is not null or undefined
+      assertParamExists("addMember", "memberDto", memberDto);
       const localVarPath = `/circles/{id}/members`.replace(`{${"id"}}`, encodeURIComponent(String(id)));
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -76,7 +72,7 @@ export const CirclesApiAxiosParamCreator = function (configuration?: Configurati
       setSearchParams(localVarUrlObj, localVarQueryParameter);
       let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
       localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-      localVarRequestOptions.data = serializeDataIfNeeded(addMemberDto, localVarRequestOptions, configuration);
+      localVarRequestOptions.data = serializeDataIfNeeded(memberDto, localVarRequestOptions, configuration);
 
       return {
         url: toPathString(localVarUrlObj),
@@ -295,16 +291,16 @@ export const CirclesApiFp = function (configuration?: Configuration) {
     /**
      *
      * @param {string} id
-     * @param {AddMemberDto} addMemberDto
+     * @param {MemberDto} memberDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async addMember(
       id: string,
-      addMemberDto: AddMemberDto,
+      memberDto: MemberDto,
       options?: RawAxiosRequestConfig,
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.addMember(id, addMemberDto, options);
+      const localVarAxiosArgs = await localVarAxiosParamCreator.addMember(id, memberDto, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
         operationServerMap["CirclesApi.addMember"]?.[localVarOperationServerIndex]?.url;
@@ -463,12 +459,12 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
     /**
      *
      * @param {string} id
-     * @param {AddMemberDto} addMemberDto
+     * @param {MemberDto} memberDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addMember(id: string, addMemberDto: AddMemberDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-      return localVarFp.addMember(id, addMemberDto, options).then((request) => request(axios, basePath));
+    addMember(id: string, memberDto: MemberDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+      return localVarFp.addMember(id, memberDto, options).then((request) => request(axios, basePath));
     },
     /**
      *
@@ -538,14 +534,14 @@ export class CirclesApi extends BaseAPI {
   /**
    *
    * @param {string} id
-   * @param {AddMemberDto} addMemberDto
+   * @param {MemberDto} memberDto
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof CirclesApi
    */
-  public addMember(id: string, addMemberDto: AddMemberDto, options?: RawAxiosRequestConfig) {
+  public addMember(id: string, memberDto: MemberDto, options?: RawAxiosRequestConfig) {
     return CirclesApiFp(this.configuration)
-      .addMember(id, addMemberDto, options)
+      .addMember(id, memberDto, options)
       .then((request) => request(this.axios, this.basePath));
   }
 

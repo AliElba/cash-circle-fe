@@ -25,7 +25,7 @@ export interface RegisterDto {
      * @type {string}
      * @memberof RegisterDto
      */
-    'email': string;
+    'phone': string;
     /**
      * 
      * @type {string}
@@ -37,12 +37,6 @@ export interface RegisterDto {
      * @type {string}
      * @memberof RegisterDto
      */
-    'firstName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterDto
-     */
-    'lastName': string;
+    'name': string;
 }
 

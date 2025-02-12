@@ -25,6 +25,6 @@ export interface CreateUnregisteredUserDto {
      * @type {string}
      * @memberof CreateUnregisteredUserDto
      */
-    'email': string;
+    'phone': string;
 }
 

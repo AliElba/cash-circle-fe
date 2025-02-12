@@ -1,4 +1,3 @@
-export * from './add-member-dto';
 export * from './circle-member-payload';
 export * from './circle-payload';
 export * from './circle-status';
@@ -7,7 +6,6 @@ export * from './create-unregistered-user-dto';
 export * from './login-dto';
 export * from './member-dto';
 export * from './member-status';
-export * from './member-update-dto';
 export * from './payment-status';
 export * from './register-dto';
 export * from './update-circle-dto';

@@ -14,7 +14,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { MemberUpdateDto } from "./member-update-dto";
+import type { MemberDto } from "./member-dto";
 
 /**
  *
@@ -60,10 +60,10 @@ export interface UpdateCircleDto {
   status: UpdateCircleDtoStatusEnum;
   /**
    * Array of members to update
-   * @type {Array<MemberUpdateDto>}
+   * @type {Array<MemberDto>}
    * @memberof UpdateCircleDto
    */
-  members: Array<MemberUpdateDto>;
+  members: Array<MemberDto>;
 }
 
 export const UpdateCircleDtoStatusEnum = {

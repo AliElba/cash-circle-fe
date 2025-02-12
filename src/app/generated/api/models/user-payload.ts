@@ -27,35 +27,23 @@ export interface UserPayload {
      */
     'id': string;
     /**
-     * Email address of the user
+     * Phone number of the user
      * @type {string}
      * @memberof UserPayload
      */
-    'email': string;
-    /**
-     * First name of the user
-     * @type {string}
-     * @memberof UserPayload
-     */
-    'firstName': string;
-    /**
-     * Last name of the user
-     * @type {string}
-     * @memberof UserPayload
-     */
-    'lastName': string;
-    /**
-     * Date when the user was created
-     * @type {string}
-     * @memberof UserPayload
-     */
-    'createdAt': string;
+    'phone': string;
     /**
      * Name of the user
      * @type {string}
      * @memberof UserPayload
      */
     'name': string;
+    /**
+     * Date when the user was created
+     * @type {string}
+     * @memberof UserPayload
+     */
+    'createdAt': string;
     /**
      * Status of the user
      * @type {string}

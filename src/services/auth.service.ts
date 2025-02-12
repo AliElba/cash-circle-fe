@@ -17,10 +17,9 @@ interface AuthResponse {
  */
 const register = async (
   userData: {
-    email: string;
+    phone: string;
     password: string;
-    firstName?: string;
-    lastName?: string;
+    name?: string;
   },
   headers = {},
 ): Promise<AuthResponse> => {
@@ -39,13 +38,12 @@ const register = async (
  * @param credentials - The user's login credentials.
  * @returns The authentication response containing the JWT token.
  */
-const login = async (credentials: { email: string; password: string }): Promise<AuthResponse> => {
+const login = async (credentials: { phone: string; password: string }): Promise<AuthResponse> => {
   const response = await axios.post(`${API_URL}/login`, credentials);
   if (response.data.access_token) {
     console.log("Preference Token saving...");
-    Preferences.set({ key: StorageConstants.token, value: response.data.access_token }).then(() => {
-      console.log("Preference Token saved.");
-    });
+    await Preferences.set({ key: StorageConstants.token, value: response.data.access_token });
+    console.log("Preference Token saved.");
   }
   return response.data;
 };
@@ -53,8 +51,8 @@ const login = async (credentials: { email: string; password: string }): Promise<
 /**
  * Logs out the current user by removing the JWT token from local storage.
  */
-const logout = (): void => {
-  localStorage.removeItem("token");
+const logout = async (): Promise<void> => {
+  await Preferences.remove({ key: StorageConstants.token });
 };
 
 /**
@@ -63,8 +61,12 @@ const logout = (): void => {
  */
 const getCurrentUserId = async (): Promise<string | null> => {
   const { value: token } = await Preferences.get({ key: StorageConstants.token });
+
+  console.log("getCurrentUserId:token: ", token);
+
   if (token) {
     const decodedToken: any = jwtDecode(token);
+    console.log("getCurrentUserId:decodedToken.sub: ", decodedToken.sub);
     return decodedToken.sub || null;
   }
   return null;

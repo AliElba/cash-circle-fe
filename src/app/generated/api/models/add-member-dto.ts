@@ -27,11 +27,11 @@ export interface AddMemberDto {
      */
     'userId': string;
     /**
-     * Email of the member if userId is not provided
+     * Phone number of the member
      * @type {string}
      * @memberof AddMemberDto
      */
-    'email': string;
+    'phone': string;
     /**
      * Slot number for the member
      * @type {number}
