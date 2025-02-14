@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from "react";import React, {useEffect, useState} from "react";import React, { useEffect, useState } from "react";
 import { IonContent, IonPage } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
@@ -13,6 +12,7 @@ import PageHeader from "../../components/back-button/PageHeader";
 import SlideIndicator from "./slides/SlideIndicator/SlideIndicator";
 import MemberSelectionSlide from "./slides/MemberSelectionSlide/MemberSelectionSlide";
 import ReviewCircleSlide from "./slides/ReviewCircleSlide/ReviewCircleSlide";
+import { useEffect, useState } from "react";
 
 export type CircleForm = {
   name: string;

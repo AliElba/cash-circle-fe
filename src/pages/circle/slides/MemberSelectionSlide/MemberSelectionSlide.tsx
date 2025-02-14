@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from "react";import React, {useEffect, useState} from "react";import React, { useEffect, useState } from "react";
 import {
   IonAvatar,
   IonButton,
@@ -20,6 +19,7 @@ import { useFilteredContacts } from "../../../../app/hooks/useContacts";
 import { CircleSlideProps } from "../CircleDetailsSlide/CircleDetailsSlide";
 import { CircleMemberPayload, MemberStatus, UserPayload } from "../../../../app/generated/api";
 import { getNameInitials } from "../../../../app/helpers/circle-helper";
+import { useEffect, useState } from "react";
 
 enum MemberSelectionMode {
   Contacts = "contacts",

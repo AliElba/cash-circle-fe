@@ -188,7 +188,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     async createUnregisteredUser(
       createUnregisteredUserDto: CreateUnregisteredUserDto,
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPayload>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.createUnregisteredUser(
         createUnregisteredUserDto,
         options,
@@ -213,7 +213,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
     async editUser(
       updateUserDto: UpdateUserDto,
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPayload>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.editUser(updateUserDto, options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
@@ -233,7 +233,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
      */
     async getMe(
       options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserPayload>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getMe(options);
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath = operationServerMap["UsersApi.getMe"]?.[localVarOperationServerIndex]?.url;
@@ -284,7 +284,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     createUnregisteredUser(
       createUnregisteredUserDto: CreateUnregisteredUserDto,
       options?: RawAxiosRequestConfig,
-    ): AxiosPromise<void> {
+    ): AxiosPromise<UserPayload> {
       return localVarFp
         .createUnregisteredUser(createUnregisteredUserDto, options)
         .then((request) => request(axios, basePath));
@@ -295,7 +295,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    editUser(updateUserDto: UpdateUserDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+    editUser(updateUserDto: UpdateUserDto, options?: RawAxiosRequestConfig): AxiosPromise<UserPayload> {
       return localVarFp.editUser(updateUserDto, options).then((request) => request(axios, basePath));
     },
     /**
@@ -303,7 +303,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getMe(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+    getMe(options?: RawAxiosRequestConfig): AxiosPromise<UserPayload> {
       return localVarFp.getMe(options).then((request) => request(axios, basePath));
     },
     /**

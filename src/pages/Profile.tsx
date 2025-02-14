@@ -1,21 +1,19 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import ExploreContainer from "../components/ExploreContainer";
 import "./Payments.scss";
-import PageHeader from "../components/back-button/PageHeader";
 import React from "react";
+import LogoutButton from "../components/logout/LogoutButton";
 
 const Profile: React.FC = () => {
   return (
     <IonPage>
-      <PageHeader title="Profile" />
-
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Profile</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Profile page" />
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Profile</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <h2>Welcome to your profile</h2>
+        <LogoutButton />
       </IonContent>
     </IonPage>
   );

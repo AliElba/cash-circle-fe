@@ -1,4 +1,3 @@
-import React from "react";import React from "react";import React from "react";
 import { IonAvatar, IonButton, IonCard, IonCardContent, IonItem, IonLabel, IonList, IonText } from "@ionic/react";
 import "./ReviewCircleSlide.scss";
 import { CircleForm, SLIDE_TITLES } from "../../Circle";

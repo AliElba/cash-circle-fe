@@ -2,7 +2,7 @@ import React from "react";
 import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
 import { cardOutline, homeOutline, personCircleOutline, syncCircleOutline } from "ionicons/icons";
 import { RouteConstants } from "../../constants/constants";
-import AppRoutes from "../AppRoutes";
+import AppRoutes from "../routes/AppRoutes";
 import { useLocation } from "react-router";
 
 const MobileTabs: React.FC = () => {

@@ -14,7 +14,7 @@ import {
 } from "@ionic/react";
 import { ellipse, square, triangle } from "ionicons/icons";
 import { RouteConstants } from "../../constants/constants";
-import AppRoutes from "../AppRoutes";
+import AppRoutes from "../routes/AppRoutes";
 
 const WebSidebar: React.FC = () => {
   const paths = [
