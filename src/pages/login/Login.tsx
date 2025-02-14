@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -16,13 +16,15 @@ import "./Login.scss";
 import { Preferences } from "@capacitor/preferences";
 import Intro from "../intro/Intro";
 import { RouteConstants, StorageConstants } from "../../constants/constants";
-import { authService } from "../../services/auth.service";
 import { AxiosError } from "axios";
+import { AuthContext } from "../../app/context/AuthContext";
 
 const Login: React.FC = () => {
+  const { login } = useContext(AuthContext)!;
+
   const ionRouter = useIonRouter();
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("0111111");
+  const [password, setPassword] = useState("123456");
   const [isIntroPageVisited, setIsIntroPageVisited] = useState<boolean | null>(null);
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
@@ -40,7 +42,8 @@ const Login: React.FC = () => {
     setErrorMessages([]); // Reset error messages state
 
     try {
-      await authService.login({ phone: phone, password });
+      // await authService.login({ phone: phone, password });
+      await login({ phone: phone, password });
 
       // Redirect to the home page after successful login
       ionRouter.push(RouteConstants.homeRelative, "forward");

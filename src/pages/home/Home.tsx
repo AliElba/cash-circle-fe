@@ -12,7 +12,7 @@ import {
 import "./Home.scss";
 import React, { useEffect, useState } from "react";
 import { CircleService } from "../../services/circle.service";
-import useCurrentUserId from "../../app/hooks/useCurrentUserId";
+import useCurrentUser from "../../app/hooks/useCurrentUser";
 import { useHistory } from "react-router";
 import { RouteConstants } from "../../constants/constants";
 import { CircleStatus } from "../../app/generated/api";
@@ -20,7 +20,8 @@ import CircleSwiper from "../../components/circleSwiper/CircleSwiper";
 
 const Home: React.FC = () => {
   const history = useHistory();
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
+  const currentUserId = currentUser?.id;
 
   const [userCircles, setUserCircles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

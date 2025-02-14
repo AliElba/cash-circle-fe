@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
 import "./Circle.scss";
 import { CircleService } from "../../services/circle.service";
-import useCurrentUserId from "../../app/hooks/useCurrentUserId";
+import useCurrentUser from "../../app/hooks/useCurrentUser";
 import { type CircleMemberPayload, CircleStatus, CreateCircleDto, MemberStatus } from "../../app/generated/api";
 import { RouteConstants } from "../../constants/constants";
 import CircleDetailsSlide from "./slides/CircleDetailsSlide/CircleDetailsSlide";
@@ -39,7 +39,8 @@ const TODAY_FORMATED = new Date().toISOString().split("T")[0]; // Format YYYY-MM
 export const SLIDE_TITLES = ["Circle Details", "Payout Month", "Add Members", "Review & Confirm"];
 
 const Circle: React.FC = () => {
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
+  const currentUserId = currentUser?.id;
   const history = useHistory();
 
   const [activeIndex, setActiveIndex] = useState(0);

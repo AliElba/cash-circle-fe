@@ -5,7 +5,7 @@ import { IonText } from "@ionic/react";
 import CircleCard from "../CircleCard/CircleCard";
 import { CircleService } from "../../services/circle.service";
 import { CircleStatus } from "../../app/generated/api";
-import useCurrentUserId from "../../app/hooks/useCurrentUserId";
+import useCurrentUser from "../../app/hooks/useCurrentUser";
 import "./CircleSwiper.css";
 
 interface CircleSwiperProps {
@@ -13,16 +13,16 @@ interface CircleSwiperProps {
 }
 
 const CircleSwiper: React.FC<CircleSwiperProps> = ({ circleStatus }) => {
-  const currentUserId = useCurrentUserId();
+  const currentUser = useCurrentUser();
   const [circles, setCircles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCircles = async () => {
-      if (!currentUserId) return;
+      if (!currentUser) return;
 
       try {
-        const data = await CircleService.getUserCircles(currentUserId, circleStatus);
+        const data = await CircleService.getUserCircles(currentUser.id, circleStatus);
         setCircles(data);
       } catch (error) {
         console.error(`Error fetching ${circleStatus} circles:`, error);
@@ -32,7 +32,7 @@ const CircleSwiper: React.FC<CircleSwiperProps> = ({ circleStatus }) => {
     };
 
     fetchCircles().then();
-  }, [currentUserId, circleStatus]);
+  }, [currentUser, circleStatus]);
 
   return (
     <div className="circle-swiper">
@@ -44,9 +44,9 @@ const CircleSwiper: React.FC<CircleSwiperProps> = ({ circleStatus }) => {
         <Swiper spaceBetween={30} slidesPerView={1} pagination={{ clickable: true }}>
           {circles.map(
             (circle) =>
-              currentUserId && (
+              currentUser && (
                 <SwiperSlide key={circle.id}>
-                  <CircleCard circle={circle} userId={currentUserId} />
+                  <CircleCard circle={circle} userId={currentUser.id} />
                 </SwiperSlide>
               ),
           )}

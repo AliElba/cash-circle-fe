@@ -9,6 +9,8 @@ const PrivateRoute: React.FC<{ component: React.ElementType; path: string; exact
 }) => {
   const isAuth = useIsAuth();
 
+  console.log("isAuth", isAuth);
+
   return (
     <Route
       {...rest}

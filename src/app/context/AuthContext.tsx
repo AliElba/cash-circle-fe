@@ -6,7 +6,6 @@ import { UserService } from "../../services/user.service";
 import { Preferences } from "@capacitor/preferences";
 
 interface AuthContextProps {
-  userId: string | null;
   user: UserPayload | null;
   login: (credentials: { phone: string; password: string }) => Promise<void>;
   register: (userData: { phone: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
@@ -16,7 +15,6 @@ interface AuthContextProps {
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [userId, setUserId] = useState<string | null>(null);
   const [user, setUser] = useState<UserPayload | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,7 +24,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     console.log("Logging out...");
     await authService.logout();
-    setUserId(null);
     setUser(null);
     return true; // ✅ Indicate that logout was successful
   };
@@ -45,18 +42,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // ✅ Get the current user ID (if token exists)
-        const currentUserId = await authService.getCurrentUserId();
-        setUserId(currentUserId);
-
-        if (currentUserId) {
-          try {
-            // ✅ Get user details
-            const currentUser = await UserService.getCurrentUser();
-            setUser(currentUser);
-          } catch (error) {
-            console.error("Fetching user failed:", error);
-            await logout();
-          }
+        try {
+          const currentUser = await UserService.getCurrentUser();
+          setUser(currentUser);
+        } catch (error) {
+          console.error("Fetching user failed:", error);
+          await logout();
         }
       } catch (error) {
         console.error("Failed to initialize authentication:", error);
@@ -81,24 +72,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   /**
-   * Logs in a user and updates the authentication state.
+   * Logs in a user
+   * store token in local storage
+   * and updates the authentication state (get me user).
    */
   const login = async (credentials: { phone: string; password: string }) => {
     try {
       await authService.login(credentials);
 
-      // ✅ Save the token after login
+      // Check token has been stored in the local storage
       const storedToken = (await Preferences.get({ key: "token" })).value;
       if (!storedToken) {
         throw new Error("Login failed: Token not found.");
       }
 
-      const currentUserId = await authService.getCurrentUserId();
-      setUserId(currentUserId);
-      if (currentUserId) {
-        const userData = await UserService.getCurrentUser();
-        setUser(userData);
-      }
+      // Get the current user Data
+      const userData = await UserService.getCurrentUser();
+      setUser(userData);
     } catch (error) {
       console.error("Failed to login:", error);
       await logout(); // 🚀 Logout on login failure
@@ -112,5 +102,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await authService.register(userData);
   };
 
-  return <AuthContext.Provider value={{ userId, user, login, register, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
 };

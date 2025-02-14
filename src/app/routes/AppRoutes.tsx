@@ -24,6 +24,7 @@ const AppRoutes: React.FC = () => {
       <Route path={RouteConstants.introRelative} component={Intro} exact />
       <Route path={RouteConstants.loginRelative} component={Login} exact />
       <Route path={RouteConstants.registerRelative} component={Register} />
+
       <Route path={RouteConstants.welcomeRelative} component={Welcome} />
       <Route path={RouteConstants.circleRelative} render={() => <MyCircles />} exact={true} />
       <Route path={RouteConstants.paymentsRelative} render={() => <Payments />} exact={true} />
