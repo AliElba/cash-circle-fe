@@ -24,11 +24,13 @@ Manually build and run your project in Xcode instead of using `npx cap run ios`.
 
 Enable automatic updates of the Android/IOS build when you make changes to your app
 `ionic build`
+`npm run sync` Use this command to sync android folder and then check if permissions are added to the xml manifest.
+`ionic cap run android --device -l --external` enable Live Reload to see changes instantly without rebuilding
+`ionic cap run android --livereload`
+`ionic cap run ios --livereload`
+
 `ionic cap build android`
 `ionic cap build ios`
-`ionic capacitor run android --livereload`
-`ionic capacitor run ios --livereload`
-`ionic cap run android --device -l --external` enable Live Reload to see changes instantly without rebuilding
 
 Debug in Chrome DevTools
 

@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "sync": "npx cap sync android && bash add-permissions.sh",
     "serve": "ionic serve",
     "dev": "vite",
     "build": "tsc && vite build",
