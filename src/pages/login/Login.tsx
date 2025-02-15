@@ -69,11 +69,11 @@ const Login: React.FC = () => {
             <IonIcon icon={personCircle} className="user-icon" />
           </IonRow>
 
-          <IonItem className="ion-justify-content-center">
+          <IonItem className="ion-justify-content-center ion-margin-vertical">
             <IonInput
               label="phone"
               labelPlacement="floating"
-              fill="outline"
+              fill="solid"
               type="tel"
               placeholder="Enter your phone"
               value={phone}
@@ -82,11 +82,11 @@ const Login: React.FC = () => {
             />
           </IonItem>
 
-          <IonItem className="ion-justify-content-center ion-margin-bottom">
+          <IonItem className="ion-justify-content-center ion-margin-vertical">
             <IonInput
               label="Password"
               labelPlacement="floating"
-              fill="outline"
+              fill="solid"
               type="password"
               placeholder="Enter your password"
               value={password}

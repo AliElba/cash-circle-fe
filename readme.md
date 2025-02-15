@@ -20,13 +20,23 @@ Manually build and run your project in Xcode instead of using `npx cap run ios`.
 
 ### Build and run the app for Android and iOS
 
-You can build and run the app using Ionic CLI or npm/npx commands.
-
 **Using Ionic CLI:**
 
 Enable automatic updates of the Android/IOS build when you make changes to your app
+`ionic build`
+`ionic cap build android`
+`ionic cap build ios`
 `ionic capacitor run android --livereload`
 `ionic capacitor run ios --livereload`
+`ionic cap run android --device -l --external` enable Live Reload to see changes instantly without rebuilding
+
+Debug in Chrome DevTools
+
+1. Open Google Chrome.
+2. In the address bar, type:
+   `chrome://inspect/#devices`
+3. Under Remote Target, find your app.
+4. Click Inspect to open DevTools for debugging.
 
 **Using npm/npx CLI:**
 
@@ -46,7 +56,6 @@ Enable automatic updates of the Android/IOS build when you make changes to your 
 - the generator will need also java to be installed (you can use docker for it)
 - also we need to add all related swagger annotations needed on BE e.g. @ApiResponse, @ApiProp, @ApiResponse which make
   the def doc correct
--
 
 **Using Docker for open api generator tool (Optional) otherwise install `@openapitools/openapi-generator-cli`**
 

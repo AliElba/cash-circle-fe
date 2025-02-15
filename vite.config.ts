@@ -27,8 +27,6 @@ export default defineConfig({
       scss: {
         additionalData: `
         @use "sass:math";
-        @use "bootstrap/scss/bootstrap-grid" as *;
-        @use "bootstrap/scss/bootstrap-utilities" as *;
         `,
         quietDeps: true, // Suppress deprecation warnings from 3rd-party libraries
       },

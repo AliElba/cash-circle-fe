@@ -17,7 +17,6 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.scss";
 import React, { FC } from "react";
 import "./App.scss";
-import "./styles-bootstrap.reset.scss";
 import { AuthProvider } from "./app/context/AuthContext";
 import AppContent from "./AppContent";
 import { IonReactRouter } from "@ionic/react-router";
