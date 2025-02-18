@@ -26,6 +26,13 @@ enum MemberSelectionMode {
   AllContacts = "all",
 }
 
+const mapUserToCircleMember = (contact: UserPayload): CircleMemberPayload =>
+  ({
+    userId: contact.id, // If the contact is not a registered user, this will be undefined
+    user: { ...contact },
+    status: MemberStatus.Pending,
+  }) as CircleMemberPayload;
+
 const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
   const { frequentContacts, allContacts, error } = useFilteredContacts();
   const [selectedTab, setSelectedTab] = useState<MemberSelectionMode>(MemberSelectionMode.Frequent);
@@ -64,26 +71,19 @@ const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, sw
     contact.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  // Function to map UserPayload to CircleMemberPayload
-  const mapToCircleMember = (contact: UserPayload): CircleMemberPayload => ({
-    userId: contact.id, // If the contact is not a registered user, this will be undefined
-    user: {
-      name: contact.name,
-      phone: contact.phone,
-    },
-    status: MemberStatus.Pending,
-  });
-
   // Function to select/unselect a contact
   const toggleSelection = (contact: UserPayload) => {
     const isSelected = selectedMembers.some((member) => member.user.phone === contact.phone);
 
     let updatedMembers: CircleMemberPayload[];
     if (isSelected) {
+      // Remove contact from selected members, if he is already selected before
       updatedMembers = selectedMembers.filter((member) => member.user.phone !== contact.phone);
     } else {
       if (isMaxReached) return; // Prevent adding more members if limit is reached
-      updatedMembers = [...selectedMembers, mapToCircleMember(contact)];
+
+      // Add contact to selected members, after mapping (mobile contact / user from BE) to CircleMemberPayload
+      updatedMembers = [...selectedMembers, mapUserToCircleMember(contact)];
     }
 
     // Update selected members
