@@ -76,29 +76,35 @@ const ReviewCircleSlide: React.FC<ReviewCircleSlideProps> = ({ form, swiper, han
               Members ({form.members.length}/{form.duration})
             </h3>
             <IonList>
-              {form.members.map((member, index: number) => (
-                <IonItem key={index}>
-                  <IonAvatar slot="start">
-                    <div className="contact-initials">{getNameInitials(member.user.name)}</div>
-                  </IonAvatar>
-                  <IonLabel>
-                    <h3>{member.user.name}</h3>
-                    <p>{member.user.phone || "Email Invitation Pending"}</p>
-                  </IonLabel>
-                  <IonText
-                    color={
-                      member.status === MemberStatus.Confirmed
-                        ? "success"
-                        : member.status === MemberStatus.Pending
-                          ? "warning"
-                          : "danger"
-                    }
-                    className={`ion-text-${member.status === MemberStatus.Confirmed ? "success" : member.status === MemberStatus.Pending ? "warning" : "danger"}`}
-                    style={{ fontSize: "0.7rem" }}>
-                    {member.status.toUpperCase()}
-                  </IonText>
+              {form.members.length === 0 ? (
+                <IonItem>
+                  <IonLabel>No members added yet.</IonLabel>
                 </IonItem>
-              ))}
+              ) : (
+                form.members.map((member, index: number) => (
+                  <IonItem key={index}>
+                    <IonAvatar slot="start">
+                      <div className="contact-initials">{getNameInitials(member.user.name)}</div>
+                    </IonAvatar>
+                    <IonLabel>
+                      <h3>{member.user.name}</h3>
+                      <p>{member.user.phone || "Email Invitation Pending"}</p>
+                    </IonLabel>
+                    <IonText
+                      color={
+                        member.status === MemberStatus.Confirmed
+                          ? "success"
+                          : member.status === MemberStatus.Pending
+                            ? "warning"
+                            : "danger"
+                      }
+                      className={`ion-text-${member.status === MemberStatus.Confirmed ? "success" : member.status === MemberStatus.Pending ? "warning" : "danger"}`}
+                      style={{ fontSize: "0.7rem" }}>
+                      {member.status.toUpperCase()}
+                    </IonText>
+                  </IonItem>
+                ))
+              )}
             </IonList>
           </IonCardContent>
         </IonCard>

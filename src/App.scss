@@ -14,3 +14,9 @@
   background: var(--ion-color-light);
   margin: 8px 0;
 }
+
+// Swiper pagination variables seems to be undefined
+// or maybe overwritten by the theme styles (so overwrite it by default)
+.swiper .swiper-pagination-bullet {
+  background: var(--ion-color-dark-tint) !important;
+}

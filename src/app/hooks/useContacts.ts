@@ -5,36 +5,34 @@ import { UserService } from "../../services/user.service";
 import { UserPayload } from "../generated/api";
 
 /**
- * Fetches contacts from the user's device (mobile)
- * Fetches contacts from the backend, but only the users who are members of this current user circles (Frequently contacts)
- * will have 2 tabs: 1. Frequent contacts (from backend) 2. All contacts (from mobile contacts)
- * once select one from the all contact, check if not registered user, then add him without id
- *
- * Steps:
- * 1. If (web), fetch all users from the backend and set the `filteredContacts` state to those users.
- * 2. If on a native platform (mobile), check if the app has permission to access the user's contacts.
- * 3. If not, ask user to give permission to access contacts.
- * 3. If the app has permission, fetch the user's contacts from the device.
- * 4. Fetch all registered users from the backend.
- * 8. If there was an error at any step, set the `error` state to the error message.
+ * Fetches contacts for the user:
+ * - On Web:
+ *   - Frequent contacts = Backend users.
+ *   - All contacts = Same as frequent contacts.
+ * - On Mobile:
+ *   - Frequent contacts = Backend users.
+ *   - All contacts = Mobile device contacts (including avatars if available).
+ * - Handles permissions for fetching contacts on mobile.
  */
 export const useFilteredContacts = () => {
-  const [filteredContacts, setFilteredContacts] = useState<UserPayload[]>([]);
+  const [frequentContacts, setFrequentContacts] = useState<UserPayload[]>([]);
+  const [allContacts, setAllContacts] = useState<UserPayload[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContacts = async () => {
       try {
+        // Step 1: Fetch frequent contacts from backend (same for Web & Mobile)
         const backendContacts = await UserService.getAllUsers();
+        setFrequentContacts(backendContacts);
 
         if (!Capacitor.isNativePlatform()) {
-          // Browser: Show all users from Backend
-          console.log("filteredContacts", backendContacts);
-          setFilteredContacts(backendContacts);
+          // Web: Set allContacts same as frequentContacts (backend users)
+          setAllContacts(backendContacts);
           return;
         }
 
-        // Mobile: Use Capacitor to fetch device contacts
+        // Step 2: Check permission to access device contacts on mobile
         const permissionStatus = await Contacts.checkPermissions();
         if (permissionStatus.contacts !== "granted") {
           const requestStatus = await Contacts.requestPermissions();
@@ -42,36 +40,27 @@ export const useFilteredContacts = () => {
           console.log("Permission requestStatus: ", requestStatus);
           if (requestStatus.contacts !== "granted") {
             setError("Contacts permission denied by user.");
+            setAllContacts([]); // Ensure allContacts is empty if permission is denied
             return;
           }
         }
 
-        const nativeContacts = await Contacts.getContacts({ projection: { phones: true } });
-        const phoneNumbers = nativeContacts.contacts
-          .filter((contact: any) => contact.phoneNumbers && contact.phoneNumbers.length)
-          .map((contact: any) => contact.phoneNumbers[0].number);
+        // Step 3: Fetch all contacts from the mobile device (including avatars)
+        const nativeContacts = await Contacts.getContacts({
+          projection: { phones: true, image: true }, // Enable fetching contact images
+        });
 
-        if (!phoneNumbers.length) return;
-
-        const registeredUserPhones = backendContacts.map((user: any) => user.phoneNumber);
-
-        // Filter native contacts to find those whose phone numbers match the BE registered users' phone numbers
-        // as we want to show only the users from native contacts not from backend, but filtered
-        const matchedContacts = nativeContacts.contacts.filter(
-          (contact) => contact.phones && contact.phones[0] && registeredUserPhones.includes(contact.phones[0].number),
+        const allContactsUserPayload: Partial<UserPayload>[] = nativeContacts.contacts.map(
+          (contact: ContactPayload) => ({
+            id: undefined,
+            name: contact.name?.display || undefined,
+            phone: contact.phones?.[0]?.number || undefined,
+            // avatar: contact.image?.[0]?.path || null, // Retrieve the avatar path if available
+            // status: MemberStatus.Pending, // Default status for mobile contacts,
+          }),
         );
 
-        const matchedContactsUserPayload: UserPayload[] = matchedContacts.map(
-          (contact: ContactPayload) =>
-            ({
-              id: contact.contactId,
-              name: contact.name?.display || undefined,
-              phone: contact.phones?.[0]?.number,
-              status: "PENDING",
-            }) as UserPayload,
-        );
-
-        setFilteredContacts(matchedContactsUserPayload);
+        setAllContacts(allContactsUserPayload as UserPayload[]);
       } catch (err) {
         console.error("Failed to fetch contacts: ", err);
         setError("Failed to fetch contacts");
@@ -81,5 +70,5 @@ export const useFilteredContacts = () => {
     fetchContacts();
   }, []);
 
-  return { filteredContacts, error };
+  return { frequentContacts, allContacts, error };
 };

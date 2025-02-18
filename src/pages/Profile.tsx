@@ -1,7 +1,7 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import "./Payments.scss";
 import React from "react";
 import LogoutButton from "../components/logout/LogoutButton";
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 
 const Profile: React.FC = () => {
   return (

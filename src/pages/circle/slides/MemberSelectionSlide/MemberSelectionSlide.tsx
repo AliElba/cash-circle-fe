@@ -13,7 +13,7 @@ import {
   IonSegmentButton,
   IonText,
 } from "@ionic/react";
-import { closeOutline } from "ionicons/icons";
+import { closeOutline, searchOutline } from "ionicons/icons";
 import "./MemberSelectionSlide.scss";
 import { useFilteredContacts } from "../../../../app/hooks/useContacts";
 import { CircleSlideProps } from "../CircleDetailsSlide/CircleDetailsSlide";
@@ -22,196 +22,174 @@ import { getNameInitials } from "../../../../app/helpers/circle-helper";
 import { useEffect, useState } from "react";
 
 enum MemberSelectionMode {
-  Contacts = "contacts",
-  Phone = "phone",
+  Frequent = "frequent",
+  AllContacts = "all",
 }
 
 const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
-  const { filteredContacts, error } = useFilteredContacts();
-  const [selectedTab, setSelectedTab] = useState<MemberSelectionMode>(MemberSelectionMode.Contacts);
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const [phone, setPhone] = useState("");
+  const { frequentContacts, allContacts, error } = useFilteredContacts();
+  const [selectedTab, setSelectedTab] = useState<MemberSelectionMode>(MemberSelectionMode.Frequent);
+  const [selectedMembers, setSelectedMembers] = useState<CircleMemberPayload[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const maxMembers = form.duration; // Duration determines the max members
-  const isMaxReached = form.members.length >= maxMembers;
-  const ownerId = form.ownerId; // Owner ID (Current user ID)
+  const maxMembers = form.duration; // Max members based on duration
+  const isMaxReached = selectedMembers.length >= maxMembers;
+  const ownerId = form.ownerId; // Current user ID
 
   let ownerDetails: UserPayload | undefined;
 
-  // 🛑 Exclude the current user from the contact list
-  const availableContacts = filteredContacts.filter((contact) => contact.id !== ownerId);
-
-  // useEffect(() => {
-  //   if (!filteredContacts.length) return; // Wait until contacts are loaded
-  //
-  //   ownerDetails = filteredContacts.find((contact) => contact.id === ownerId);
-  //   console.log("Owner Details:", ownerDetails);
-  // }, [filteredContacts]); // 🔥 Add dependencies
-
-  // ✅ Ensure the current user is always in the members list
+  // Ensure the owner is always in the members list
   useEffect(() => {
-    if (!filteredContacts.length) return; // Wait until contacts are loaded
+    if (!frequentContacts.length) return;
 
-    ownerDetails = filteredContacts.find((contact) => contact.id === ownerId);
-    console.log("Owner Details:", ownerDetails);
-
-    if (ownerDetails && !form.members.some((member) => member.userId === ownerId)) {
-      updateForm("members", [
-        {
-          userId: ownerId,
-          user: {
-            name: ownerDetails.name,
-            phone: ownerDetails.phone,
-          },
-          status: MemberStatus.Confirmed,
-        } as Partial<CircleMemberPayload>,
-        ...form.members,
-      ]);
-    }
-  }, [ownerId, updateForm]); // 🔥 Add dependencies
-
-  // Function to select/deselect a contact
-  const toggleSelection = (contact: UserPayload) => {
-    if (isMaxReached) return; // Prevent adding more members if limit reached
-
-    const isSelected = selectedMembers.includes(contact.phone);
-
-    let updatedSelection, updatedMembers: any[];
-
-    if (isSelected) {
-      // Remove from selected members
-      updatedSelection = selectedMembers.filter((phone) => phone !== contact.phone);
-      updatedMembers = form.members.filter((member) => member.user.phone !== contact.phone);
-    } else {
-      // Add new member
-      updatedSelection = [...selectedMembers, contact.phone];
-      updatedMembers = [
-        ...form.members,
-        {
-          user: {
-            name: contact.name,
-            phone: contact.phone,
-          },
-          userId: contact.id,
-          status: MemberStatus.Pending,
+    ownerDetails = frequentContacts.find((contact) => contact.id === ownerId);
+    if (ownerDetails && !selectedMembers.some((member) => member.userId === ownerId)) {
+      const ownerMember: CircleMemberPayload = {
+        userId: ownerDetails.id,
+        user: {
+          name: ownerDetails.name,
+          phone: ownerDetails.phone,
         },
-      ];
+        status: MemberStatus.Confirmed,
+      } as CircleMemberPayload;
+
+      const updatedMembers = [ownerMember, ...selectedMembers];
+      setSelectedMembers(updatedMembers);
+      updateForm("members", updatedMembers);
+    }
+  }, [ownerId, frequentContacts]);
+
+  // Apply search only to "All Contacts"
+  const filteredAllContacts = allContacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  // Function to map UserPayload to CircleMemberPayload
+  const mapToCircleMember = (contact: UserPayload): CircleMemberPayload => ({
+    userId: contact.id, // If the contact is not a registered user, this will be undefined
+    user: {
+      name: contact.name,
+      phone: contact.phone,
+    },
+    status: MemberStatus.Pending,
+  });
+
+  // Function to select/unselect a contact
+  const toggleSelection = (contact: UserPayload) => {
+    const isSelected = selectedMembers.some((member) => member.user.phone === contact.phone);
+
+    let updatedMembers: CircleMemberPayload[];
+    if (isSelected) {
+      updatedMembers = selectedMembers.filter((member) => member.user.phone !== contact.phone);
+    } else {
+      if (isMaxReached) return; // Prevent adding more members if limit is reached
+      updatedMembers = [...selectedMembers, mapToCircleMember(contact)];
     }
 
-    // Update selected members & form
-    setSelectedMembers(updatedSelection);
+    // Update selected members
+    setSelectedMembers(updatedMembers);
     updateForm("members", updatedMembers);
-  };
-
-  // Function to add an unregistered member by phone
-  const addUnregisteredMemberByPhone = () => {
-    if (isMaxReached || !phone || form.members.some((member: any) => member.phone === phone)) return;
-
-    updateForm("members", [
-      ...form.members,
-      {
-        name: "Unregistered Member",
-        phone: phone,
-        status: MemberStatus.Pending,
-      },
-    ]);
-    setPhone("");
-  };
-
-  // Function to remove a member (excluding the owner)
-  const removeMember = (phone: string) => {
-    updateForm(
-      "members",
-      form.members.filter((member: any) => member.phone !== phone && member.userId !== ownerId),
-    );
   };
 
   return (
     <div className="member-selection-slide swiper__slide-container">
       <div className="swiper__slide-content">
         <h2>Add Members</h2>
-        <p className="text-start fs-6 ion-color-medium">
-          Select from your contacts or enter a phone number for new members.
-        </p>
+        <p className="text-start fs-6 ion-color-medium">Select members from your frequent contacts or all contacts.</p>
 
-        {/* Tabs: Contacts or Manual Phone Entry */}
+        {/* Tabs: Frequent Contacts or All Contacts */}
         <IonSegment value={selectedTab} onIonChange={(e) => setSelectedTab(e.detail.value as MemberSelectionMode)}>
-          <IonSegmentButton value={MemberSelectionMode.Contacts}>Contacts</IonSegmentButton>
-          <IonSegmentButton value={MemberSelectionMode.Phone}>Add by Phone</IonSegmentButton>
+          <IonSegmentButton value={MemberSelectionMode.Frequent}>Frequent Contacts</IonSegmentButton>
+          <IonSegmentButton value={MemberSelectionMode.AllContacts}>All Contacts</IonSegmentButton>
         </IonSegment>
 
+        {/* Show Search Bar only when in All Contacts Tab */}
+        {selectedTab === MemberSelectionMode.AllContacts && (
+          <IonItem className="search-bar">
+            <IonIcon icon={searchOutline} slot="start" />
+            <IonInput
+              placeholder="Search contacts..."
+              value={searchQuery}
+              onIonInput={(e) => setSearchQuery(e.detail.value!)} // Runs immediately on change
+            />
+          </IonItem>
+        )}
+
         {/* Contacts List */}
-        {selectedTab === MemberSelectionMode.Contacts && (
-          <div className="selection-card__container">
-            {error ? (
-              <p className="error">{error}</p>
-            ) : (
-              <IonGrid>
-                <IonRow>
-                  {availableContacts.map((contact, index) => (
-                    <IonCol key={index} size="3" className={`contact-item ${isMaxReached ? "disabled" : ""}`}>
-                      <div
-                        className={`contact-avatar ${selectedMembers.includes(contact.phone) ? "selected" : ""}`}
-                        onClick={() => toggleSelection(contact)}>
-                        <IonAvatar className="contact-avatar__content">
-                          <div className="contact-initials">{getNameInitials(contact.name)}</div>
-                        </IonAvatar>
-                      </div>
-                      <IonLabel className="contact-name">{contact.name}</IonLabel>
-                      <IonText className="contact-phone">{contact.phone}</IonText>
-                    </IonCol>
-                  ))}
-                </IonRow>
-              </IonGrid>
-            )}
-          </div>
-        )}
+        <div className="scrollable-contacts-list">
+          {error ? (
+            <p className="error">{error}</p>
+          ) : selectedTab === MemberSelectionMode.Frequent ? (
+            // Frequent Contacts Grid View
+            <IonGrid>
+              <IonRow>
+                {frequentContacts.map((contact, index) => (
+                  <IonCol key={index} size="3" className="contact-item">
+                    <div
+                      className={`contact-avatar ${selectedMembers.some((m) => m.user.phone === contact.phone) ? "selected" : ""}`}
+                      onClick={() => toggleSelection(contact)}>
+                      <IonAvatar className="contact-avatar__content">
+                        <div className="contact-initials">{getNameInitials(contact.name)}</div>
+                      </IonAvatar>
+                    </div>
+                    <IonLabel className="contact-name">{contact.name}</IonLabel>
+                    <IonText className="contact-phone">{contact.phone}</IonText>
+                  </IonCol>
+                ))}
+              </IonRow>
+            </IonGrid>
+          ) : (
+            // All Contacts List View (Scrollable, Max 4 contacts at a time)
+            <IonList>
+              {filteredAllContacts.slice(0, 4).map((contact, index) => (
+                <IonItem key={index} button onClick={() => toggleSelection(contact)}>
+                  <IonAvatar slot="start">
+                    <div className="contact-initials">{getNameInitials(contact.name)}</div>
+                  </IonAvatar>
+                  <IonLabel>
+                    <h3>{contact.name}</h3>
+                    <p>{contact.phone}</p>
+                  </IonLabel>
+                  {selectedMembers.some((m) => m.user.phone === contact.phone) && <IonIcon icon={closeOutline} />}
+                </IonItem>
+              ))}
+            </IonList>
+          )}
+        </div>
 
-        {/* Manual Phone Input */}
-        {selectedTab === MemberSelectionMode.Phone && (
-          <div className="phone-input-container">
-            <IonInput placeholder="Enter phone" value={phone} onIonChange={(e) => setPhone(e.detail.value!)} />
-            <IonButton onClick={addUnregisteredMemberByPhone} fill="outline" disabled={isMaxReached}>
-              Add
-            </IonButton>
-          </div>
-        )}
-
-        {/* Added Members List (Vertical) */}
-        <h4 className="mt-3">Added Members</h4>
-        <IonList className="added-members-list">
-          {form.members.map((member, index: number) => (
-            <IonItem key={index}>
-              <IonAvatar slot="start">
-                <div className="contact-initials">{getNameInitials(member.user.name)}</div>
-              </IonAvatar>
-              <IonLabel>
-                <h3>{member.user.name}</h3>
-                <p>{member.user.phone}</p>
-              </IonLabel>
-              {member.userId !== form.ownerId && (
-                <IonButton fill="clear" color="danger" onClick={() => removeMember(member.user.phone)}>
+        {/* Selected Members Section (Title Fixed, List Scrollable) */}
+        {selectedMembers.length > 0 && (
+          <div className="selected-members-container">
+            <h4 className="selected-members-title">Selected Members</h4>
+            <IonList className="scrollable-selected-members">
+              {selectedMembers.map((member, index) => (
+                <IonItem key={index} button onClick={() => toggleSelection(member.user)}>
+                  <IonAvatar slot="start">
+                    <div className="contact-initials">{getNameInitials(member.user.name)}</div>
+                  </IonAvatar>
+                  <IonLabel>
+                    <h3>{member.user.name}</h3>
+                    <p>{member.user.phone}</p>
+                  </IonLabel>
                   <IonIcon icon={closeOutline} />
-                </IonButton>
-              )}
-            </IonItem>
-          ))}
-        </IonList>
+                </IonItem>
+              ))}
+            </IonList>
+          </div>
+        )}
       </div>
 
-      {/* Footer with summary & navigation */}
+      {/* Footer */}
       <div className="swiper__footer slot-footer">
-        {/* Member Count Indicator */}
         <div className="footer-counter">
           <IonText color="medium">
-            Members: <strong>{form.members.length}</strong> / <strong>{maxMembers}</strong>
+            Members: <strong>{selectedMembers.length}</strong> / <strong>{maxMembers}</strong>
           </IonText>
           <IonText color="medium">
-            Remaining: <strong>{maxMembers - form.members.length}</strong>
+            Remaining: <strong>{maxMembers - selectedMembers.length}</strong>
           </IonText>
         </div>
 
-        {/* Next Button */}
         <IonButton expand="block" onClick={() => swiper.slideNext()}>
           Next: Review Circle Details
         </IonButton>

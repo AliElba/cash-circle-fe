@@ -15,8 +15,8 @@
     justify-content: center;
     align-items: center;
 
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: var(--ion-color-light);
     transition: transform 0.2s ease-in-out;
@@ -89,4 +89,33 @@
   justify-content: space-between;
   font-size: 14px;
   font-weight: bold;
+}
+
+.scrollable-contacts-list {
+  max-height: 175px; /* Show only 4 contacts at a time */
+  overflow-y: auto;
+}
+
+.search-bar {
+  margin: 10px 0;
+}
+
+.selected-members-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--ion-background-color);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.selected-members-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px; /* Keeps space between title and list */
+}
+
+.scrollable-selected-members {
+  max-height: 180px; /* Limit height */
+  overflow-y: auto; /* Make only list scrollable */
+  padding-right: 8px; /* Space for scrollbar */
 }
