@@ -1,10 +1,17 @@
-import { IonContent, IonPage } from "@ionic/react";
+import { IonContent, IonPage, useIonToast } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
 import "./Circle.scss";
 import { CircleService } from "../../services/circle.service";
 import useCurrentUser from "../../app/hooks/useCurrentUser";
-import { type CircleMemberPayload, CircleStatus, CreateCircleDto, MemberStatus } from "../../app/generated/api";
+import {
+  type CircleMemberPayload,
+  CircleStatus,
+  CreateCircleDto,
+  MemberDto,
+  MemberStatus,
+  UpdateCircleDto,
+} from "../../app/generated/api";
 import { RouteConstants } from "../../constants/constants";
 import CircleDetailsSlide from "./slides/CircleDetailsSlide/CircleDetailsSlide";
 import SlotSelectionSlide from "./slides/SlotSelectionSlide/SlotSelectionSlide";
@@ -13,12 +20,14 @@ import SlideIndicator from "./slides/SlideIndicator/SlideIndicator";
 import MemberSelectionSlide from "./slides/MemberSelectionSlide/MemberSelectionSlide";
 import ReviewCircleSlide from "./slides/ReviewCircleSlide/ReviewCircleSlide";
 import { useEffect, useState } from "react";
+import { calcAdminFees, getUserPayoutDate } from "../../app/helpers/circle-helper";
 
 export type CircleForm = {
+  id?: string;
   name: string;
   amount: number;
   duration: number;
-  slotNumber: number;
+  slotNumber?: number;
   startDate: string;
   endDate: string;
   status: CircleStatus;
@@ -36,35 +45,34 @@ const calculateEndDate = (startDate: string, duration: number) => {
 const DEFAULT_DURATION = 6;
 const MIN_AMOUNT = 1000;
 const TODAY_FORMATED = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
-export const SLIDE_TITLES = ["Circle Details", "Payout Month", "Add Members", "Review & Confirm"];
+export const SLIDE_TITLES = ["Circle Details", "Payout Month", "Members Selection", "Review & Confirm"];
 
 const Circle: React.FC = () => {
   const currentUser = useCurrentUser();
   const currentUserId = currentUser?.id;
   const history = useHistory();
+  const [present] = useIonToast();
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const { circleId } = useParams<{ circleId?: string }>(); // Detect if editing
+  const { circleId } = useParams<{ circleId?: string }>(); // Detect if edit mode and id exists
+  const [activeIndex, setActiveIndex] = useState(0); // zero index steps
   const [swiper, setSwiper] = useState<any>(null);
   const [form, setForm] = useState<CircleForm>({
+    // Circle details
+    id: circleId,
     name: `Circle-${Date.now()}`,
     amount: MIN_AMOUNT,
     duration: DEFAULT_DURATION,
-    slotNumber: 1,
     startDate: TODAY_FORMATED,
     endDate: calculateEndDate(TODAY_FORMATED, DEFAULT_DURATION),
-    status: CircleStatus.Pending as CircleStatus,
-    ownerId: currentUserId || "", // Default to current user
-    members: [] as CircleMemberPayload[],
-  });
+    status: CircleStatus.Pending,
 
-  useEffect(() => {
-    if (!currentUserId) {
-      console.log("Waiting for user ID...");
-    } else {
-      console.log("User ID set:", currentUserId);
-    }
-  }, [currentUserId]);
+    // member details
+    slotNumber: 1,
+
+    // relations
+    members: [] as CircleMemberPayload[],
+    ownerId: currentUserId || "", // Default to current user
+  });
 
   // Fetch circle data if editing and url has circleId
   useEffect(() => {
@@ -77,16 +85,17 @@ const Circle: React.FC = () => {
             return;
           }
           setForm({
+            id: data.id,
             name: data.name,
             startDate: data.startDate,
             endDate: data.endDate,
             status: data.status,
-            ownerId: currentUserId as string,
-
             amount: data.amount,
             duration: data.duration,
-            slotNumber: data.members[0].slotNumber,
-            members: (data.members || []) as CircleMemberPayload[],
+            // Slot number of the current user
+            slotNumber: data.members.find((member) => member.userId === currentUserId)?.slotNumber || undefined,
+            members: data.members || [],
+            ownerId: currentUserId || "",
           });
         } catch (error) {
           console.error("Error fetching circle:", error);
@@ -96,7 +105,7 @@ const Circle: React.FC = () => {
     }
   }, [circleId]);
 
-  const updateForm = (field: string, value: any) => {
+  const updateFormField = (field: string, value: any) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -107,8 +116,62 @@ const Circle: React.FC = () => {
     }
 
     try {
+      const currentMember = form.members.find((member) => member.userId === currentUserId)!;
+      const currentMemberDto: MemberDto = {
+        id: currentMember?.id,
+        userId: currentMember?.userId,
+        phone: currentMember.user.phone,
+        // Current user can change the slot number for himself, so also payout date will be updated
+        slotNumber: form.slotNumber!,
+        payoutDate: getUserPayoutDate(form.startDate, form.slotNumber!).toISOString(), // Format YYYY-MM-DD,
+
+        // Set the member status of the current user by default to Confirmed
+        status: MemberStatus.Confirmed,
+
+        // calculate the admin fees from the total circle amount
+        adminFees: calcAdminFees(form.amount),
+
+        paymentStatus: currentMember.paymentStatus,
+      };
+
       if (circleId) {
-        await CircleService.updateCircle(circleId, form as any);
+        const updateCircleDto: UpdateCircleDto = {
+          name: form.name,
+          amount: form.amount,
+          duration: form.duration,
+          startDate: form.startDate,
+          endDate: form.endDate,
+          members: form.members.map((member) => {
+            if (member.userId === currentUserId) {
+              return currentMemberDto;
+            }
+            return {
+              id: member?.id,
+              userId: member?.userId,
+              phone: member.user.phone,
+              slotNumber: member.slotNumber,
+              payoutDate: member.payoutDate,
+              status: member.status,
+              paymentStatus: member.paymentStatus,
+              adminFees: calcAdminFees(form.amount),
+            };
+          }),
+        };
+
+        await CircleService.updateCircle(circleId, updateCircleDto);
+
+        // Show success toast
+        await present({
+          message: "Circle updated successfully!",
+          duration: 2000,
+          position: "top",
+          color: "success",
+        });
+
+        // ✅ Navigate to "My Circles" after a short delay
+        setTimeout(() => {
+          history.push(RouteConstants.circleRelative, "root");
+        }, 2000);
       } else {
         const createCircleDto: CreateCircleDto = {
           name: form.name,
@@ -118,17 +181,23 @@ const Circle: React.FC = () => {
           endDate: form.endDate,
           status: form.status,
           ownerId: form.ownerId,
-          members: form.members.map((member) => ({
-            id: member?.id,
-            userId: member?.userId,
-            phone: member.user.phone,
-            slotNumber: member.slotNumber,
-            status: member.status as MemberStatus,
-            paymentStatus: member.paymentStatus,
-            payoutDate: member.payoutDate,
-            adminFees: member.adminFees,
-          })),
+          members: form.members.map((member) => {
+            if (member.userId === currentUserId) {
+              return currentMemberDto;
+            }
+            return {
+              id: member?.id,
+              userId: member?.userId,
+              phone: member.user.phone,
+              slotNumber: member.slotNumber,
+              payoutDate: member.payoutDate,
+              status: member.status,
+              paymentStatus: member.paymentStatus,
+              adminFees: calcAdminFees(form.amount),
+            };
+          }),
         };
+
         const createdCircle = await CircleService.createCircle(createCircleDto);
 
         history.push({
@@ -154,16 +223,28 @@ const Circle: React.FC = () => {
           slidesPerView={1}
           allowTouchMove={false}>
           <SwiperSlide>
-            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
-            <CircleDetailsSlide form={form} updateForm={updateForm} swiper={swiper} />
+            <SlideIndicator
+              swiper={swiper}
+              activeIndex={activeIndex}
+              slideTitles={SLIDE_TITLES}
+              disabledSteps={
+                !form.amount || form.amount < 1000 || form.amount > 10000 || !form.startDate ? [1, 2, 3] : []
+              }
+            />
+            <CircleDetailsSlide form={form} updateForm={updateFormField} swiper={swiper} />
+          </SwiperSlide>
+          <SwiperSlide>
+            <SlideIndicator
+              swiper={swiper}
+              activeIndex={activeIndex}
+              slideTitles={SLIDE_TITLES}
+              disabledSteps={!form.slotNumber ? [2, 3] : []}
+            />
+            <SlotSelectionSlide form={form} updateForm={updateFormField} swiper={swiper} />
           </SwiperSlide>
           <SwiperSlide>
             <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
-            <SlotSelectionSlide form={form} updateForm={updateForm} swiper={swiper} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideIndicator swiper={swiper} activeIndex={activeIndex} slideTitles={SLIDE_TITLES} />
-            <MemberSelectionSlide form={form} updateForm={updateForm} swiper={swiper} />
+            <MemberSelectionSlide form={form} updateForm={updateFormField} swiper={swiper} />
           </SwiperSlide>
           <SwiperSlide>
             <ReviewCircleSlide form={form} swiper={swiper} handleSubmit={handleSubmit} />

@@ -57,7 +57,7 @@ const Home: React.FC = () => {
 
       <IonContent>
         <div className="header">
-          <IonText className="ion-text-subtitle">Active Circles</IonText>
+          <IonText className="ion-text-subtitle">My Circles</IonText>
 
           <IonButton
             fill="clear"

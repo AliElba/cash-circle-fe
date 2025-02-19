@@ -33,7 +33,7 @@ const AppRoutes: React.FC = () => {
       <Route path={RouteConstants.circleRelative} component={MyCircles} exact />
 
       <Route path={RouteConstants.circleCreateRelative} component={Circle} exact />
-      <Route path={`${RouteConstants.circleRelative}/edit/:circleId`} component={Circle} exact />
+      <Route path={`${RouteConstants.circleEditRelative}/:circleId`} component={Circle} exact />
       <Route path={RouteConstants.circleCongratulationsRelative} component={CongratulationsPage} exact />
 
       {/* Protected Routes */}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IonButton, IonChip, IonSegment, IonSegmentButton, IonText } from "@ionic/react";
 import "./SlotSelectionSlide.scss";
 import { CircleSlideProps } from "../CircleDetailsSlide/CircleDetailsSlide";
+import { calcAdminFees } from "../../../../app/helpers/circle-helper";
 
 enum SlotCategory {
   FIRST = "First Slots",
@@ -24,7 +25,7 @@ const generateAvailableSlots = (startDate: string, duration: number, totalAmount
       id: i + 1,
       month: slotDate.toLocaleString("default", { month: "short" }),
       year: slotDate.getFullYear(),
-      fees: Math.round((totalAmount / duration) * 0.08), // Example: 8% fee calculation
+      fees: calcAdminFees(totalAmount),
     });
   }
 
@@ -44,10 +45,30 @@ const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
     [SlotCategory.LAST]: [],
   });
 
+  /**
+   * Generate available slots/Categories based on the form data.
+   * It recalculates the slots whenever the startDate, duration, or amount changes.
+   */
   useEffect(() => {
     const slotsByCategory = generateAvailableSlots(form.startDate, form.duration, form.amount);
     setAvailableSlots(slotsByCategory);
   }, [form.startDate, form.duration, form.amount]);
+
+  /**
+   * Automatically select the correct category if `form.slotNumber` exists
+   */
+  useEffect(() => {
+    if (!form.slotNumber) return;
+
+    // Determine which category contains the selected slotNumber
+    const category = Object.entries(availableSlots).find(([_, slots]) =>
+      slots.some((slot) => slot.id === form.slotNumber),
+    );
+
+    if (category) {
+      setSelectedCategory(category[0] as SlotCategory);
+    }
+  }, [form.slotNumber, availableSlots]);
 
   return (
     <div className="slot-selection-slide swiper__slide-container">

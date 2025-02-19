@@ -63,7 +63,7 @@ const ReviewCircleSlide: React.FC<ReviewCircleSlideProps> = ({ form, swiper, han
                 <strong>Slot Number:</strong> {form.slotNumber}
               </p>
               <p>
-                <strong>Payout Date:</strong> {getUserTurnMonth(form.startDate, form.slotNumber)}
+                <strong>Payout Date:</strong> {getUserTurnMonth(form.startDate, form.slotNumber!)}
               </p>
             </IonText>
           </IonCardContent>

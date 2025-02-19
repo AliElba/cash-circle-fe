@@ -1,8 +1,15 @@
 export const getUserTurnMonth = (startDate: string, userSlot: number): string => {
   if (!userSlot) return "Your turn (Slot not assigned)";
 
-  const turnDate = new Date(new Date(startDate).setMonth(new Date(startDate).getMonth() + (userSlot - 1)));
+  const turnDate = getUserPayoutDate(startDate, userSlot);
   return getMonthYearString(turnDate);
+};
+
+export const getUserPayoutDate = (startDate: string, userSlot: number) => {
+  console.log("startDate", startDate);
+  console.log("userSlot", userSlot);
+  console.log("calc", new Date(new Date(startDate).setMonth(new Date(startDate).getMonth() + (userSlot - 1))));
+  return new Date(new Date(startDate).setMonth(new Date(startDate).getMonth() + (userSlot - 1)));
 };
 
 export const getMonthYearString = (date: Date): string =>

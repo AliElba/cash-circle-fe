@@ -36,35 +36,33 @@ const mapUserToCircleMember = (contact: UserPayload): CircleMemberPayload =>
 const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
   const { frequentContacts, allContacts, error } = useFilteredContacts();
   const [selectedTab, setSelectedTab] = useState<MemberSelectionMode>(MemberSelectionMode.Frequent);
-  const [selectedMembers, setSelectedMembers] = useState<CircleMemberPayload[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<CircleMemberPayload[]>(form.members || []); // ✅ Initialize from form.members
   const [searchQuery, setSearchQuery] = useState("");
 
   const maxMembers = form.duration; // Max members based on duration
   const isMaxReached = selectedMembers.length >= maxMembers;
-  const ownerId = form.ownerId; // Current user ID
 
-  let ownerDetails: UserPayload | undefined;
-
-  // Ensure the owner is always in the members list
   useEffect(() => {
-    if (!frequentContacts.length) return;
-
-    ownerDetails = frequentContacts.find((contact) => contact.id === ownerId);
-    if (ownerDetails && !selectedMembers.some((member) => member.userId === ownerId)) {
-      const ownerMember: CircleMemberPayload = {
-        userId: ownerDetails.id,
-        user: {
-          name: ownerDetails.name,
-          phone: ownerDetails.phone,
-        },
-        status: MemberStatus.Confirmed,
-      } as CircleMemberPayload;
-
-      const updatedMembers = [ownerMember, ...selectedMembers];
-      setSelectedMembers(updatedMembers);
-      updateForm("members", updatedMembers);
+    // ✅ If in edit mode (form.members has values), don't add owner again
+    if (form.members?.length > 0) {
+      setSelectedMembers(form.members);
+    } else {
+      // ✅ In create mode: Add owner automatically
+      const ownerDetails = frequentContacts.find((contact) => contact.id === form.ownerId);
+      if (ownerDetails && !selectedMembers.some((member) => member.userId === form.ownerId)) {
+        const ownerMember: CircleMemberPayload = {
+          userId: ownerDetails.id,
+          user: {
+            name: ownerDetails.name,
+            phone: ownerDetails.phone,
+          },
+          status: MemberStatus.Confirmed,
+        } as CircleMemberPayload;
+        setSelectedMembers([ownerMember, ...selectedMembers]);
+        updateForm("members", [ownerMember, ...selectedMembers]);
+      }
     }
-  }, [ownerId, frequentContacts]);
+  }, [form.members, frequentContacts, form.ownerId]);
 
   // Apply search only to "All Contacts"
   const filteredAllContacts = allContacts.filter((contact) =>
@@ -77,12 +75,10 @@ const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, sw
 
     let updatedMembers: CircleMemberPayload[];
     if (isSelected) {
-      // Remove contact from selected members, if he is already selected before
+      // Remove contact from selected members
       updatedMembers = selectedMembers.filter((member) => member.user.phone !== contact.phone);
     } else {
       if (isMaxReached) return; // Prevent adding more members if limit is reached
-
-      // Add contact to selected members, after mapping (mobile contact / user from BE) to CircleMemberPayload
       updatedMembers = [...selectedMembers, mapUserToCircleMember(contact)];
     }
 
@@ -94,7 +90,7 @@ const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, sw
   return (
     <div className="member-selection-slide swiper__slide-container">
       <div className="swiper__slide-content">
-        <h2>Add Members</h2>
+        <h2>Members Selection</h2>
         <p className="text-start fs-6 ion-color-medium">Select members from your frequent contacts or all contacts.</p>
 
         {/* Tabs: Frequent Contacts or All Contacts */}
@@ -120,7 +116,6 @@ const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, sw
           {error ? (
             <p className="error">{error}</p>
           ) : selectedTab === MemberSelectionMode.Frequent ? (
-            // Frequent Contacts Grid View
             <IonGrid>
               <IonRow>
                 {frequentContacts.map((contact, index) => (
@@ -139,7 +134,6 @@ const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, sw
               </IonRow>
             </IonGrid>
           ) : (
-            // All Contacts List View (Scrollable, Max 4 contacts at a time)
             <IonList>
               {filteredAllContacts.slice(0, 4).map((contact, index) => (
                 <IonItem key={index} button onClick={() => toggleSelection(contact)}>
@@ -157,7 +151,7 @@ const MemberSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, sw
           )}
         </div>
 
-        {/* Selected Members Section (Title Fixed, List Scrollable) */}
+        {/* Selected Members Section */}
         {selectedMembers.length > 0 && (
           <div className="selected-members-container">
             <h4 className="selected-members-title">Selected Members</h4>

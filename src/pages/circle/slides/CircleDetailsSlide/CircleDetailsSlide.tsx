@@ -15,9 +15,6 @@ export interface CircleSlideProps {
   swiper: any;
 }
 
-const MIN_START_DATE = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
-const MAX_START_DATE = new Date(new Date().setFullYear(new Date().getFullYear() + 2)).toISOString(); // max 2 years
-
 const CircleDetailsSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
   return (
     <div className="swiper__slide-container">
@@ -60,8 +57,6 @@ const CircleDetailsSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
             id="startDatePicker"
             presentation="month-year"
             value={form.startDate}
-            min={MIN_START_DATE}
-            max={MAX_START_DATE}
             onIonChange={(e) => {
               const selectedDate = e.detail.value! as string;
               const date = new Date(selectedDate);
@@ -93,6 +88,7 @@ const CircleDetailsSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
           </div>
         </div>
 
+        {/* End date is disabled as it should be auto calculated from the start date and the duration */}
         <IonItem lines="full">
           <IonLabel>End Date</IonLabel>
           <IonDatetimeButton datetime="endDatePicker" />

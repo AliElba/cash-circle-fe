@@ -16,6 +16,7 @@ import "./CircleCard.scss";
 import { CirclePayload } from "../../app/generated/api";
 import { formatAmount, getUserTurnMonth } from "../../app/helpers/circle-helper";
 import { useHistory } from "react-router";
+import { RouteConstants } from "../../constants/constants";
 
 interface CircleCardProps {
   circle: CirclePayload;
@@ -28,10 +29,6 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, userId }) => {
   // ✅ Find the logged-in user's membership info in this circle
   const circleMemberDetails = circle.members.find((member) => member.userId === userId);
   const userSlot = circleMemberDetails ? circleMemberDetails.slotNumber : null;
-
-  console.log("User id:", userId);
-  console.log("Circle Details:", circle);
-  console.log("Circle Member Details:", circleMemberDetails);
 
   const renderTimeline = () => {
     return Array.from({ length: circle.duration }).map((_, index) => (
@@ -48,8 +45,8 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, userId }) => {
     ));
   };
 
-  const handleCardClick = () => {
-    history.push(`/circle/${circle.id}`);
+  const handleDetailsClick = () => {
+    history.push(`${RouteConstants.circleEditRelative}/${circle.id}`);
   };
 
   return (
@@ -61,7 +58,7 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, userId }) => {
             <IonCardSubtitle>{formatAmount(circle.amount / circle.duration)} CHF Monthly</IonCardSubtitle>
           </IonCol>
           <IonCol size="5" className="ion-text-end">
-            <IonButton fill="clear" color="primary" size="small" onClick={handleCardClick}>
+            <IonButton fill="clear" color="primary" size="small" onClick={handleDetailsClick}>
               Details
               <IonIcon slot="end" icon={enterOutline} />
             </IonButton>

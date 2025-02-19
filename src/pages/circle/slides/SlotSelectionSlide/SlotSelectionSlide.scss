@@ -46,14 +46,13 @@
 .footer-summary {
   display: flex;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 8px 0;
 }
 
 .summary-item {
   display: flex;
   flex-direction: column;
   text-align: center;
-  flex: 1;
 }
 
 .summary-item:not(:last-child) {

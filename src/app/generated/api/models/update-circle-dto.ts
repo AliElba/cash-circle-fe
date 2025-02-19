@@ -29,17 +29,17 @@ export interface UpdateCircleDto {
    */
   name: string;
   /**
-   *
-   * @type {string}
-   * @memberof UpdateCircleDto
-   */
-  ownerId: string;
-  /**
    * Duration of the circle in Months
    * @type {number}
    * @memberof UpdateCircleDto
    */
   duration: number;
+  /**
+   * Total amount for the circle
+   * @type {number}
+   * @memberof UpdateCircleDto
+   */
+  amount: number;
   /**
    * Start date of the circle
    * @type {string}
@@ -53,23 +53,9 @@ export interface UpdateCircleDto {
    */
   endDate: string;
   /**
-   *
-   * @type {string}
-   * @memberof UpdateCircleDto
-   */
-  status: UpdateCircleDtoStatusEnum;
-  /**
    * Array of members to update
    * @type {Array<MemberDto>}
    * @memberof UpdateCircleDto
    */
   members: Array<MemberDto>;
 }
-
-export const UpdateCircleDtoStatusEnum = {
-  Pending: "PENDING",
-  Active: "ACTIVE",
-  Completed: "COMPLETED",
-} as const;
-
-export type UpdateCircleDtoStatusEnum = (typeof UpdateCircleDtoStatusEnum)[keyof typeof UpdateCircleDtoStatusEnum];
