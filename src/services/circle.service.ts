@@ -1,24 +1,18 @@
 import axios, { AxiosError } from "axios";
-import { CirclePayload, CirclesApi, CircleStatus, CreateCircleDto, UpdateCircleDto } from "../app/generated/api";
+import { CirclesApi, CircleStatus, CreateCircleDto, UpdateCircleDto } from "../app/generated/api";
+import { Preferences } from "@capacitor/preferences";
+import { StorageConstants } from "../constants/constants";
 
 const circleApi = new CirclesApi(undefined, "/api", axios);
 
 export const CircleService = {
   getUserCircles: async (userId: string, circleStatus: CircleStatus = CircleStatus.Active) => {
+    const { value: token } = await Preferences.get({ key: StorageConstants.token });
+    const requestOptions = { headers: { Authorization: `Bearer ${token}` } };
+
     try {
-      const response = await circleApi.findAll(); // Fetch all circles
-
-      const userCircles = response.data.filter((circle: CirclePayload) =>
-        circle.members.some((member) => member.userId === userId),
-      );
-
-      // Filter circles by status if provided
-      if (circleStatus) {
-        return userCircles.filter((circle: CirclePayload) => circle.status === circleStatus);
-      }
-
-      // Return all user circles if no status is provided
-      return userCircles;
+      const response = await circleApi.findAllUserCircles(circleStatus, requestOptions);
+      return response.data;
     } catch (error) {
       console.error("Failed to fetch user circles:", error);
       throw error;
@@ -51,6 +45,15 @@ export const CircleService = {
       return response.data;
     } catch (error) {
       console.error("Failed to update circle:", error);
+      throw error;
+    }
+  },
+
+  deleteCircle: async (id: string) => {
+    try {
+      await circleApi.remove(id);
+    } catch (error) {
+      console.error("Failed to delete circle:", error);
       throw error;
     }
   },

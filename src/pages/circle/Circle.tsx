@@ -1,4 +1,4 @@
-import { IonContent, IonPage, useIonToast } from "@ionic/react";
+import { IonContent, IonPage, useIonAlert, useIonToast } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useHistory, useParams } from "react-router";
 import "./Circle.scss";
@@ -52,6 +52,7 @@ const Circle: React.FC = () => {
   const currentUserId = currentUser?.id;
   const history = useHistory();
   const [present] = useIonToast();
+  const [presentAlert] = useIonAlert();
 
   const { circleId } = useParams<{ circleId?: string }>(); // Detect if edit mode and id exists
   const [activeIndex, setActiveIndex] = useState(0); // zero index steps
@@ -210,6 +211,72 @@ const Circle: React.FC = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!circleId) return; // Ensure we're in edit mode
+
+    if (form.ownerId !== currentUserId) {
+      await present({
+        message: "Delete circle only allowed for circle owner!",
+        duration: 2000,
+        position: "top",
+        color: "danger",
+      });
+      return;
+    }
+
+    await presentAlert({
+      header: "Delete Circle",
+      message: "Are you sure you want to delete this circle? This action cannot be undone.",
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+        },
+        {
+          text: "Delete",
+          role: "destructive",
+          handler: async () => {
+            try {
+              await CircleService.deleteCircle(circleId);
+
+              // Show success toast
+              await present({
+                message: "Circle deleted successfully!",
+                duration: 2000,
+                position: "top",
+                color: "success",
+              });
+
+              // Navigate to "My Circles" after a short delay
+              setTimeout(() => {
+                history.push(RouteConstants.circleRelative, "root");
+              });
+            } catch (error) {
+              await present({
+                message: "Failed to delete circle. Please try again.",
+                duration: 3000,
+                position: "top",
+                color: "danger",
+              });
+            }
+          },
+        },
+      ],
+    });
+  };
+
+  const getDisabledSteps = (form: CircleForm): number[] => {
+    const hasAmount = form.amount && form.amount >= 1000 && form.amount <= 10000;
+    const hasStartDate = !!form.startDate;
+    const hasSlotNumber = !!form.slotNumber;
+
+    if (!hasAmount || !hasStartDate) {
+      return [1, 2, 3];
+    }
+
+    return !hasSlotNumber ? [2, 3] : [];
+  };
+
   return (
     <IonPage>
       <PageHeader title={circleId ? "Edit Circle" : "Create Circle"} />
@@ -227,9 +294,7 @@ const Circle: React.FC = () => {
               swiper={swiper}
               activeIndex={activeIndex}
               slideTitles={SLIDE_TITLES}
-              disabledSteps={
-                !form.amount || form.amount < 1000 || form.amount > 10000 || !form.startDate ? [1, 2, 3] : []
-              }
+              disabledSteps={getDisabledSteps(form)}
             />
             <CircleDetailsSlide form={form} updateForm={updateFormField} swiper={swiper} />
           </SwiperSlide>
@@ -247,7 +312,7 @@ const Circle: React.FC = () => {
             <MemberSelectionSlide form={form} updateForm={updateFormField} swiper={swiper} />
           </SwiperSlide>
           <SwiperSlide>
-            <ReviewCircleSlide form={form} swiper={swiper} handleSubmit={handleSubmit} />
+            <ReviewCircleSlide form={form} swiper={swiper} handleSubmit={handleSubmit} handleDelete={handleDelete} />
           </SwiperSlide>
         </Swiper>
       </IonContent>

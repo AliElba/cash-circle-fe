@@ -141,6 +141,41 @@ export const CirclesApiAxiosParamCreator = function (configuration?: Configurati
     },
     /**
      *
+     * @param {FindAllUserCirclesStatusEnum} [status]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUserCircles: async (
+      status?: FindAllUserCirclesStatusEnum,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/circles/mine`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: "GET", ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (status !== undefined) {
+        localVarQueryParameter["status"] = status;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
      * @param {string} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -356,6 +391,28 @@ export const CirclesApiFp = function (configuration?: Configuration) {
     },
     /**
      *
+     * @param {FindAllUserCirclesStatusEnum} [status]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async findAllUserCircles(
+      status?: FindAllUserCirclesStatusEnum,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CirclePayload>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.findAllUserCircles(status, options);
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap["CirclesApi.findAllUserCircles"]?.[localVarOperationServerIndex]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
+    /**
+     *
      * @param {string} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -485,6 +542,18 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
     },
     /**
      *
+     * @param {FindAllUserCirclesStatusEnum} [status]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    findAllUserCircles(
+      status?: FindAllUserCirclesStatusEnum,
+      options?: RawAxiosRequestConfig,
+    ): AxiosPromise<Array<CirclePayload>> {
+      return localVarFp.findAllUserCircles(status, options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
      * @param {string} id
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -572,6 +641,19 @@ export class CirclesApi extends BaseAPI {
 
   /**
    *
+   * @param {FindAllUserCirclesStatusEnum} [status]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CirclesApi
+   */
+  public findAllUserCircles(status?: FindAllUserCirclesStatusEnum, options?: RawAxiosRequestConfig) {
+    return CirclesApiFp(this.configuration)
+      .findAllUserCircles(status, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
    * @param {string} id
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
@@ -624,3 +706,14 @@ export class CirclesApi extends BaseAPI {
       .then((request) => request(this.axios, this.basePath));
   }
 }
+
+/**
+ * @export
+ */
+export const FindAllUserCirclesStatusEnum = {
+  Pending: "PENDING",
+  Active: "ACTIVE",
+  Completed: "COMPLETED",
+} as const;
+export type FindAllUserCirclesStatusEnum =
+  (typeof FindAllUserCirclesStatusEnum)[keyof typeof FindAllUserCirclesStatusEnum];

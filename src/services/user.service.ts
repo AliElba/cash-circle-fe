@@ -17,12 +17,8 @@ export const UserService = {
 
   getCurrentUser: async (): Promise<UserPayload> => {
     const { value: token } = await Preferences.get({ key: StorageConstants.token });
-    const options = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await usersApi.getMe(options);
-    return response.data;
+    const options = { headers: { Authorization: `Bearer ${token}` } };
+
+    return (await usersApi.getMe(options)).data;
   },
 };

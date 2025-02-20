@@ -9,15 +9,22 @@ export interface ReviewCircleSlideProps {
   form: CircleForm;
   swiper: any;
   handleSubmit: () => Promise<void>;
+  handleDelete: () => Promise<void>;
 }
 
-const ReviewCircleSlide: React.FC<ReviewCircleSlideProps> = ({ form, swiper, handleSubmit }) => {
+const ReviewCircleSlide: React.FC<ReviewCircleSlideProps> = ({ form, swiper, handleSubmit, handleDelete }) => {
   return (
     <div className="review-circle-slide swiper__slide-container">
       <SlideIndicator swiper={swiper} activeIndex={4} slideTitles={SLIDE_TITLES} />
       {/* Scrollable Content */}
       <div className="swiper__slide-content">
         <CircleReview circle={form as CirclePayload} />
+
+        <div className="delete-circle ion-margin">
+          <IonButton color="danger" expand="block" fill="outline" onClick={handleDelete}>
+            Delete Circle
+          </IonButton>
+        </div>
       </div>
 
       {/* Footer */}

@@ -3,6 +3,7 @@ import { IonButton, IonChip, IonSegment, IonSegmentButton, IonText } from "@ioni
 import "./SlotSelectionSlide.scss";
 import { CircleSlideProps } from "../CircleDetailsSlide/CircleDetailsSlide";
 import { calcAdminFees } from "../../../../app/helpers/circle-helper";
+import useCurrentUser from "../../../../app/hooks/useCurrentUser";
 
 enum SlotCategory {
   FIRST = "First Slots",
@@ -38,6 +39,8 @@ const generateAvailableSlots = (startDate: string, duration: number, totalAmount
 };
 
 const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swiper }) => {
+  const currentUser = useCurrentUser();
+  const currentUserId = currentUser?.id;
   const [selectedCategory, setSelectedCategory] = useState<SlotCategory>(SlotCategory.FIRST);
   const [availableSlots, setAvailableSlots] = useState<Record<SlotCategory, any[]>>({
     [SlotCategory.FIRST]: [],
@@ -74,6 +77,20 @@ const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
     }
   }, [form.slotNumber, availableSlots]);
 
+  /**
+   * Handle slot selection, updating both `form.slotNumber` and the current user's `slotNumber`
+   */
+  const handleSlotSelection = (selectedSlotId: number) => {
+    updateForm("slotNumber", selectedSlotId);
+
+    // Update the current user's slot number in the members list
+    const updatedMembers = form.members.map((member) =>
+      member.userId === currentUserId ? { ...member, slotNumber: selectedSlotId } : member,
+    );
+
+    updateForm("members", updatedMembers);
+  };
+
   return (
     <div className="slot-selection-slide swiper__slide-container">
       <div className="swiper__slide-content">
@@ -97,7 +114,7 @@ const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
             <div
               key={slot.id}
               className={`selection-card ${form.slotNumber === slot.id ? "selected" : ""}`}
-              onClick={() => updateForm("slotNumber", slot.id)}>
+              onClick={() => handleSlotSelection(slot.id)}>
               <div>
                 <IonChip color="dark">{slot.id}st</IonChip>{" "}
               </div>
