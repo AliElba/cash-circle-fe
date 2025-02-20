@@ -61,12 +61,16 @@ const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
     if (!form.slotNumber) return;
 
     // Determine which category contains the selected slotNumber
-    const category = Object.entries(availableSlots).find(([_, slots]) =>
-      slots.some((slot) => slot.id === form.slotNumber),
-    );
+    let foundCategory: SlotCategory | null = null;
+    for (const [category, slots] of Object.entries(availableSlots)) {
+      if (slots.some((slot) => slot.id === form.slotNumber)) {
+        foundCategory = category as SlotCategory;
+        break;
+      }
+    }
 
-    if (category) {
-      setSelectedCategory(category[0] as SlotCategory);
+    if (foundCategory) {
+      setSelectedCategory(foundCategory);
     }
   }, [form.slotNumber, availableSlots]);
 
