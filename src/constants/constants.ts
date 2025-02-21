@@ -30,6 +30,7 @@ export class RouteConstants {
   static readonly circleCreateRelative = `/${RouteConstants.circle}/create`;
   static readonly circleEditRelative = `/${RouteConstants.circle}/edit`;
   static readonly circleCongratulationsRelative = `/${RouteConstants.circle}/congratulations`;
+  static readonly circleDetailsRelative = `/${RouteConstants.circle}/details`;
 
   static readonly wildcard = `**`;
 }

@@ -52,7 +52,7 @@ const CircleSwiper: React.FC<CircleSwiperProps> = ({ circleStatus }) => {
             (circle) =>
               currentUser && (
                 <SwiperSlide key={circle.id}>
-                  <CircleCard circle={circle} userId={currentUser.id} />
+                  <CircleCard circle={circle} currentUserId={currentUser.id} />
                 </SwiperSlide>
               ),
           )}

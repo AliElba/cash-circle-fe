@@ -20,23 +20,23 @@ import { RouteConstants } from "../../constants/constants";
 
 interface CircleCardProps {
   circle: CirclePayload;
-  userId: string; // ✅ Pass the logged-in user ID
+  currentUserId: string;
 }
 
-const CircleCard: React.FC<CircleCardProps> = ({ circle, userId }) => {
+const CircleCard: React.FC<CircleCardProps> = ({ circle, currentUserId }) => {
   const history = useHistory();
 
-  // ✅ Find the logged-in user's membership info in this circle
-  const circleMemberDetails = circle.members.find((member) => member.userId === userId);
-  const userSlot = circleMemberDetails ? circleMemberDetails.slotNumber : null;
+  // Find the current user's member in this circle members
+  const currentCircleMember = circle.members.find((member) => member.userId === currentUserId);
+  const currentCircleMemberSlot = currentCircleMember ? currentCircleMember.slotNumber : null;
 
   const renderTimeline = () => {
     return Array.from({ length: circle.duration }).map((_, index) => (
-      <div key={index} className={`timeline-box ${index + 1 === userSlot ? "active" : ""}`}>
-        {index + 1 === userSlot && (
+      <div key={index} className={`timeline-box ${index + 1 === currentCircleMemberSlot ? "active" : ""}`}>
+        {index + 1 === currentCircleMemberSlot && (
           <div className="timeline-indicator-container">
             <IonText className="text-secondary your-turn-text">
-              Your turn ({getUserTurnMonth(circle.startDate, userSlot)})
+              Your turn ({getUserTurnMonth(circle.startDate, currentCircleMemberSlot)})
             </IonText>
             <IonIcon icon={personCircle} size="medium" color="primary" />
           </div>
@@ -46,7 +46,11 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, userId }) => {
   };
 
   const handleDetailsClick = () => {
-    history.push(`${RouteConstants.circleEditRelative}/${circle.id}`);
+    if (currentUserId === circle.ownerId) {
+      history.push(`${RouteConstants.circleEditRelative}/${circle.id}`);
+    } else {
+      history.push(`${RouteConstants.circleDetailsRelative}/${circle.id}`);
+    }
   };
 
   return (
@@ -78,7 +82,7 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, userId }) => {
         </IonRow>
         <IonRow className="admin-fees">
           <IonCol size="12" className="ion-text-start">
-            <IonText>{circleMemberDetails?.adminFees} Admin Fees</IonText>
+            <IonText>{currentCircleMember?.adminFees} Admin Fees</IonText>
           </IonCol>
         </IonRow>
       </IonCardContent>

@@ -2,7 +2,7 @@ import { IonButton } from "@ionic/react";
 import "./ReviewCircleSlide.scss";
 import { CircleForm, SLIDE_TITLES } from "../../Circle";
 import SlideIndicator from "../SlideIndicator/SlideIndicator";
-import CircleReview from "../../circle-review/CIrcleReview";
+import CircleReview from "../../circle-review/CircleReview";
 import { CirclePayload } from "../../../../app/generated/api";
 
 export interface ReviewCircleSlideProps {

@@ -35,7 +35,8 @@ import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, operationServerMap, type Reques
 // @ts-ignore
 // @ts-ignore
 // @ts-ignore
-import type { CirclePayload, CreateCircleDto, MemberDto, UpdateCircleDto } from "../models";
+// @ts-ignore
+import type { CircleMemberPayload, CirclePayload, CreateCircleDto, MemberDto, UpdateCircleDto } from "../models";
 
 /**
  * CirclesApi - axios parameter creator
@@ -313,6 +314,49 @@ export const CirclesApiAxiosParamCreator = function (configuration?: Configurati
         options: localVarRequestOptions,
       };
     },
+    /**
+     *
+     * @param {string} memberId
+     * @param {MemberDto} memberDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateMember: async (
+      memberId: string,
+      memberDto: MemberDto,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'memberId' is not null or undefined
+      assertParamExists("updateMember", "memberId", memberId);
+      // verify required parameter 'memberDto' is not null or undefined
+      assertParamExists("updateMember", "memberDto", memberDto);
+      const localVarPath = `/circles/members/{memberId}`.replace(
+        `{${"memberId"}}`,
+        encodeURIComponent(String(memberId)),
+      );
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: "PUT", ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter["Content-Type"] = "application/json";
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(memberDto, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -503,6 +547,30 @@ export const CirclesApiFp = function (configuration?: Configuration) {
           configuration,
         )(axios, localVarOperationServerBasePath || basePath);
     },
+    /**
+     *
+     * @param {string} memberId
+     * @param {MemberDto} memberDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async updateMember(
+      memberId: string,
+      memberDto: MemberDto,
+      options?: RawAxiosRequestConfig,
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CircleMemberPayload>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.updateMember(memberId, memberDto, options);
+      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+      const localVarOperationServerBasePath =
+        operationServerMap["CirclesApi.updateMember"]?.[localVarOperationServerIndex]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, localVarOperationServerBasePath || basePath);
+    },
   };
 };
 
@@ -589,6 +657,20 @@ export const CirclesApiFactory = function (configuration?: Configuration, basePa
      */
     update(id: string, updateCircleDto: UpdateCircleDto, options?: RawAxiosRequestConfig): AxiosPromise<CirclePayload> {
       return localVarFp.update(id, updateCircleDto, options).then((request) => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} memberId
+     * @param {MemberDto} memberDto
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateMember(
+      memberId: string,
+      memberDto: MemberDto,
+      options?: RawAxiosRequestConfig,
+    ): AxiosPromise<CircleMemberPayload> {
+      return localVarFp.updateMember(memberId, memberDto, options).then((request) => request(axios, basePath));
     },
   };
 };
@@ -703,6 +785,20 @@ export class CirclesApi extends BaseAPI {
   public update(id: string, updateCircleDto: UpdateCircleDto, options?: RawAxiosRequestConfig) {
     return CirclesApiFp(this.configuration)
       .update(id, updateCircleDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} memberId
+   * @param {MemberDto} memberDto
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CirclesApi
+   */
+  public updateMember(memberId: string, memberDto: MemberDto, options?: RawAxiosRequestConfig) {
+    return CirclesApiFp(this.configuration)
+      .updateMember(memberId, memberDto, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }

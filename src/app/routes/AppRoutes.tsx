@@ -14,6 +14,7 @@ import Circle from "../../pages/circle/Circle";
 import MyCircles from "../../pages/my-circles/MyCircles";
 import CongratulationsPage from "../../pages/circle/congratulations-page/CongratulationsPage";
 import PrivateRoute from "./PrivateRoute";
+import CircleDetails from "../../pages/circle-details/CircleDetails";
 
 const AppRoutes: React.FC = () => {
   const isAuth = useIsAuth();
@@ -34,6 +35,7 @@ const AppRoutes: React.FC = () => {
       <Route path={RouteConstants.circleCreateRelative} component={Circle} exact />
       <Route path={`${RouteConstants.circleEditRelative}/:circleId`} component={Circle} exact />
       <Route path={RouteConstants.circleCongratulationsRelative} component={CongratulationsPage} exact />
+      <Route path={`${RouteConstants.circleDetailsRelative}/:circleId`} component={CircleDetails} exact />
 
       {/* Protected Routes */}
       <PrivateRoute path={RouteConstants.homeRelative} component={Home} exact={true} />

@@ -1,5 +1,5 @@
 import { IonAvatar, IonCard, IonCardContent, IonItem, IonLabel, IonList, IonText } from "@ionic/react";
-import "./CIrcleReview.scss";
+import "./CircleReview.scss";
 import {
   calcAdminFees,
   formatAmount,
@@ -9,12 +9,21 @@ import {
 } from "../../../app/helpers/circle-helper";
 import { CirclePayload, MemberStatus } from "../../../app/generated/api";
 import useCurrentUser from "../../../app/hooks/useCurrentUser";
+import React from "react";
 
 interface CircleReviewProps {
   circle: CirclePayload;
 }
 
 const CircleReview: React.FC<CircleReviewProps> = ({ circle }) => {
+  if (!circle) {
+    return (
+      <div className="circle-review-card">
+        <h2>Review Your Circle</h2>
+        <IonText>No circle found!</IonText>
+      </div>
+    );
+  }
   const currentUser = useCurrentUser();
   const currentCircleMember = circle.members.find((m) => m.userId === currentUser?.id)!;
 
@@ -46,7 +55,7 @@ const CircleReview: React.FC<CircleReviewProps> = ({ circle }) => {
               <strong>End Date:</strong> {getMonthYearString(new Date(circle.endDate))}
             </p>
             <div className="separator" />
-            <p>Admin Fees (10%): {calcAdminFees(circle.amount)} CHF</p>
+            <p className="admin-fees">Admin Fees (10%): {calcAdminFees(circle.amount)} CHF</p>
           </IonText>
         </IonCardContent>
       </IonCard>
@@ -57,10 +66,14 @@ const CircleReview: React.FC<CircleReviewProps> = ({ circle }) => {
           <h3 className="review-title">Payout Slot</h3>
           <IonText>
             <p>
-              <strong>Slot Number:</strong> {currentCircleMember?.slotNumber}
+              <strong>Slot Number:</strong> {currentCircleMember?.slotNumber || "--"}
             </p>
             <p>
-              <strong>Payout Date:</strong> {getUserTurnMonth(circle.startDate, currentCircleMember?.slotNumber!)}
+              <strong>Payout Date:</strong>
+              <span className={currentCircleMember?.slotNumber ? "" : "text-danger"}>
+                {"  "}
+                {getUserTurnMonth(circle.startDate, currentCircleMember?.slotNumber!)}
+              </span>
             </p>
           </IonText>
         </IonCardContent>
@@ -78,29 +91,34 @@ const CircleReview: React.FC<CircleReviewProps> = ({ circle }) => {
                 <IonLabel>No members added yet.</IonLabel>
               </IonItem>
             ) : (
-              circle.members.map((member, index: number) => (
-                <IonItem key={index}>
-                  <IonAvatar slot="start">
-                    <div className="contact-initials">{getNameInitials(member.user.name)}</div>
-                  </IonAvatar>
-                  <IonLabel>
-                    <h3>{member.user.name}</h3>
-                    <p>{member.user.phone || "Email Invitation Pending"}</p>
-                  </IonLabel>
-                  <IonText
-                    color={
-                      member.status === MemberStatus.Confirmed
-                        ? "success"
-                        : member.status === MemberStatus.Pending
-                          ? "warning"
-                          : "danger"
-                    }
-                    className={`ion-text-${member.status === MemberStatus.Confirmed ? "success" : member.status === MemberStatus.Pending ? "warning" : "danger"}`}
-                    style={{ fontSize: "0.7rem" }}>
-                    {member.status.toUpperCase()}
-                  </IonText>
-                </IonItem>
-              ))
+              circle.members
+                .sort((a, b) => (a.slotNumber || 100) - (b.slotNumber || 100))
+                .map((member, index: number) => (
+                  <IonItem key={index}>
+                    <IonAvatar slot="start">
+                      <div className="contact-initials">{getNameInitials(member.user.name)}</div>
+                    </IonAvatar>
+                    <IonLabel>
+                      <h3 className={member.userId === currentUser?.id ? "ion-text-bold" : ""}>{member.user.name}</h3>
+                      <p>{member.user.phone}</p>
+                    </IonLabel>
+                    <IonText
+                      color={
+                        member.status === MemberStatus.Confirmed
+                          ? "success"
+                          : member.status === MemberStatus.Pending
+                            ? "warning"
+                            : "danger"
+                      }
+                      className={`ion-text-${member.status === MemberStatus.Confirmed ? "success" : member.status === MemberStatus.Pending ? "warning" : "danger"}`}
+                      style={{ fontSize: "0.7rem" }}>
+                      {member.status.toUpperCase()}
+                      <div className="ion-text-center">
+                        {circle.ownerId === member.userId && <IonText className="owner-member_text">(owner)</IonText>}
+                      </div>
+                    </IonText>
+                  </IonItem>
+                ))
             )}
           </IonList>
         </IonCardContent>

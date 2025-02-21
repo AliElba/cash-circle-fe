@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { CirclesApi, CircleStatus, CreateCircleDto, UpdateCircleDto } from "../app/generated/api";
+import { CirclesApi, CircleStatus, CreateCircleDto, MemberDto, UpdateCircleDto } from "../app/generated/api";
 import { Preferences } from "@capacitor/preferences";
 import { StorageConstants } from "../constants/constants";
 
@@ -54,6 +54,16 @@ export const CircleService = {
       await circleApi.remove(id);
     } catch (error) {
       console.error("Failed to delete circle:", error);
+      throw error;
+    }
+  },
+
+  updateCircleMember: async (id: string, memberDto: Partial<MemberDto>) => {
+    try {
+      const response = await circleApi.updateMember(id, memberDto as MemberDto);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to update circle member:", error);
       throw error;
     }
   },
