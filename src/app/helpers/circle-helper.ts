@@ -18,7 +18,8 @@ export const getMonthYearString = (date: Date): string =>
     year: "numeric",
   });
 
-export const formatAmount = (amount: number, locale: string = "en-US"): string => amount.toLocaleString(locale);
+export const formatAmount = (amount: number, locale: string = "en-US"): string =>
+  amount.toLocaleString(locale, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
 export const calcAdminFees = (amount: number): number => Math.round(amount * 0.025);
 

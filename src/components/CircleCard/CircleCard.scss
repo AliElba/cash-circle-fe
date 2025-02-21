@@ -1,7 +1,14 @@
 .circle-card {
+  
   .circle-card__title {
     font-size: 1.25rem;
     text-align: left;
+    margin-bottom: 6px;
+  }
+
+  .circle-card__subtitle {
+    text-align: left;
+    line-height: 1rem;
   }
 
   .timeline {
@@ -13,10 +20,11 @@
       justify-content: space-between;
       align-items: center;
       position: relative; // To support positioning of indicators
-      margin-top: 16px;
+      margin-top: 8px;
 
       .timeline-box {
-        width: 20px;
+        width: 100%;
+        min-width: 20px;
         height: 8px;
         background-color: var(--ion-color-medium); // Neutral for inactive boxes
         border-radius: 4px;
@@ -67,5 +75,10 @@
     padding-top: 10px;
     border-top: 1px solid var(--ion-color-medium); // Subtle neutral border
     font-size: 0.8rem;
+  }
+
+  .owner-member_text {
+    color: var(--ion-color-medium);
+    font-size: 0.6rem;
   }
 }

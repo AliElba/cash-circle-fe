@@ -13,7 +13,7 @@ import {
 } from "@ionic/react";
 import { enterOutline, personCircle } from "ionicons/icons";
 import "./CircleCard.scss";
-import { CirclePayload } from "../../app/generated/api";
+import { CirclePayload, MemberStatus } from "../../app/generated/api";
 import { formatAmount, getUserTurnMonth } from "../../app/helpers/circle-helper";
 import { useHistory } from "react-router";
 import { RouteConstants } from "../../constants/constants";
@@ -59,11 +59,13 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, currentUserId }) => {
         <IonRow className="ion-align-items-center">
           <IonCol size="7">
             <IonCardTitle className="circle-card__title">{formatAmount(circle.amount)} CHF</IonCardTitle>
-            <IonCardSubtitle>{formatAmount(circle.amount / circle.duration)} CHF Monthly</IonCardSubtitle>
+            <IonCardSubtitle className="circle-card__subtitle">
+              {formatAmount(circle.amount / circle.duration)} CHF Monthly
+            </IonCardSubtitle>
           </IonCol>
           <IonCol size="5" className="ion-text-end">
             <IonButton fill="clear" color="primary" size="small" onClick={handleDetailsClick}>
-              Details
+              {currentCircleMember?.status === MemberStatus.Pending ? "Join" : "Details"}
               <IonIcon slot="end" icon={enterOutline} />
             </IonButton>
           </IonCol>
@@ -81,8 +83,25 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, currentUserId }) => {
           </IonCol>
         </IonRow>
         <IonRow className="admin-fees">
-          <IonCol size="12" className="ion-text-start">
+          <IonCol size="6" className="ion-text-start">
             <IonText>{currentCircleMember?.adminFees} Admin Fees</IonText>
+          </IonCol>
+          <IonCol size="6" className="ion-text-end">
+            <IonText
+              color={
+                currentCircleMember?.status === MemberStatus.Confirmed
+                  ? "success"
+                  : currentCircleMember?.status === MemberStatus.Pending
+                    ? "warning"
+                    : "danger"
+              }
+              className={`ion-text-${currentCircleMember?.status === MemberStatus.Confirmed ? "success" : currentCircleMember?.status === MemberStatus.Pending ? "warning" : "danger"}`}
+              style={{ fontSize: "0.7rem" }}>
+              {currentCircleMember?.status.toUpperCase()}
+              <div className="owner-member_text">
+                {circle.ownerId === currentCircleMember?.userId && <IonText>(owner)</IonText>}
+              </div>
+            </IonText>
           </IonCol>
         </IonRow>
       </IonCardContent>
