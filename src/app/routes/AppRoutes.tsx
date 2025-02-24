@@ -2,7 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import Home from "../../pages/home/Home";
 
-import Payments from "../../pages/Payments";
+import Payments from "../../pages/payments/Payments";
 import Profile from "../../pages/Profile";
 import { RouteConstants } from "../../constants/constants";
 import Welcome from "../../pages/Welcome";

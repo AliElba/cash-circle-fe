@@ -39,17 +39,17 @@ export interface UserPayload {
      */
     'name': string;
     /**
-     * Date when the user was created
-     * @type {string}
-     * @memberof UserPayload
-     */
-    'createdAt': string;
-    /**
      * Status of the user
      * @type {string}
      * @memberof UserPayload
      */
     'status': string;
+    /**
+     * URL or path to the user\'s avatar
+     * @type {string}
+     * @memberof UserPayload
+     */
+    'avatar': string;
     /**
      * Circles owned by the user
      * @type {object}
@@ -62,5 +62,17 @@ export interface UserPayload {
      * @memberof UserPayload
      */
     'circleMemberships': Array<object>;
+    /**
+     * Date when the user was created
+     * @type {string}
+     * @memberof UserPayload
+     */
+    'createdAt': string;
+    /**
+     * Date when the user was last updated
+     * @type {string}
+     * @memberof UserPayload
+     */
+    'updatedAt': string;
 }
 

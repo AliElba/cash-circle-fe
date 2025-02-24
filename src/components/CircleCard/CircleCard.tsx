@@ -31,18 +31,29 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, currentUserId }) => {
   const currentCircleMemberSlot = currentCircleMember ? currentCircleMember.slotNumber : null;
 
   const renderTimeline = () => {
-    return Array.from({ length: circle.duration }).map((_, index) => (
-      <div key={index} className={`timeline-box ${index + 1 === currentCircleMemberSlot ? "active" : ""}`}>
-        {index + 1 === currentCircleMemberSlot && (
-          <div className="timeline-indicator-container">
-            <IonText className="text-secondary your-turn-text">
-              Your turn ({getUserTurnMonth(circle.startDate, currentCircleMemberSlot)})
-            </IonText>
-            <IonIcon icon={personCircle} size="medium" color="primary" />
-          </div>
-        )}
-      </div>
-    ));
+    // ✅ Get all reserved slot numbers
+    const reservedSlots = circle.members.map((member) => member.slotNumber).filter(Boolean);
+
+    return Array.from({ length: circle.duration }).map((_, index) => {
+      const slotNumber = index + 1;
+      const isReserved = reservedSlots.includes(slotNumber);
+      const isUserSlot = slotNumber === currentCircleMemberSlot;
+
+      return (
+        <div
+          key={index}
+          className={`timeline-box ${isUserSlot ? "user-slot" : ""} ${isReserved ? "reserved-slot" : ""}`}>
+          {isUserSlot && (
+            <div className="timeline-indicator-container">
+              <IonText className="text-secondary your-turn-text">
+                Your turn ({getUserTurnMonth(circle.startDate, currentCircleMemberSlot)})
+              </IonText>
+              <IonIcon icon={personCircle} size="medium" color="primary" />
+            </div>
+          )}
+        </div>
+      );
+    });
   };
 
   const handleDetailsClick = () => {
@@ -60,7 +71,7 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, currentUserId }) => {
           <IonCol size="7">
             <IonCardTitle className="circle-card__title">{formatAmount(circle.amount)} CHF</IonCardTitle>
             <IonCardSubtitle className="circle-card__subtitle">
-              {formatAmount(circle.amount / circle.duration)} CHF Monthly
+              {formatAmount(circle.amount / circle.duration)} CHF <span className="small-text"> Monthly</span>
             </IonCardSubtitle>
           </IonCol>
           <IonCol size="5" className="ion-text-end">

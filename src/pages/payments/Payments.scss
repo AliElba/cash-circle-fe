@@ -1,0 +1,46 @@
+.payments-page {
+  .empty-state {
+    text-align: center;
+    padding: 20px;
+
+    .empty-state__image {
+      width: 250px;
+      height: auto;
+      margin: 20px auto;
+
+      border-radius: 16px;
+      overflow: hidden; // ✅ Forces child elements (including IonImg) to respect the border-radius
+    }
+
+    .empty-state__title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 16px;
+    }
+
+    .empty-state__description {
+      font-size: 0.9rem;
+      margin: 16px;
+    }
+  }
+
+  .payment-options {
+    margin-top: 10px; // ✅ Reduce top margin
+
+    .section-title {
+      margin-bottom: 5px; // ✅ Reduce space below title
+    }
+
+    ion-row {
+      margin: 0; // ✅ Remove extra margins
+      padding: 0;
+    }
+
+    ion-card {
+      text-align: center;
+      cursor: pointer;
+      margin: 5px; // ✅ Reduce space between cards
+      padding: 8px; // ✅ Reduce padding inside cards
+    }
+  }
+}

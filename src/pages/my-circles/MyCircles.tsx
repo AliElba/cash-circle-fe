@@ -16,8 +16,8 @@ const MyCircles: React.FC = () => {
       <IonContent>
         <div className="page-header-actions">
           <IonButton fill="solid" color="primary" size="small" onClick={() => history.push("/circle/create")}>
-            <IonIcon slot="start" icon={addCircle} />
             Create Circle
+            <IonIcon slot="end" icon={addCircle} />
           </IonButton>
         </div>
 

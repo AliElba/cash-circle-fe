@@ -1,4 +1,4 @@
-import "./Payments.scss";
+import "./payments/Payments.scss";
 import React from "react";
 import LogoutButton from "../components/logout/LogoutButton";
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";

@@ -38,5 +38,11 @@ export interface UpdateUserDto {
      * @memberof UpdateUserDto
      */
     'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserDto
+     */
+    'avatar': string;
 }
 

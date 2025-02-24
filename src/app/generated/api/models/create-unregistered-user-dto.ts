@@ -26,5 +26,17 @@ export interface CreateUnregisteredUserDto {
      * @memberof CreateUnregisteredUserDto
      */
     'phone': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUnregisteredUserDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUnregisteredUserDto
+     */
+    'avatar': string;
 }
 

@@ -8,3 +8,12 @@
         height: fit-content;
     }
 }
+
+.no-circles__image {
+    width: 150px;
+    height: auto;
+    margin: 0 auto;
+
+    border-radius: 16px;
+    overflow: hidden;
+}

@@ -1,5 +1,5 @@
 .circle-card {
-  
+
   .circle-card__title {
     font-size: 1.25rem;
     text-align: left;
@@ -9,10 +9,16 @@
   .circle-card__subtitle {
     text-align: left;
     line-height: 1rem;
+
+    .small-text {
+      font-size: 0.6rem;
+      color: var(--ion-text-color);
+      text-transform: capitalize;
+    }
   }
 
   .timeline {
-    margin-top: 20px;
+    margin-top: 30px;
     position: relative;
 
     .timeline-bar {
@@ -31,8 +37,12 @@
         margin: 0 2px;
         position: relative; // For overlaying the indicator on active boxes
 
-        &.active {
-          background-color: var(--ion-color-primary); // Primary color for active box
+        &.reserved-slot {
+          background-color: var(--ion-color-success) !important; // ✅ Make reserved slots green
+        }
+
+        &.user-slot {
+          background-color: var(--ion-color-primary) !important; // ✅ Keep current user's slot blue
         }
 
         .timeline-indicator-container {
