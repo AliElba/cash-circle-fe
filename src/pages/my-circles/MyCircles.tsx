@@ -1,17 +1,20 @@
-import { IonButton, IonContent, IonIcon, IonPage, IonText } from "@ionic/react";
+import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import "./MyCircles.scss";
 import React from "react";
 import { CircleStatus } from "../../app/generated/api";
 import { addCircle } from "ionicons/icons";
 import { useHistory } from "react-router";
-import CircleSwiper from "../../components/circleSwiper/CircleSwiper";
-import PageHeader from "../../components/back-button/PageHeader";
+import CircleSwiper from "../../components/circle-swiper/CircleSwiper";
 
 const MyCircles: React.FC = () => {
   const history = useHistory();
   return (
     <IonPage>
-      <PageHeader title="My Circles" />
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>My Circles</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
       <IonContent>
         <div className="page-header-actions">

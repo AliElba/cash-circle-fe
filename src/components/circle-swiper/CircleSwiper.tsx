@@ -3,7 +3,7 @@ import { CircleService } from "../../services/circle.service";
 import { CircleStatus } from "../../app/generated/api";
 import useCurrentUser from "../../app/hooks/useCurrentUser";
 import "./CircleSwiper.css";
-import CircleCard from "../CircleCard/CircleCard";
+import CircleCard from "../circle-card/CircleCard";
 import { IonImg, IonText } from "@ionic/react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -47,7 +47,7 @@ const CircleSwiper: React.FC<CircleSwiperProps> = ({ circleStatus }) => {
   if (circles.length === 0) {
     return (
       <div className="ion-text-center">
-        <IonImg src="/assets/cloud-trans.png" alt="No active circles" className="no-circles__image" />
+        <IonImg src="/assets/clouds/cool.png" alt="No active circles" className="no-circles__image" />
         <IonText>Your {circleStatus.toLowerCase()} circles will appear here!</IonText>
       </div>
     );

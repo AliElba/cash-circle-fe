@@ -5,6 +5,8 @@ import {
   IonGrid,
   IonIcon,
   IonInput,
+  IonItem,
+  IonList,
   IonPage,
   IonRow,
   IonText,
@@ -50,11 +52,11 @@ const Register: React.FC = () => {
             </IonRow>
 
             {/* phone Input */}
-            <IonRow className="ion-justify-content-center">
+            <IonRow className="ion-justify-content-center ion-margin-vertical">
               <IonInput
                 label="Phone"
                 labelPlacement="floating"
-                fill="outline"
+                fill="solid"
                 type="tel"
                 placeholder="Enter your phone"
                 value={phone}
@@ -65,11 +67,11 @@ const Register: React.FC = () => {
             </IonRow>
 
             {/* Password Input */}
-            <IonRow className="ion-justify-content-center">
+            <IonRow className="ion-justify-content-center ion-margin-vertical">
               <IonInput
                 label="Password"
                 labelPlacement="floating"
-                fill="outline"
+                fill="solid"
                 type="password"
                 placeholder="Enter your password"
                 value={password}
@@ -79,11 +81,11 @@ const Register: React.FC = () => {
               />
             </IonRow>
 
-            <IonRow className="ion-justify-content-center">
+            <IonRow className="ion-justify-content-center ion-margin-vertical">
               <IonInput
                 label="Name (Optional)"
                 labelPlacement="floating"
-                fill="outline"
+                fill="solid"
                 type="text"
                 placeholder="Enter your name"
                 value={name}
@@ -92,8 +94,8 @@ const Register: React.FC = () => {
               />
             </IonRow>
 
-            <IonRow className="ion-justify-content-center">
-              <IonButton expand="block" color="primary" type="submit">
+            <IonRow className="ion-justify-content-center ion-margin-bottom">
+              <IonButton className="w-100" expand="block" color="primary" type="submit">
                 Register
                 <IonIcon icon={personAddOutline} slot="end" />
               </IonButton>
@@ -102,16 +104,30 @@ const Register: React.FC = () => {
 
           {/* Error Messages */}
           {errorMessages.length > 0 && (
-            <IonRow className="ion-justify-content-center">
-              <IonText color="danger">
-                <ul>
-                  {errorMessages.map((message, index) => (
-                    <li key={index}>{message}</li>
-                  ))}
-                </ul>
-              </IonText>
-            </IonRow>
+            <>
+              <IonList className="ion-no-padding">
+                {errorMessages.map((message, index) => (
+                  <IonItem lines="none" key={index} className="ion-text-small ion-no-padding">
+                    <IonText color="danger">{message}</IonText>
+                  </IonItem>
+                ))}
+              </IonList>
+              <div className="separator" />
+            </>
           )}
+
+          <div className="separator"></div>
+          <IonRow className="ion-justify-content-center">
+            <IonText>
+              Already have an account?{" "}
+              <IonText
+                color="primary"
+                style={{ cursor: "pointer", fontWeight: "bold" }}
+                onClick={() => ionRouter.push(RouteConstants.loginRelative)}>
+                Login
+              </IonText>
+            </IonText>
+          </IonRow>
         </IonGrid>
       </IonContent>
     </IonPage>

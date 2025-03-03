@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IonButton, IonChip, IonSegment, IonSegmentButton, IonText } from "@ionic/react";
 import "./SlotSelectionSlide.scss";
 import { CircleSlideProps } from "../CircleDetailsSlide/CircleDetailsSlide";
-import { calcAdminFees } from "../../../../app/helpers/circle-helper";
+import { calcAdminFees } from "../../../../app/helpers/circle-helpers";
 import useCurrentUser from "../../../../app/hooks/useCurrentUser";
 
 enum SlotCategory {
@@ -133,7 +133,7 @@ const SlotSelectionSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
       </div>
 
       {/* Footer */}
-      <div className="slot-footer">
+      <div className="member-selection-slide-footer">
         <div className="footer-summary">
           <div className="summary-item">
             <IonText color="medium">Total Payout</IonText>

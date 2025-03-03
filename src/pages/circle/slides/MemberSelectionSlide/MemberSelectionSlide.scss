@@ -1,6 +1,31 @@
 .member-selection-slide {
   display: flex;
   flex-direction: column;
+}
+
+.member-selection-slide-footer {
+  padding: 16px;
+  background: var(--ion-background-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid var(--ion-color-light);
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Space between counter & button */
+}
+
+.footer-counter {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.frequent-contacts-list {
+  max-height: 175px; /* Show only 4 contacts at a time */
+  overflow-y: auto;
 
   .contact-item {
     display: flex;
@@ -25,11 +50,11 @@
       width: 40px;
       height: 40px;
     }
-  }
 
-  .contact-avatar.selected {
-    border: 1px solid var(--ion-color-primary);
-    transform: scale(1.1);
+    &.selected {
+      border: 1px solid var(--ion-color-primary);
+      transform: scale(1.1);
+    }
   }
 
   .contact-name {
@@ -56,44 +81,6 @@
     width: 40px;
     height: 40px;
   }
-
-  .added-members-list {
-    margin-top: 12px;
-    max-height: 250px;
-
-    overflow-y: auto; /* Enable vertical scroll */
-    padding-right: 8px; /* Space for scrollbar */
-  }
-
-  .added-members-list IonItem {
-    display: flex;
-    align-items: center;
-  }
-}
-
-.slot-footer {
-  padding: 16px;
-  background: var(--ion-background-color);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-top: 1px solid var(--ion-color-light);
-  display: flex;
-  flex-direction: column;
-  gap: 5px; /* Space between counter & button */
-}
-
-.footer-counter {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.scrollable-contacts-list {
-  max-height: 175px; /* Show only 4 contacts at a time */
-  overflow-y: auto;
 }
 
 .search-bar {

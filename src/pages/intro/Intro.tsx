@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "swiper/scss";
 import "@ionic/react/css/ionic-swiper.css";
 import { IonButton, IonContent, IonPage, IonText } from "@ionic/react";
@@ -26,7 +26,6 @@ const SwiperNextButton = ({ children }: any) => {
 
 // This component renders the intro.
 const Intro: React.FC = () => {
-  console.log("[Intro] rendered");
   const history = useHistory();
 
   const slidesData = [
@@ -52,6 +51,10 @@ const Intro: React.FC = () => {
       buttonText: "Start Saving Now",
     },
   ];
+
+  useEffect(() => {
+    console.log("[Intro] rendered"); // This will run only once when the component mounts
+  }, []);
 
   /**
    * When the user has finished the intro slider, we store a preference in the native app's storage.

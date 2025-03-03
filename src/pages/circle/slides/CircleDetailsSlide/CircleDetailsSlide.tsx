@@ -23,7 +23,7 @@ const CircleDetailsSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
           <IonInput
             label="Circle Name"
             labelPlacement="floating"
-            fill="outline"
+            fill="solid"
             type="text"
             placeholder="Enter Circle Name"
             required={true}
@@ -38,8 +38,11 @@ const CircleDetailsSlide: React.FC<CircleSlideProps> = ({ form, updateForm, swip
 
         <IonItem lines="full">
           <IonInput
-            type="number"
+            label="Amount"
             placeholder="Enter Amount"
+            labelPlacement="floating"
+            fill="solid"
+            type="number"
             value={form.amount}
             min={1000}
             max={10000}

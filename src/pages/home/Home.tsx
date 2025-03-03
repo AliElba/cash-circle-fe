@@ -16,7 +16,7 @@ import useCurrentUser from "../../app/hooks/useCurrentUser";
 import { useHistory } from "react-router";
 import { RouteConstants } from "../../constants/constants";
 import { CircleStatus } from "../../app/generated/api";
-import CircleSwiper from "../../components/circleSwiper/CircleSwiper";
+import CircleSwiper from "../../components/circle-swiper/CircleSwiper";
 
 const Home: React.FC = () => {
   const history = useHistory();

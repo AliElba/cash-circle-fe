@@ -2,6 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Preferences } from "@capacitor/preferences";
 import { StorageConstants } from "../constants/constants";
+import { RegisterDto } from "../app/generated/api";
 
 const API_URL = "/api/auth"; // Use proxy path instead of full backend URL
 
@@ -15,21 +16,9 @@ interface AuthResponse {
  * @param headers - Optional headers for the request.
  * @returns The authentication response containing the JWT token.
  */
-const register = async (
-  userData: {
-    phone: string;
-    password: string;
-    name?: string;
-  },
-  headers = {},
-): Promise<AuthResponse> => {
+const register = async (userData: RegisterDto, headers = {}): Promise<AuthResponse> => {
   const token = await getToken();
-  const response = await axios.post(`${API_URL}/register`, userData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      ...headers,
-    },
-  });
+  const response = await axios.post(`${API_URL}/register`, userData);
   return response.data;
 };
 
@@ -41,9 +30,7 @@ const register = async (
 const login = async (credentials: { phone: string; password: string }): Promise<AuthResponse> => {
   const response = await axios.post(`${API_URL}/login`, credentials);
   if (response.data.access_token) {
-    console.log("Preference Token saving...");
     await Preferences.set({ key: StorageConstants.token, value: response.data.access_token });
-    console.log("Preference Token saved.");
   }
   return response.data;
 };

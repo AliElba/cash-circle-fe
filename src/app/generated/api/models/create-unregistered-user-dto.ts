@@ -31,12 +31,6 @@ export interface CreateUnregisteredUserDto {
      * @type {string}
      * @memberof CreateUnregisteredUserDto
      */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUnregisteredUserDto
-     */
-    'avatar': string;
+    'name'?: string;
 }
 

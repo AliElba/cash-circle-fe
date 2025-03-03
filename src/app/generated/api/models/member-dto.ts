@@ -39,6 +39,12 @@ export interface MemberDto {
      */
     'phone': string;
     /**
+     * User name of the member
+     * @type {string}
+     * @memberof MemberDto
+     */
+    'userName': string;
+    /**
      * Slot number for the member in the circle
      * @type {number}
      * @memberof MemberDto

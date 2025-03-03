@@ -6,22 +6,23 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonList,
   IonPage,
   IonRow,
   IonText,
   useIonRouter,
+  useIonToast,
 } from "@ionic/react";
 import { logInOutline, personCircle } from "ionicons/icons";
 import "./Login.scss";
 import { Preferences } from "@capacitor/preferences";
-import Intro from "../intro/Intro";
 import { RouteConstants, StorageConstants } from "../../constants/constants";
 import { AxiosError } from "axios";
 import { AuthContext } from "../../app/context/AuthContext";
 
 const Login: React.FC = () => {
   const { login } = useContext(AuthContext)!;
-
+  const [present] = useIonToast();
   const ionRouter = useIonRouter();
   const [phone, setPhone] = useState("0111111");
   const [password, setPassword] = useState("123456");
@@ -30,6 +31,7 @@ const Login: React.FC = () => {
 
   // Check if the intro page has been visited
   useEffect(() => {
+    console.log("[Login] rendered");
     const checkIntroPageVisited = async () => {
       const result = await Preferences.get({ key: StorageConstants.isIntroPageVisited });
       setIsIntroPageVisited(result.value === "true");
@@ -38,11 +40,17 @@ const Login: React.FC = () => {
     checkIntroPageVisited().then();
   }, []);
 
+  // Render Intro page if it hasn't been visited
+  useEffect(() => {
+    if (isIntroPageVisited === false) {
+      ionRouter.push(RouteConstants.introRelative, "forward");
+    }
+  }, [isIntroPageVisited, ionRouter]); // Runs when isIntroPageVisited changes
+
   const handleLogin = async () => {
     setErrorMessages([]); // Reset error messages state
 
     try {
-      // await authService.login({ phone: phone, password });
       await login({ phone: phone, password });
 
       // Redirect to the home page after successful login
@@ -51,13 +59,16 @@ const Login: React.FC = () => {
       // Handle errors from authService
       const errorMessage = err.response?.data?.message || "An error occurred during login.";
       setErrorMessages(Array.isArray(errorMessage) ? errorMessage : [errorMessage]);
+
+      // show the error main message also using ion toast
+      await present({ message: err.message, duration: 2000, position: "top", color: "danger" });
     }
   };
 
-  // Render Intro page if it hasn't been visited
-  if (isIntroPageVisited === false) {
-    return <Intro />;
-  }
+  const handleReSeeIntro = async () => {
+    await Preferences.remove({ key: StorageConstants.isIntroPageVisited });
+    setIsIntroPageVisited(false);
+  };
 
   // Render login page if intro page has been visited
   return (
@@ -71,7 +82,7 @@ const Login: React.FC = () => {
 
           <IonItem className="ion-justify-content-center ion-margin-vertical">
             <IonInput
-              label="phone"
+              label="Phone"
               labelPlacement="floating"
               fill="solid"
               type="tel"
@@ -96,7 +107,7 @@ const Login: React.FC = () => {
           </IonItem>
 
           <IonRow className="ion-justify-content-center ion-margin-bottom">
-            <IonButton expand="block" color="primary" onClick={handleLogin}>
+            <IonButton className="w-100" expand="block" color="primary" onClick={handleLogin}>
               Login
               <IonIcon icon={logInOutline} slot="end" />
             </IonButton>
@@ -104,16 +115,42 @@ const Login: React.FC = () => {
 
           {/* Error Messages */}
           {errorMessages.length > 0 && (
-            <IonRow className="ion-justify-content-center">
-              <IonText color="danger">
-                <ul>
-                  {errorMessages.map((message, index) => (
-                    <li key={index}>{message}</li>
-                  ))}
-                </ul>
-              </IonText>
-            </IonRow>
+            <>
+              <IonList className="ion-no-padding">
+                {errorMessages.map((message, index) => (
+                  <IonItem lines="none" key={index} className="ion-text-small ion-no-padding">
+                    <IonText color="danger">{message}</IonText>
+                  </IonItem>
+                ))}
+              </IonList>
+              <div className="separator" />
+            </>
           )}
+
+          {/* Register Link */}
+          <IonRow className="ion-justify-content-center">
+            <IonText>
+              Don't have an account?{" "}
+              <IonText
+                color="primary"
+                style={{ cursor: "pointer", fontWeight: "bold" }}
+                onClick={() => ionRouter.push(RouteConstants.registerRelative)}>
+                Register
+              </IonText>
+            </IonText>
+          </IonRow>
+
+          <div className="separator" />
+
+          {/* Re-see Intro Link */}
+          <IonRow className="ion-justify-content-center">
+            <IonText>
+              Want to see the intro again?{" "}
+              <IonText color="primary" style={{ cursor: "pointer", fontWeight: "bold" }} onClick={handleReSeeIntro}>
+                Click here
+              </IonText>
+            </IonText>
+          </IonRow>
         </IonGrid>
       </IonContent>
     </IonPage>

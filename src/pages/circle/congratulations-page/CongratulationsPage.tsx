@@ -14,7 +14,7 @@ import { checkmarkCircleOutline, copyOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import "./CongratulationsPage.scss";
 import { CirclePayload } from "../../../app/generated/api";
-import { formatAmount, getMonthYearString } from "../../../app/helpers/circle-helper";
+import { formatAmount, getMonthYearString } from "../../../app/helpers/circle-helpers";
 import { RouteConstants } from "../../../constants/constants";
 import { useLocation } from "react-router";
 

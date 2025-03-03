@@ -14,7 +14,7 @@ import {
 import { enterOutline, personCircle } from "ionicons/icons";
 import "./CircleCard.scss";
 import { CirclePayload, MemberStatus } from "../../app/generated/api";
-import { formatAmount, getUserTurnMonth } from "../../app/helpers/circle-helper";
+import { formatAmount, getUserTurnMonth } from "../../app/helpers/circle-helpers";
 import { useHistory } from "react-router";
 import { RouteConstants } from "../../constants/constants";
 
@@ -31,7 +31,7 @@ const CircleCard: React.FC<CircleCardProps> = ({ circle, currentUserId }) => {
   const currentCircleMemberSlot = currentCircleMember ? currentCircleMember.slotNumber : null;
 
   const renderTimeline = () => {
-    // ✅ Get all reserved slot numbers
+    // Get all reserved slot numbers
     const reservedSlots = circle.members.map((member) => member.slotNumber).filter(Boolean);
 
     return Array.from({ length: circle.duration }).map((_, index) => {

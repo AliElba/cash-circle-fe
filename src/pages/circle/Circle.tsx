@@ -20,7 +20,7 @@ import SlideIndicator from "./slides/SlideIndicator/SlideIndicator";
 import MemberSelectionSlide from "./slides/MemberSelectionSlide/MemberSelectionSlide";
 import ReviewCircleSlide from "./slides/ReviewCircleSlide/ReviewCircleSlide";
 import { useEffect, useState } from "react";
-import { calcAdminFees, getUserPayoutDate } from "../../app/helpers/circle-helper";
+import { calcAdminFees, getUserPayoutDate } from "../../app/helpers/circle-helpers";
 
 export type CircleForm = {
   id?: string;
@@ -122,6 +122,7 @@ const Circle: React.FC = () => {
         id: currentMember?.id,
         userId: currentMember?.userId,
         phone: currentMember.user.phone,
+        userName: currentMember.user.name,
         // Current user can change the slot number for himself, so also payout date will be updated
         slotNumber: form.slotNumber!,
         payoutDate: getUserPayoutDate(form.startDate, form.slotNumber!).toISOString(), // Format YYYY-MM-DD,
@@ -142,7 +143,7 @@ const Circle: React.FC = () => {
           duration: form.duration,
           startDate: form.startDate,
           endDate: form.endDate,
-          members: form.members.map((member) => {
+          members: form.members.map((member): MemberDto => {
             if (member.userId === currentUserId) {
               return currentMemberDto;
             }
@@ -150,6 +151,7 @@ const Circle: React.FC = () => {
               id: member?.id,
               userId: member?.userId,
               phone: member.user.phone,
+              userName: member.user.name,
               slotNumber: member.slotNumber,
               payoutDate: member.payoutDate,
               status: member.status,
@@ -169,7 +171,7 @@ const Circle: React.FC = () => {
           color: "success",
         });
 
-        // ✅ Navigate to "My Circles" after a short delay
+        // Navigate to "My Circles" after a short delay
         setTimeout(() => {
           history.push(RouteConstants.circleRelative, "root");
         }, 2000);
@@ -186,10 +188,12 @@ const Circle: React.FC = () => {
             if (member.userId === currentUserId) {
               return currentMemberDto;
             }
+
             return {
               id: member?.id,
               userId: member?.userId,
               phone: member.user.phone,
+              userName: member.user.name,
               slotNumber: member.slotNumber,
               payoutDate: member.payoutDate,
               status: member.status,

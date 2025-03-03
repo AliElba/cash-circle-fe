@@ -7,7 +7,7 @@ import { CircleService } from "../../services/circle.service";
 import CircleReview from "../circle/circle-review/CircleReview";
 import PageHeader from "../../components/back-button/PageHeader";
 import "./CircleDetails.scss";
-import { getUserPayoutDate } from "../../app/helpers/circle-helper";
+import { getUserPayoutDate } from "../../app/helpers/circle-helpers";
 
 const CircleDetails: React.FC = () => {
   const currentUser = useCurrentUser();

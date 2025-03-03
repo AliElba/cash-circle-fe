@@ -20,24 +20,25 @@ const AppRoutes: React.FC = () => {
   const isAuth = useIsAuth();
   return (
     <>
-      {/* Public Routes */}
       <PrivateRoute path="/" exact component={Home} />
+
+      {/* Public Routes */}
       <Route path={RouteConstants.introRelative} component={Intro} exact />
       <Route path={RouteConstants.loginRelative} component={Login} exact />
       <Route path={RouteConstants.registerRelative} component={Register} />
 
-      <Route path={RouteConstants.welcomeRelative} component={Welcome} />
-      <Route path={RouteConstants.paymentsRelative} render={() => <Payments />} exact={true} />
-      <Route path={RouteConstants.profileRelative} render={() => <Profile />} exact={true} />
-
-      <Route path={RouteConstants.circleRelative} component={MyCircles} exact />
-
-      <Route path={RouteConstants.circleCreateRelative} component={Circle} exact />
-      <Route path={`${RouteConstants.circleEditRelative}/:circleId`} component={Circle} exact />
-      <Route path={RouteConstants.circleCongratulationsRelative} component={CongratulationsPage} exact />
-      <Route path={`${RouteConstants.circleDetailsRelative}/:circleId`} component={CircleDetails} exact />
-
       {/* Protected Routes */}
+      <PrivateRoute path={RouteConstants.welcomeRelative} component={Welcome} />
+      <PrivateRoute path={RouteConstants.paymentsRelative} component={Payments} exact={true} />
+      <PrivateRoute path={RouteConstants.profileRelative} component={Profile} exact={true} />
+
+      <PrivateRoute path={RouteConstants.circleRelative} component={MyCircles} exact />
+
+      <PrivateRoute path={RouteConstants.circleCreateRelative} component={Circle} exact />
+      <PrivateRoute path={`${RouteConstants.circleEditRelative}/:circleId`} component={Circle} exact />
+      <PrivateRoute path={RouteConstants.circleCongratulationsRelative} component={CongratulationsPage} exact />
+      <PrivateRoute path={`${RouteConstants.circleDetailsRelative}/:circleId`} component={CircleDetails} exact />
+
       <PrivateRoute path={RouteConstants.homeRelative} component={Home} exact={true} />
     </>
   );

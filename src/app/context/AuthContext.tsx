@@ -1,15 +1,16 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { authService } from "../../services/auth.service";
 import { IonContent, IonPage, IonSpinner } from "@ionic/react";
-import { UserPayload } from "../generated/api";
+import { RegisterDto, UpdateUserDto, UserPayload } from "../generated/api";
 import { UserService } from "../../services/user.service";
 import { Preferences } from "@capacitor/preferences";
 
 interface AuthContextProps {
   user: UserPayload | null;
   login: (credentials: { phone: string; password: string }) => Promise<void>;
-  register: (userData: { phone: string; password: string; firstName?: string; lastName?: string }) => Promise<void>;
+  register: (userData: RegisterDto) => Promise<void>;
   logout: () => Promise<boolean>;
+  updateUser: (updateUserDto: UpdateUserDto) => Promise<UserPayload | undefined>;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         setIsLoading(true);
 
-        // ✅ Check if token exists before proceeding
+        // Check if token exists before proceeding
         const storedToken = (await Preferences.get({ key: "token" })).value;
         if (!storedToken) {
           console.warn("No token found, user not authenticated!");
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           return;
         }
 
-        // ✅ Get the current user ID (if token exists)
+        // Get the current user ID (if token exists)
         try {
           const currentUser = await UserService.getCurrentUser();
           setUser(currentUser);
@@ -80,10 +81,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await authService.login(credentials);
 
-      // Check token has been stored in the local storage
+      // step1: Check token has been stored in the local storage (login should save token in local storage)
       const storedToken = (await Preferences.get({ key: "token" })).value;
       if (!storedToken) {
-        throw new Error("Login failed: Token not found.");
+        throw new Error("Login failed: Token not generated and not found.");
       }
 
       // Get the current user Data
@@ -92,15 +93,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error("Failed to login:", error);
       await logout(); // 🚀 Logout on login failure
+      throw error; // Rethrow the error, so the caller can handle it
     }
   };
 
   /**
    * Registers a new user.
    */
-  const register = async (userData: { phone: string; password: string; firstName?: string; lastName?: string }) => {
+  const register = async (userData: RegisterDto) => {
     await authService.register(userData);
   };
 
-  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
+  /**
+   * Logs in a user
+   * store token in local storage
+   * and updates the authentication state (get me user).
+   */
+  const updateUser = async (updateUserDto: UpdateUserDto) => {
+    try {
+      const userData = await UserService.updateUser(updateUserDto);
+
+      if (userData) {
+        setUser(userData);
+      }
+
+      return userData;
+    } catch (error) {
+      console.error("Failed to update the current user:", error);
+    }
+  };
+
+  return <AuthContext.Provider value={{ user, login, register, logout, updateUser }}>{children}</AuthContext.Provider>;
 };

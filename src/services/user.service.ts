@@ -1,4 +1,4 @@
-import { UserPayload, UsersApi } from "../app/generated/api";
+import { UpdateUserDto, UserPayload, UsersApi } from "../app/generated/api";
 import axios from "axios";
 import { Preferences } from "@capacitor/preferences";
 import { StorageConstants } from "../constants/constants";
@@ -11,14 +11,31 @@ export const UserService = {
    * @returns A promise that resolves to the list of users.
    */
   getAllUsers: async () => {
-    const response = await usersApi.getUsers();
-    return response.data;
+    const options = {
+      headers: { Authorization: `Bearer ${(await Preferences.get({ key: StorageConstants.token })).value}` },
+    };
+
+    return (await usersApi.getUsers(options)).data;
   },
 
   getCurrentUser: async (): Promise<UserPayload> => {
-    const { value: token } = await Preferences.get({ key: StorageConstants.token });
-    const options = { headers: { Authorization: `Bearer ${token}` } };
+    const options = {
+      headers: { Authorization: `Bearer ${(await Preferences.get({ key: StorageConstants.token })).value}` },
+    };
 
     return (await usersApi.getMe(options)).data;
+  },
+
+  /**
+   * Updates the current user with the provided data.
+   * @param updateUserDto - The data to update the user with.
+   * @returns A promise that resolves to the updated user payload.
+   */
+  updateUser: async (updateUserDto: UpdateUserDto): Promise<UserPayload> => {
+    const options = {
+      headers: { Authorization: `Bearer ${(await Preferences.get({ key: StorageConstants.token })).value}` },
+    };
+
+    return (await usersApi.editUser(updateUserDto, options)).data;
   },
 };

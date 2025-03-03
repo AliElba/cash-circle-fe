@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "api": "yarn generate-backend-service",
+    "api": "npm run generate-backend-service",
     "sync": "npx cap sync android && bash add-permissions.sh",
     "serve": "ionic serve",
     "dev": "vite",

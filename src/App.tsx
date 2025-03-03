@@ -24,7 +24,7 @@ import { IonReactRouter } from "@ionic/react-router";
 setupIonicReact();
 
 const App: FC = () => {
-  console.log("[App] rendered");
+  console.log("[App] Rendered");
   return (
     <AuthProvider>
       <IonApp>

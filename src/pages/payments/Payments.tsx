@@ -6,14 +6,16 @@ import {
   IonCol,
   IonContent,
   IonGrid,
+  IonHeader,
   IonImg,
   IonPage,
   IonRow,
   IonText,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import "./Payments.scss";
-import PageHeader from "../../components/back-button/PageHeader";
 import { RouteConstants } from "../../constants/constants";
 
 const Payments: React.FC = () => {
@@ -22,7 +24,11 @@ const Payments: React.FC = () => {
 
   return (
     <IonPage>
-      <PageHeader title="My Circles" />
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>My Payments</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
       <IonContent>
         <div className="payments-page ion-padding">
