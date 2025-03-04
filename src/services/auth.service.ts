@@ -4,7 +4,11 @@ import { Preferences } from "@capacitor/preferences";
 import { StorageConstants } from "../constants/constants";
 import { RegisterDto } from "../app/generated/api";
 
-const API_URL = "/api/auth"; // Use proxy path instead of full backend URL
+// Use proxy path (/api) setup on vite.config.ts instead of full backend URL
+const API_URL = (import.meta.env.VITE_API_PROXY_URL || "") + "/auth";
+//const API_URL = "/api/auth";
+
+//const API_URL = "/api/auth";
 
 interface AuthResponse {
   access_token: string;
