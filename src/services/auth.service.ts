@@ -5,7 +5,7 @@ import { StorageConstants } from "../constants/constants";
 import { RegisterDto } from "../app/generated/api";
 
 // Use proxy path (/api) setup on vite.config.ts instead of full backend URL
-const API_URL = (import.meta.env.VITE_API_PROXY_URL || "") + "/auth";
+const API_URL = (import.meta.env.VITE_API_PROXY_URL || import.meta.env.VITE_API_URL || "") + "/auth";
 //const API_URL = "/api/auth";
 
 //const API_URL = "/api/auth";
