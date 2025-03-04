@@ -14,6 +14,7 @@ import "@ionic/react/css/display.css";
 
 // Enable Dark Mode
 // import "@ionic/react/css/palettes/dark.system.css";
+import "./theme/global.scss";
 import "./theme/variables.scss";
 import React, { FC } from "react";
 import "./App.scss";

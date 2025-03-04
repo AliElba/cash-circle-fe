@@ -1,0 +1,13 @@
+// Global Styles: center all page contents
+@media (min-width: 768px) {
+  ion-content {
+    display: flex;
+    justify-content: center;
+  }
+
+  ion-content > * {
+    width: 100%;
+    margin: 0 auto !important;
+    max-width: 600px;
+  }
+}

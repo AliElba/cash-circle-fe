@@ -1,9 +1,19 @@
 import React from "react";
-import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
+import {
+  IonIcon,
+  IonLabel,
+  IonPage,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+  isPlatform,
+} from "@ionic/react";
 import { cardOutline, homeOutline, personCircleOutline, syncCircleOutline } from "ionicons/icons";
 import { RouteConstants } from "../../constants/constants";
 import AppRoutes from "../routes/AppRoutes";
 import { useLocation } from "react-router";
+import SideBarMenu from "./SideBarMenu";
 
 const MobileTabs: React.FC = () => {
   const location = useLocation();
@@ -18,35 +28,42 @@ const MobileTabs: React.FC = () => {
   ];
 
   // Check if the current route is in the hideTabsOnRoutes list
-  const shouldHideTabs = hideTabsOnRoutes.includes(location.pathname);
+  const shouldHideTabs = hideTabsOnRoutes.includes(location.pathname) || isPlatform("desktop");
 
   return (
-    <IonTabs>
-      <IonRouterOutlet>
-        <AppRoutes />
-      </IonRouterOutlet>
+    <>
+      <SideBarMenu />
 
-      {!shouldHideTabs && (
-        <IonTabBar slot="bottom">
-          <IonTabButton tab={RouteConstants.home} href={RouteConstants.homeRelative}>
-            <IonIcon aria-hidden="true" icon={homeOutline} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab={RouteConstants.circleRelative} href={RouteConstants.circleRelative}>
-            <IonIcon aria-hidden="true" icon={syncCircleOutline} />
-            <IonLabel>My Circles</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab={RouteConstants.payments} href={RouteConstants.paymentsRelative}>
-            <IonIcon aria-hidden="true" icon={cardOutline} />
-            <IonLabel>Payments</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab={RouteConstants.profile} href={RouteConstants.profileRelative}>
-            <IonIcon aria-hidden="true" icon={personCircleOutline} />
-            <IonLabel>Profile</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      )}
-    </IonTabs>
+      {/* Bottom Tabs Navigation */}
+      <IonPage id="main-content">
+        <IonTabs>
+          <IonRouterOutlet>
+            <AppRoutes />
+          </IonRouterOutlet>
+
+          {!shouldHideTabs && (
+            <IonTabBar slot="bottom">
+              <IonTabButton tab={RouteConstants.home} href={RouteConstants.homeRelative}>
+                <IonIcon aria-hidden="true" icon={homeOutline} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab={RouteConstants.circleRelative} href={RouteConstants.circleRelative}>
+                <IonIcon aria-hidden="true" icon={syncCircleOutline} />
+                <IonLabel>My Circles</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab={RouteConstants.payments} href={RouteConstants.paymentsRelative}>
+                <IonIcon aria-hidden="true" icon={cardOutline} />
+                <IonLabel>Payments</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab={RouteConstants.profile} href={RouteConstants.profileRelative}>
+                <IonIcon aria-hidden="true" icon={personCircleOutline} />
+                <IonLabel>Profile</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          )}
+        </IonTabs>
+      </IonPage>
+    </>
   );
 };
 
