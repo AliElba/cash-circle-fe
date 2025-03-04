@@ -1,3 +1,5 @@
+export const CONTENT_ID = "main-content";
+
 export class StorageConstants {
   static readonly isIntroPageVisited = "is-intro-page-visited";
   static readonly token = "token";

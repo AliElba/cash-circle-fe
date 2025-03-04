@@ -11,7 +11,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { cardOutline, homeOutline, personCircleOutline, syncCircleOutline } from "ionicons/icons";
-import { RouteConstants } from "../../constants/constants";
+import { CONTENT_ID, RouteConstants } from "../../constants/constants";
 
 const paths = [
   { path: RouteConstants.homeRelative, label: "Home", icon: homeOutline },
@@ -22,7 +22,7 @@ const paths = [
 
 const SideBarMenu: React.FC = () => {
   return (
-    <IonMenu contentId="main-content">
+    <IonMenu contentId={CONTENT_ID}>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Cash Circle</IonTitle>

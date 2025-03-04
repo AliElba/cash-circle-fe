@@ -26,7 +26,6 @@ setupIonicReact();
 
 const App: FC = () => {
   console.log("[App] Rendered");
-  console.log(import.meta.env.VITE_API_URL);
   return (
     <AuthProvider>
       <IonApp>

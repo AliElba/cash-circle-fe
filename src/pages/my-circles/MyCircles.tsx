@@ -1,4 +1,15 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonPage, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonMenuButton,
+  IonPage,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import "./MyCircles.scss";
 import React from "react";
 import { CircleStatus } from "../../app/generated/api";
@@ -12,6 +23,9 @@ const MyCircles: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
           <IonTitle>My Circles</IonTitle>
         </IonToolbar>
       </IonHeader>

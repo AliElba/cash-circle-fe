@@ -9,6 +9,7 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonMenuButton,
   IonModal,
   IonPage,
   IonRow,
@@ -56,6 +57,9 @@ const Profile: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
           <IonTitle slot="start">Profile</IonTitle>
         </IonToolbar>
       </IonHeader>

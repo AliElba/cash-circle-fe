@@ -1,6 +1,7 @@
 import React from "react";
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCol,
@@ -8,6 +9,7 @@ import {
   IonGrid,
   IonHeader,
   IonImg,
+  IonMenuButton,
   IonPage,
   IonRow,
   IonText,
@@ -26,6 +28,9 @@ const Payments: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
           <IonTitle>My Payments</IonTitle>
         </IonToolbar>
       </IonHeader>

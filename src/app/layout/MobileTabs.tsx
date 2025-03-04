@@ -10,7 +10,7 @@ import {
   isPlatform,
 } from "@ionic/react";
 import { cardOutline, homeOutline, personCircleOutline, syncCircleOutline } from "ionicons/icons";
-import { RouteConstants } from "../../constants/constants";
+import { CONTENT_ID, RouteConstants } from "../../constants/constants";
 import AppRoutes from "../routes/AppRoutes";
 import { useLocation } from "react-router";
 import SideBarMenu from "./SideBarMenu";
@@ -35,7 +35,7 @@ const MobileTabs: React.FC = () => {
       <SideBarMenu />
 
       {/* Bottom Tabs Navigation */}
-      <IonPage id="main-content">
+      <IonPage id={CONTENT_ID}>
         <IonTabs>
           <IonRouterOutlet>
             <AppRoutes />
