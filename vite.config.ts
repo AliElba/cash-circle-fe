@@ -23,6 +23,7 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
+      historyApiFallback: true, // Ensures fallback to index.html
     },
     test: {
       globals: true,
