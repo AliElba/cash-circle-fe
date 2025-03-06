@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * CashCircle API
- * API documentation for CashCircle - http://localhost:3000/api/docs-json
+ * API documentation for CashCircle - /api/docs-json
  *
  * The version of the OpenAPI document: 1.0
  *
@@ -76,33 +76,6 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
     },
     /**
      *
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    login_1: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-      const localVarPath = `/auth/_login`;
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-      let baseOptions;
-      if (configuration) {
-        baseOptions = configuration.baseOptions;
-      }
-
-      const localVarRequestOptions = { method: "POST", ...baseOptions, ...options };
-      const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = {} as any;
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter);
-      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      };
-    },
-    /**
-     *
      * @param {RegisterDto} registerDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -167,26 +140,6 @@ export const AuthApiFp = function (configuration?: Configuration) {
     },
     /**
      *
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async login_1(
-      options?: RawAxiosRequestConfig,
-    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.login_1(options);
-      const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-      const localVarOperationServerBasePath =
-        operationServerMap["AuthApi.login_1"]?.[localVarOperationServerIndex]?.url;
-      return (axios, basePath) =>
-        createRequestFunction(
-          localVarAxiosArgs,
-          globalAxios,
-          BASE_PATH,
-          configuration,
-        )(axios, localVarOperationServerBasePath || basePath);
-    },
-    /**
-     *
      * @param {RegisterDto} registerDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -228,14 +181,6 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
     },
     /**
      *
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    login_1(options?: RawAxiosRequestConfig): AxiosPromise<void> {
-      return localVarFp.login_1(options).then((request) => request(axios, basePath));
-    },
-    /**
-     *
      * @param {RegisterDto} registerDto
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -263,18 +208,6 @@ export class AuthApi extends BaseAPI {
   public login(loginDto: LoginDto, options?: RawAxiosRequestConfig) {
     return AuthApiFp(this.configuration)
       .login(loginDto, options)
-      .then((request) => request(this.axios, this.basePath));
-  }
-
-  /**
-   *
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof AuthApi
-   */
-  public login_1(options?: RawAxiosRequestConfig) {
-    return AuthApiFp(this.configuration)
-      .login_1(options)
       .then((request) => request(this.axios, this.basePath));
   }
 

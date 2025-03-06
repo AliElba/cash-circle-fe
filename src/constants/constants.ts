@@ -1,5 +1,8 @@
 export const CONTENT_ID = "main-content";
 
+// Use proxy path (/api) setup on vite.config.ts instead of full backend URL
+export const BASE_API_URL = import.meta.env.VITE_API_PROXY_URL || import.meta.env.VITE_API_URL || "";
+
 export class StorageConstants {
   static readonly isIntroPageVisited = "is-intro-page-visited";
   static readonly token = "token";

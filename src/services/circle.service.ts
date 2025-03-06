@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { CirclesApi, CircleStatus, CreateCircleDto, MemberDto, UpdateCircleDto } from "../app/generated/api";
 import { Preferences } from "@capacitor/preferences";
-import { StorageConstants } from "../constants/constants";
+import { BASE_API_URL, StorageConstants } from "../constants/constants";
 
-const circleApi = new CirclesApi(undefined, "/api", axios);
+const circleApi = new CirclesApi(undefined, BASE_API_URL, axios);
 
 export const CircleService = {
   getUserCircles: async (userId: string, circleStatus: CircleStatus = CircleStatus.Active) => {

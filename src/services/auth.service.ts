@@ -1,14 +1,10 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Preferences } from "@capacitor/preferences";
-import { StorageConstants } from "../constants/constants";
+import { BASE_API_URL, StorageConstants } from "../constants/constants";
 import { RegisterDto } from "../app/generated/api";
 
-// Use proxy path (/api) setup on vite.config.ts instead of full backend URL
-const API_URL = (import.meta.env.VITE_API_PROXY_URL || import.meta.env.VITE_API_URL || "") + "/auth";
-//const API_URL = "/api/auth";
-
-//const API_URL = "/api/auth";
+const API_URL = BASE_API_URL + "/auth";
 
 interface AuthResponse {
   access_token: string;
@@ -21,7 +17,6 @@ interface AuthResponse {
  * @returns The authentication response containing the JWT token.
  */
 const register = async (userData: RegisterDto, headers = {}): Promise<AuthResponse> => {
-  const token = await getToken();
   const response = await axios.post(`${API_URL}/register`, userData);
   return response.data;
 };

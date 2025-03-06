@@ -1,9 +1,9 @@
 import { UpdateUserDto, UserPayload, UsersApi } from "../app/generated/api";
 import axios from "axios";
 import { Preferences } from "@capacitor/preferences";
-import { StorageConstants } from "../constants/constants";
+import { BASE_API_URL, StorageConstants } from "../constants/constants";
 
-const usersApi = new UsersApi(undefined, "/api", axios);
+const usersApi = new UsersApi(undefined, BASE_API_URL, axios);
 
 export const UserService = {
   /**

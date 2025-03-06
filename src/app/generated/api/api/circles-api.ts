@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * CashCircle API
- * API documentation for CashCircle - http://localhost:3000/api/docs-json
+ * API documentation for CashCircle - /api/docs-json
  *
  * The version of the OpenAPI document: 1.0
  *
