@@ -11,7 +11,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint",
-    "generate-backend-service": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-axios -o ./src/app/generated/api --skip-validate-spec -p removeOperationIdPrefix=true --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,apiPackage=api,modelPackage=models"
+    "generate-backend-service": "openapi-generator-cli generate -i http://localhost:3000/api/docs-json -g typescript-axios -o ./src/app/generated/api --skip-validate-spec -p removeOperationIdPrefix=true --additional-properties=supportsES6=true,withSeparateModelsAndApi=true,apiPackage=api,modelPackage=models",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@capacitor-community/contacts": "^6.1.1",
