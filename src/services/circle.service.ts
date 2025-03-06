@@ -5,13 +5,16 @@ import { BASE_API_URL, StorageConstants } from "../constants/constants";
 
 const circleApi = new CirclesApi(undefined, BASE_API_URL, axios);
 
+async function authorizationOptions() {
+  return {
+    headers: { Authorization: `Bearer ${(await Preferences.get({ key: StorageConstants.token })).value}` },
+  };
+}
+
 export const CircleService = {
   getUserCircles: async (userId: string, circleStatus: CircleStatus = CircleStatus.Active) => {
-    const { value: token } = await Preferences.get({ key: StorageConstants.token });
-    const requestOptions = { headers: { Authorization: `Bearer ${token}` } };
-
     try {
-      const response = await circleApi.findAllUserCircles(circleStatus, requestOptions);
+      const response = await circleApi.findAllUserCircles(circleStatus, await authorizationOptions());
       return response.data;
     } catch (error) {
       console.error("Failed to fetch user circles:", error);
@@ -21,7 +24,7 @@ export const CircleService = {
 
   getCircleById: async (id: string) => {
     try {
-      const response = await circleApi.findOne(id);
+      const response = await circleApi.findOne(id, await authorizationOptions());
       return response.data;
     } catch (error) {
       console.error("Failed to fetch circle details:", error);
@@ -31,7 +34,7 @@ export const CircleService = {
 
   createCircle: async (createCircleDto: CreateCircleDto) => {
     try {
-      const response = await circleApi.create(createCircleDto);
+      const response = await circleApi.create(createCircleDto, await authorizationOptions());
       return response.data;
     } catch (error: AxiosError | any) {
       console.error("Failed to create circle:", error.response.data.message);
@@ -41,7 +44,7 @@ export const CircleService = {
 
   updateCircle: async (id: string, updateCircleDto: UpdateCircleDto) => {
     try {
-      const response = await circleApi.update(id, updateCircleDto);
+      const response = await circleApi.update(id, updateCircleDto, await authorizationOptions());
       return response.data;
     } catch (error) {
       console.error("Failed to update circle:", error);
@@ -51,7 +54,7 @@ export const CircleService = {
 
   deleteCircle: async (id: string) => {
     try {
-      await circleApi.remove(id);
+      await circleApi.remove(id, await authorizationOptions());
     } catch (error) {
       console.error("Failed to delete circle:", error);
       throw error;
@@ -60,7 +63,7 @@ export const CircleService = {
 
   updateCircleMember: async (id: string, memberDto: Partial<MemberDto>) => {
     try {
-      const response = await circleApi.updateMember(id, memberDto as MemberDto);
+      const response = await circleApi.updateMember(id, memberDto as MemberDto, await authorizationOptions());
       return response.data;
     } catch (error) {
       console.error("Failed to update circle member:", error);
