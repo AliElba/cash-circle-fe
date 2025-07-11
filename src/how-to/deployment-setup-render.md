@@ -2,9 +2,14 @@
 
 Render is a simple and user-friendly platform for deploying web services, databases, and backends.
 
-Pros include easy setup, integrated database options, and automatic deployments from your repository.
+**Pros:**
+- Easy setup
+- Integrated database options
+- Automatic deployments from your repository
 
-Cons include potential idle cold starts, which can cause delays when services have not received traffic for a while, and some limitations compared to more customizable cloud providers.
+**Cons:**
+- Potential idle cold starts, which can cause delays when services have not received traffic for a while
+- Some limitations compared to more customizable cloud providers
 
 ## Web Service (Frontend)
 
